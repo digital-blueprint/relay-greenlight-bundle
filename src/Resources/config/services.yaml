@@ -8,6 +8,11 @@ services:
     tags: ['controller.service_arguments']
     autowire: true
 
+  Dbp\Relay\GreenlightBundle\DataPersister\:
+    resource: '../../DataPersister'
+    autowire: true
+    autoconfigure: true
+
   Dbp\Relay\GreenlightBundle\DataProvider\PermitCollectionDataProvider:
     tags: [{ name: 'api_platform.collection_data_provider'}]
     autowire: true
