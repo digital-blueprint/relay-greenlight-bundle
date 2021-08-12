@@ -1,0 +1,28 @@
+services:
+  Dbp\Relay\GreenlightBundle\Command\TestCommand:
+    autowire: true
+    autoconfigure: true
+
+  Dbp\Relay\GreenlightBundle\Controller\:
+    resource: '../../Controller'
+    tags: ['controller.service_arguments']
+    autowire: true
+
+  Dbp\Relay\GreenlightBundle\DataProvider\PermitCollectionDataProvider:
+    tags: [{ name: 'api_platform.collection_data_provider'}]
+    autowire: true
+
+  Dbp\Relay\GreenlightBundle\DataProvider\PermitItemDataProvider:
+    tags: ['api_platform.item_data_provider']
+    autowire: true
+
+  Dbp\Relay\GreenlightBundle\Service\ExternalApi:
+    autowire: true
+    autoconfigure: true
+
+  Dbp\Relay\GreenlightBundle\Service\MyCustomService:
+    autowire: true
+    autoconfigure: true
+
+  Dbp\Relay\GreenlightBundle\Service\PermitProviderInterface:
+    '@Dbp\Relay\GreenlightBundle\Service\ExternalApi'
