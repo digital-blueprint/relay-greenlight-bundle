@@ -8,30 +8,28 @@ use Dbp\Relay\GreenlightBundle\Entity\Permit;
 
 class ExternalApi implements PermitProviderInterface
 {
-    private $places;
+    private $permits;
 
     public function __construct(MyCustomService $service)
     {
-        $service = $service;
+        $this->permits = [];
+        $permit1 = new Permit();
+        $permit1->setIdentifier('graz');
+        $permit1->setName('Graz');
 
-        $this->places = [];
-        $place1 = new Permit();
-        $place1->setIdentifier('graz');
-        $place1->setName('Graz');
+        $permit2 = new Permit();
+        $permit2->setIdentifier('vienna');
+        $permit2->setName('Vienna');
 
-        $place2 = new Permit();
-        $place2->setIdentifier('vienna');
-        $place2->setName('Vienna');
-
-        $this->places[] = $place1;
-        $this->places[] = $place2;
+        $this->permits[] = $permit1;
+        $this->permits[] = $permit2;
     }
 
     public function getPermitById(string $identifier): ?Permit
     {
-        foreach ($this->places as $place) {
-            if ($place->getIdentifier() === $identifier) {
-                return $place;
+        foreach ($this->permits as $permit) {
+            if ($permit->getIdentifier() === $identifier) {
+                return $permit;
             }
         }
 
@@ -40,6 +38,6 @@ class ExternalApi implements PermitProviderInterface
 
     public function getPermits(): array
     {
-        return $this->places;
+        return $this->permits;
     }
 }
