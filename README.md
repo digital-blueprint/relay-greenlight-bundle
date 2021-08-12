@@ -1,22 +1,5 @@
 # DbpRelayGreenlightBundle
 
-This Symfony bundle can be used as a template for creating new bundles for the
-DBP Relay project.
-
-When including this bundle into your API server it will gain the following
-features:
-
-* A custom `./bin/console` command
-* An example entity
-* Various HTTP methods implemented for that entity
-
-## Using the Bundle as a Template
-
-* Copy the repo contents
-* Adjust the package name in `composer.json`
-* Invent a new PHP namespace and adjust it in all PHP files
-* Rename `src/DbpRelayGreenlightBundle` and `DependencyInjection/DbpRelayGreenlightExtension` to match the new project name
-
 ## Integration into the API Server
 
 * Add the repository to your composer.json:
@@ -25,7 +8,7 @@ features:
     "repositories": [
         {
             "type": "vcs",
-            "url": "git@gitlab.tugraz.at:dbp/dbp-api/dbp-relay-greenlight-bundle.git"
+            "url": "git@gitlab.tugraz.at:dbp/relay/dbp-relay-greenlight-bundle.git"
         }
     ],
 ```
