@@ -13,6 +13,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  * @ApiResource(
  *     collectionOperations={
  *         "get" = {
+ *             "security" = "is_granted('IS_AUTHENTICATED_FULLY')",
  *             "path" = "/greenlight/permits",
  *             "openapi_context" = {
  *                 "tags" = {"Electronic Covid Access Permits"},
@@ -21,18 +22,21 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *     },
  *     itemOperations={
  *         "get" = {
+ *             "security" = "is_granted('IS_AUTHENTICATED_FULLY')",
  *             "path" = "/greenlight/permits/{identifier}",
  *             "openapi_context" = {
  *                 "tags" = {"Electronic Covid Access Permits"},
  *             },
  *         },
  *         "put" = {
+ *             "security" = "is_granted('IS_AUTHENTICATED_FULLY')",
  *             "path" = "/greenlight/permits/{identifier}",
  *             "openapi_context" = {
  *                 "tags" = {"Electronic Covid Access Permits"},
  *             },
  *         },
  *         "delete" = {
+ *             "security" = "is_granted('IS_AUTHENTICATED_FULLY')",
  *             "path" = "/greenlight/permits/{identifier}",
  *             "openapi_context" = {
  *                 "tags" = {"Electronic Covid Access Permits"},
