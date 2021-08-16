@@ -6,8 +6,11 @@
         "php": "^7.3",
         "ext-json": "*",
         "api-platform/core": "^2.5",
+        "dbp/api-base-bundle": "dev-main",
         "dbp/relay-core-bundle": "^0.1.11",
-        "symfony/framework-bundle": "^5.2"
+        "symfony/framework-bundle": "^5.2",
+        "symfony/orm-pack": "^2.1",
+        "symfony/uid": "^5.3"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.0",
@@ -18,6 +21,12 @@
         "symfony/phpunit-bridge": "^5.2",
         "vimeo/psalm": "^4.2.1"
     },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "git@gitlab.tugraz.at:dbp/dbp-api/api-base-bundle.git"
+        }
+    ],
     "autoload": {
         "psr-4": {
             "Dbp\\Relay\\GreenlightBundle\\": "src/"

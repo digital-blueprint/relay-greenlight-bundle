@@ -21,13 +21,6 @@ services:
     tags: ['api_platform.item_data_provider']
     autowire: true
 
-  Dbp\Relay\GreenlightBundle\Service\ExternalApi:
+  Dbp\Relay\GreenlightBundle\Service\GreenlightService:
     autowire: true
     autoconfigure: true
-
-  Dbp\Relay\GreenlightBundle\Service\MyCustomService:
-    autowire: true
-    autoconfigure: true
-
-  Dbp\Relay\GreenlightBundle\Service\PermitProviderInterface:
-    '@Dbp\Relay\GreenlightBundle\Service\ExternalApi'

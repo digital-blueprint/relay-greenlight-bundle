@@ -6,7 +6,8 @@ namespace Dbp\Relay\GreenlightBundle\Entity;
 
 use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
-use Dbp\Relay\GreenlightBundle\Controller\LoggedInOnly;
+use Dbp\Relay\GreenlightBundle\Controller\CreatePermitAction;
+use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
@@ -21,14 +22,29 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *         }
  *     },
  *     itemOperations={
- *         "get" = {
+ *         "post" = {
+ *             "method" = "POST",
  *             "security" = "is_granted('IS_AUTHENTICATED_FULLY')",
- *             "path" = "/greenlight/permits/{identifier}",
+ *             "path" = "/greenlight/permits",
+ *             "controller" = CreatePermitAction::class,
+ *             "deserialize" = false,
  *             "openapi_context" = {
  *                 "tags" = {"Electronic Covid Access Permits"},
- *             },
+ *                 "requestBody" = {
+ *                     "content" = {
+ *                         "multipart/form-data" = {
+ *                             "schema" = {
+ *                                 "type" = "object",
+ *                                 "properties" = {
+ *                                     "place" = {"description" = "Place", "type" = "string", "example" = "somedata"},
+ *                                 }
+ *                             }
+ *                         }
+ *                     }
+ *                 }
+ *             }
  *         },
- *         "put" = {
+ *         "get" = {
  *             "security" = "is_granted('IS_AUTHENTICATED_FULLY')",
  *             "path" = "/greenlight/permits/{identifier}",
  *             "openapi_context" = {
@@ -39,16 +55,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *             "security" = "is_granted('IS_AUTHENTICATED_FULLY')",
  *             "path" = "/greenlight/permits/{identifier}",
  *             "openapi_context" = {
- *                 "tags" = {"Electronic Covid Access Permits"},
- *             },
- *         },
- *         "loggedin_only" = {
- *             "security" = "is_granted('IS_AUTHENTICATED_FULLY')",
- *             "method" = "GET",
- *             "path" = "/greenlight/permits/{identifier}/loggedin-only",
- *             "controller" = LoggedInOnly::class,
- *             "openapi_context" = {
- *                 "summary" = "Only works when logged in.",
  *                 "tags" = {"Electronic Covid Access Permits"},
  *             },
  *         }
@@ -64,39 +70,75 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *         "jsonld_embed_context" = true
  *     }
  * )
+ * @ORM\Entity
+ * @ORM\Table(name="greenlight_permits")
  */
 class Permit
 {
     /**
      * @ApiProperty(identifier=true)
+     * @Groups({"GreenlightPermit:output"})
+     * @ORM\Id
+     * @ORM\Column(type="string", length=50)
      */
     private $identifier;
 
     /**
-     * @ApiProperty(iri="https://schema.org/name")
+     * @ApiProperty(iri="https://schema.org/validFor")
      * @Groups({"GreenlightPermit:output", "GreenlightPermit:input"})
+     *
+     * @var \DateInterval
+     */
+    private $validFor;
+
+    /**
+     * @ApiProperty(iri="https://schema.org/expires")
+     * @Groups({"GreenlightPermit:output", "GreenlightPermit:input"})
+     * @ORM\Column(type="datetime")
+     *
+     * @var \DateTime
+     */
+    private $expires;
+
+    /**
+     * @ORM\Column(type="string", length=100)
      *
      * @var string
      */
-    private $name;
-
-    public function getName(): string
-    {
-        return $this->name;
-    }
-
-    public function setName(string $name): void
-    {
-        $this->name = $name;
-    }
+    private $personId;
 
     public function getIdentifier(): string
     {
-        return $this->identifier;
+        return (string) $this->identifier;
     }
 
     public function setIdentifier(string $identifier): void
     {
         $this->identifier = $identifier;
+    }
+
+    public function getValidFor(): \DateInterval
+    {
+        return (new \DateTime('now'))->diff($this->expires);
+    }
+
+    public function getExpires(): \DateTime
+    {
+        return $this->expires;
+    }
+
+    public function setExpires(\DateTime $expires): void
+    {
+        $this->expires = $expires;
+    }
+
+    public function getPersonId(): string
+    {
+        return $this->personId;
+    }
+
+    public function setPersonId(string $personId): void
+    {
+        $this->personId = $personId;
     }
 }

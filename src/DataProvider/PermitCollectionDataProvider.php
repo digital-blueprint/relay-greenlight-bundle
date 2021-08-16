@@ -7,16 +7,21 @@ namespace Dbp\Relay\GreenlightBundle\DataProvider;
 use ApiPlatform\Core\DataProvider\CollectionDataProviderInterface;
 use ApiPlatform\Core\DataProvider\RestrictedDataProviderInterface;
 use Dbp\Relay\CoreBundle\Helpers\ArrayFullPaginator;
+use Dbp\Relay\CoreBundle\Helpers\ArrayPaginator;
 use Dbp\Relay\GreenlightBundle\Entity\Permit;
-use Dbp\Relay\GreenlightBundle\Service\PermitProviderInterface;
+use Dbp\Relay\GreenlightBundle\Service\GreenlightService;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-final class PermitCollectionDataProvider implements CollectionDataProviderInterface, RestrictedDataProviderInterface
+final class PermitCollectionDataProvider extends AbstractController implements CollectionDataProviderInterface, RestrictedDataProviderInterface
 {
-    private $api;
+    /**
+     * @var GreenlightService
+     */
+    private $greenlightService;
 
-    public function __construct(PermitProviderInterface $api)
+    public function __construct(GreenlightService $greenlightService)
     {
-        $this->api = $api;
+        $this->greenlightService = $greenlightService;
     }
 
     public function supports(string $resourceClass, string $operationName = null, array $context = []): bool
@@ -26,6 +31,8 @@ final class PermitCollectionDataProvider implements CollectionDataProviderInterf
 
     public function getCollection(string $resourceClass, string $operationName = null, array $context = []): ArrayFullPaginator
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
         $perPage = 30;
         $page = 1;
 
@@ -37,6 +44,6 @@ final class PermitCollectionDataProvider implements CollectionDataProviderInterf
             $perPage = (int) $filters['perPage'];
         }
 
-        return new ArrayFullPaginator($this->api->getPermits(), $page, $perPage);
+        return new ArrayFullPaginator($this->greenlightService->getPermitsForCurrentPerson(), $page, $perPage);
     }
 }

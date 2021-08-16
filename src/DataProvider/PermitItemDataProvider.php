@@ -7,15 +7,19 @@ namespace Dbp\Relay\GreenlightBundle\DataProvider;
 use ApiPlatform\Core\DataProvider\ItemDataProviderInterface;
 use ApiPlatform\Core\DataProvider\RestrictedDataProviderInterface;
 use Dbp\Relay\GreenlightBundle\Entity\Permit;
-use Dbp\Relay\GreenlightBundle\Service\PermitProviderInterface;
+use Dbp\Relay\GreenlightBundle\Service\GreenlightService;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-final class PermitItemDataProvider implements ItemDataProviderInterface, RestrictedDataProviderInterface
+final class PermitItemDataProvider extends AbstractController implements ItemDataProviderInterface, RestrictedDataProviderInterface
 {
-    private $api;
+    /**
+     * @var GreenlightService
+     */
+    private $greenlightService;
 
-    public function __construct(PermitProviderInterface $api)
+    public function __construct(GreenlightService $greenlightService)
     {
-        $this->api = $api;
+        $this->greenlightService = $greenlightService;
     }
 
     public function supports(string $resourceClass, string $operationName = null, array $context = []): bool
@@ -25,6 +29,8 @@ final class PermitItemDataProvider implements ItemDataProviderInterface, Restric
 
     public function getItem(string $resourceClass, $id, string $operationName = null, array $context = []): ?Permit
     {
-        return $this->api->getPermitById($id);
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        return $this->greenlightService->getPermitByIdForCurrentPerson($id);
     }
 }

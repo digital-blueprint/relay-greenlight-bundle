@@ -4,31 +4,48 @@ declare(strict_types=1);
 
 namespace Dbp\Relay\GreenlightBundle\DataPersister;
 
-use ApiPlatform\Core\DataPersister\DataPersisterInterface;
+use ApiPlatform\Core\DataPersister\ContextAwareDataPersisterInterface;
 use Dbp\Relay\GreenlightBundle\Entity\Permit;
-use Dbp\Relay\GreenlightBundle\Service\PermitProviderInterface;
+use Dbp\Relay\GreenlightBundle\Service\GreenlightService;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-class PermitDataPersister implements DataPersisterInterface
+class PermitDataPersister extends AbstractController implements ContextAwareDataPersisterInterface
 {
-    private $api;
+    /**
+     * @var GreenlightService
+     */
+    private $greenlightService;
 
-    public function __construct(PermitProviderInterface $api)
+    public function __construct(GreenlightService $greenlightService)
     {
-        $this->api = $api;
+        $this->greenlightService = $greenlightService;
     }
 
-    public function supports($data): bool
+    /**
+     * @param $data
+     */
+    public function supports($data, array $context = []): bool
     {
         return $data instanceof Permit;
     }
 
-    public function persist($data)
+    /**
+     * @param $data
+     *
+     * @return void
+     */
+    public function persist($data, array $context = [])
     {
-        // TODO
+        // NOP
     }
 
-    public function remove($data)
+    /**
+     * @param Permit $data
+     *
+     * @return void
+     */
+    public function remove($data, array $context = [])
     {
-        // TODO
+        $this->greenlightService->removePermitByIdForCurrentPerson($data->getIdentifier());
     }
 }
