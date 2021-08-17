@@ -7,7 +7,6 @@ namespace Dbp\Relay\GreenlightBundle\Entity;
 use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Dbp\Relay\GreenlightBundle\Controller\CreatePermitAction;
-use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
@@ -70,42 +69,46 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *         "jsonld_embed_context" = true
  *     }
  * )
- * @ORM\Entity
- * @ORM\Table(name="greenlight_permits")
  */
 class Permit
 {
     /**
      * @ApiProperty(identifier=true)
      * @Groups({"GreenlightPermit:output"})
-     * @ORM\Id
-     * @ORM\Column(type="string", length=50)
      */
     private $identifier;
 
     /**
-     * @ApiProperty(iri="https://schema.org/validFor")
+     * @ApiProperty(iri="https://schema.org/validFrom")
      * @Groups({"GreenlightPermit:output", "GreenlightPermit:input"})
-     *
-     * @var \DateInterval
-     */
-    private $validFor;
-
-    /**
-     * @ApiProperty(iri="https://schema.org/expires")
-     * @Groups({"GreenlightPermit:output", "GreenlightPermit:input"})
-     * @ORM\Column(type="datetime")
      *
      * @var \DateTime
      */
-    private $expires;
+    private $validFrom;
 
     /**
-     * @ORM\Column(type="string", length=100)
+     * @ApiProperty(iri="https://schema.org/validUntil")
+     * @Groups({"GreenlightPermit:output", "GreenlightPermit:input"})
+     *
+     * @var \DateTime
+     */
+    private $validUntil;
+
+    /**
+     * @ApiProperty(iri="https://schema.org/Place")
+     * @Groups({"GreenlightPermit:output", "GreenlightPermit:input"})
      *
      * @var string
      */
-    private $personId;
+    private $place;
+
+    /**
+     * @ApiProperty(iri="https://schema.org/image")
+     * @Groups({"GreenlightPermit:output", "GreenlightPermit:input"})
+     *
+     * @var string
+     */
+    private $image;
 
     public function getIdentifier(): string
     {
@@ -117,19 +120,24 @@ class Permit
         $this->identifier = $identifier;
     }
 
-    public function getValidFor(): \DateInterval
+    public function setValidFrom(string $validFrom): void
     {
-        return (new \DateTime('now'))->diff($this->expires);
+        $this->validFrom = $validFrom;
     }
 
-    public function getExpires(): \DateTime
+    public function getValidFrom(): \DateTime
     {
-        return $this->expires;
+        return $this->validFrom;
     }
 
-    public function setExpires(\DateTime $expires): void
+    public function setValidUntil(string $validUntil): void
     {
-        $this->expires = $expires;
+        $this->validUntil = $validUntil;
+    }
+
+    public function getValidUntil(): \DateTime
+    {
+        return $this->validUntil;
     }
 
     public function getPersonId(): string
@@ -140,5 +148,37 @@ class Permit
     public function setPersonId(string $personId): void
     {
         $this->personId = $personId;
+    }
+
+    /**
+     * @return string
+     */
+    public function getImage(): string
+    {
+        return $this->image;
+    }
+
+    /**
+     * @param string $image
+     */
+    public function setImage(string $image): void
+    {
+        $this->image = $image;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPlace(): string
+    {
+        return $this->place;
+    }
+
+    /**
+     * @param string $place
+     */
+    public function setPlace(string $place): void
+    {
+        $this->place = $place;
     }
 }
