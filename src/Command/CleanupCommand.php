@@ -30,23 +30,23 @@ class CleanupCommand extends Command
      */
     protected function configure()
     {
-        $this->setDescription('Removes expired Permit entities in the database');
+        $this->setDescription('Removes expired permits in the database');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $output->writeln('Removing expired Permit entities...');
+        $output->writeln('Removing expired permits...');
         $reviews = $this->greenlightService->getExpiredPermits();
         $reviewCount = count($reviews);
 
         if ($reviewCount === 0) {
-            $output->writeln('There were no expired reviews.');
+            $output->writeln('There were no expired permits.');
         } else {
             foreach ($reviews as $review) {
                 $this->greenlightService->removePermit($review);
             }
 
-            $output->writeln($reviewCount.' expired reviews where removed.');
+            $output->writeln($reviewCount.' expired permits where removed.');
         }
 
         return 0;
