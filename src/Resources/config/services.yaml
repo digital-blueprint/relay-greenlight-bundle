@@ -3,10 +3,10 @@ services:
     autowire: true
     autoconfigure: true
 
-  Dbp\Relay\GreenlightBundle\Controller\:
-    resource: '../../Controller'
-    tags: ['controller.service_arguments']
-    autowire: true
+#  Dbp\Relay\GreenlightBundle\Controller\:
+#    resource: '../../Controller'
+#    tags: ['controller.service_arguments']
+#    autowire: true
 
   Dbp\Relay\GreenlightBundle\DataPersister\:
     resource: '../../DataPersister'

@@ -23,6 +23,9 @@ composer require dbp/relay-greenlight-bundle=dev-main
 
 ```php
 ...
+Doctrine\Bundle\DoctrineBundle\DoctrineBundle::class => ['all' => true],
+Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle::class => ['all' => true],
+Symfony\Bundle\MakerBundle\MakerBundle::class => ['dev' => true],
 Dbp\Relay\GreenlightBundle\DbpRelayGreenlightBundle::class => ['all' => true],
 DBP\API\CoreBundle\DbpCoreBundle::class => ['all' => true],
 ];

@@ -5,8 +5,11 @@ declare(strict_types=1);
 namespace Dbp\Relay\GreenlightBundle\Tests;
 
 use ApiPlatform\Core\Bridge\Symfony\Bundle\ApiPlatformBundle;
+use DBP\API\BaseBundle\DbpBaseBundle;
 use Dbp\Relay\CoreBundle\DbpRelayCoreBundle;
 use Dbp\Relay\GreenlightBundle\DbpRelayGreenlightBundle;
+use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
+use Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle;
 use Nelmio\CorsBundle\NelmioCorsBundle;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
@@ -27,8 +30,11 @@ class Kernel extends BaseKernel
         yield new SecurityBundle();
         yield new TwigBundle();
         yield new NelmioCorsBundle();
+        yield new DoctrineBundle();
+        yield new DoctrineMigrationsBundle();
         yield new ApiPlatformBundle();
         yield new DbpRelayGreenlightBundle();
+        yield new DbpBaseBundle();
         yield new DbpRelayCoreBundle();
     }
 
@@ -46,7 +52,7 @@ class Kernel extends BaseKernel
         ]);
 
         $container->extension('dbp_relay_greenlight', [
-            'secret_token' => 'secret-test',
+            'database_url' => 'mysql://dummy:dummy@dummy'
         ]);
     }
 }
