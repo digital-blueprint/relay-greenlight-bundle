@@ -1,5 +1,5 @@
 services:
-  Dbp\Relay\GreenlightBundle\Command\TestCommand:
+  Dbp\Relay\GreenlightBundle\Command\CleanupCommand:
     autowire: true
     autoconfigure: true
 

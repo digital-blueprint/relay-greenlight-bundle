@@ -73,7 +73,7 @@ composer update dbp/relay-greenlight-bundle
 
 ### Cleanup
 
-Run this script daily to remove expired reviews.
+Run this script daily to remove expired permits.
 
 ```bash
 php bin/console dbp:relay-greenlight:cleanup
