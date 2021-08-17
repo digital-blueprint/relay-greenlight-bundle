@@ -35,7 +35,7 @@ DBP\API\CoreBundle\DbpCoreBundle::class => ['all' => true],
 
 ## Configuration
 
-The bundle has a `secret_token` configuration value that you can specify in your
+The bundle has a `database_url` configuration value that you can specify in your
 app, either by hardcoding it, or by referencing an environment variable.
 
 For this create `config/packages/dbp_relay_greenlight.yaml` in the app with the following
@@ -43,8 +43,8 @@ content:
 
 ```yaml
 dbp_relay_greenlight:
-  secret_token: 42
-  # secret_token: '%env(SECRET_TOKEN)%'
+  database_url: 'mysql://db:secret@mariadb:3306/db?serverVersion=mariadb-10.3.30'
+  # database_url: %env(EU_DCC_DATABASE_URL)%
 ```
 
 The value gets read in `DbpRelayGreenlightExtension` and passed when creating the
@@ -67,4 +67,22 @@ Don't forget you need to pull down your dependencies in your main application if
 ```bash
 # updates and installs dependencies from dbp/relay-greenlight-bundle
 composer update dbp/relay-greenlight-bundle
+```
+
+## Scripts
+
+### Cleanup
+
+Run this script daily to remove expired reviews.
+
+```bash
+php bin/console dbp:relay-greenlight:cleanup
+```
+
+### Database migration
+
+Run this script to migrate the database.
+
+```bash
+php bin/console doctrine:migrations:migrate --em=dbp_relay_greenlight_bundle
 ```
