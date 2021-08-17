@@ -77,7 +77,7 @@ class PermitPersistence
         $this->identifier = $identifier;
     }
 
-    public function setValidFrom(string $validFrom): void
+    public function setValidFrom(\DateTime $validFrom): void
     {
         $this->validFrom = $validFrom;
     }
@@ -87,7 +87,7 @@ class PermitPersistence
         return $this->validFrom;
     }
 
-    public function setValidUntil(string $validUntil): void
+    public function setValidUntil(\DateTime $validUntil): void
     {
         $this->validUntil = $validUntil;
     }
@@ -110,7 +110,7 @@ class PermitPersistence
     /**
      * @return bool
      */
-    public function isConsentAssurance(): bool
+    public function getConsentAssurance(): bool
     {
         return $this->consentAssurance;
     }
@@ -142,7 +142,7 @@ class PermitPersistence
     /**
      * @return bool
      */
-    public function isManualCheckRequired(): bool
+    public function getManualCheckRequired(): bool
     {
         return $this->manualCheckRequired;
     }
@@ -169,5 +169,30 @@ class PermitPersistence
     public function setPlace(string $place): void
     {
         $this->place = $place;
+    }
+
+    /**
+     * @param Permit $permit
+     * @return PermitPersistence
+     */
+    static public function fromPermit(Permit $permit): PermitPersistence {
+        $permitPersistence = new PermitPersistence();
+        $permitPersistence->setIdentifier($permit->getIdentifier());
+        $permitPersistence->setPlace($permit->getPlace() === null ? '' : $permit->getPlace());
+        $permitPersistence->setPersonId($permit->getPersonId() === null ? '' : $permit->getPersonId());
+        $permitPersistence->setImage($permit->getImage() === null ? '' : $permit->getImage());
+
+        if ($permit->getValidUntil() !== null) {
+            $permitPersistence->setValidUntil($permit->getValidUntil());
+        }
+
+        if ($permit->getValidFrom() !== null) {
+            $permitPersistence->setValidFrom($permit->getValidFrom());
+        }
+
+        $permitPersistence->setManualCheckRequired($permit->getManualCheckRequired());
+        $permitPersistence->setConsentAssurance($permit->getConsentAssurance());
+
+        return $permitPersistence;
     }
 }

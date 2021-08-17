@@ -8,10 +8,12 @@ use DBP\API\BaseBundle\API\PersonProviderInterface;
 use DBP\API\BaseBundle\Entity\Person;
 use Dbp\Relay\CoreBundle\Exception\ApiError;
 use Dbp\Relay\GreenlightBundle\Entity\Permit;
+use Dbp\Relay\GreenlightBundle\Entity\PermitPersistence;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Uid\Uuid;
 
 class GreenlightService
 {
@@ -48,17 +50,17 @@ class GreenlightService
      */
     public function getPermitById(string $identifier): ?Permit
     {
-        /** @var Permit $permit */
-        $permit = $this->em
-            ->getRepository(Permit::class)
+        /** @var PermitPersistence $permitPersistence */
+        $permitPersistence = $this->em
+            ->getRepository(PermitPersistence::class)
             ->find($identifier);
 
-        if (!$permit) {
+        if (!$permitPersistence) {
             // TODO: Use correct exception
             throw new ApiError(Response::HTTP_NOT_FOUND, 'Permit was not found!');
         }
 
-        return $permit;
+        return Permit::fromPermitPersistence($permitPersistence);
     }
 
     /**
@@ -70,9 +72,11 @@ class GreenlightService
     {
         $person = $this->getCurrentPerson();
 
-        return $this->em
-            ->getRepository(Permit::class)
+        $permitPersistences = $this->em
+            ->getRepository(PermitPersistence::class)
             ->findBy(['personId' => $person->getIdentifier()]);
+
+        return Permit::fromPermitPersistences($permitPersistences);
     }
 
     /**
@@ -84,13 +88,13 @@ class GreenlightService
     {
         $expr = Criteria::expr();
         $criteria = Criteria::create();
-        $criteria->where($expr->lt('expires', new \DateTime('now')));
+        $criteria->where($expr->lt('validUntil', new \DateTime('now')));
 
         $result = $this->em
-            ->getRepository(Permit::class)
+            ->getRepository(PermitPersistence::class)
             ->matching($criteria);
 
-        return $result->getValues();
+        return Permit::fromPermitPersistences($result->getValues());
     }
 
     /**
@@ -126,7 +130,31 @@ class GreenlightService
      */
     public function removePermit(Permit $permit): void
     {
-        $this->em->remove($permit);
+        // Prevent "Detached entity cannot be removed" error by fetching the PermitPersistence
+        // instead of using "PermitPersistence::fromPermit($permit)".
+        // "$this->em->merge" would fix it too, but is deprecated
+        /** @var PermitPersistence $permitPersistence */
+        $permitPersistence = $this->em
+            ->getRepository(PermitPersistence::class)
+            ->find($permit->getIdentifier());
+
+        $this->em->remove($permitPersistence);
         $this->em->flush();
+    }
+
+    public function createPermitByIdForCurrentPerson(Permit $permit): Permit
+    {
+        $permitPersistence = PermitPersistence::fromPermit($permit);
+
+        $permitPersistence->setIdentifier((string) Uuid::v4());
+        $permitPersistence->setPersonId($this->personProvider->getCurrentPerson()->getIdentifier());
+        $permitPersistence->setValidFrom(new \DateTime('now'));
+        $permitPersistence->setValidUntil((new \DateTime('now'))->add(new \DateInterval('PT12H')));
+        $permitPersistence->setImage('');
+
+        $this->em->persist($permitPersistence);
+        $this->em->flush();
+
+        return Permit::fromPermitPersistence($permitPersistence);
     }
 }

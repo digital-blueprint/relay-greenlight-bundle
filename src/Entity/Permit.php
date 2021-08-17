@@ -6,12 +6,18 @@ namespace Dbp\Relay\GreenlightBundle\Entity;
 
 use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
-use Dbp\Relay\GreenlightBundle\Controller\CreatePermitAction;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ApiResource(
  *     collectionOperations={
+ *         "post" = {
+ *             "security" = "is_granted('IS_AUTHENTICATED_FULLY')",
+ *             "path" = "/greenlight/permits",
+ *             "openapi_context" = {
+ *                 "tags" = {"Electronic Covid Access Permits"}
+ *             }
+ *         },
  *         "get" = {
  *             "security" = "is_granted('IS_AUTHENTICATED_FULLY')",
  *             "path" = "/greenlight/permits",
@@ -21,40 +27,18 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *         }
  *     },
  *     itemOperations={
- *         "post" = {
- *             "method" = "POST",
- *             "security" = "is_granted('IS_AUTHENTICATED_FULLY')",
- *             "path" = "/greenlight/permits",
- *             "controller" = CreatePermitAction::class,
- *             "deserialize" = false,
- *             "openapi_context" = {
- *                 "tags" = {"Electronic Covid Access Permits"},
- *                 "requestBody" = {
- *                     "content" = {
- *                         "multipart/form-data" = {
- *                             "schema" = {
- *                                 "type" = "object",
- *                                 "properties" = {
- *                                     "place" = {"description" = "Place", "type" = "string", "example" = "somedata"},
- *                                 }
- *                             }
- *                         }
- *                     }
- *                 }
- *             }
- *         },
  *         "get" = {
  *             "security" = "is_granted('IS_AUTHENTICATED_FULLY')",
  *             "path" = "/greenlight/permits/{identifier}",
  *             "openapi_context" = {
- *                 "tags" = {"Electronic Covid Access Permits"},
+ *                 "tags" = {"Electronic Covid Access Permits"}
  *             },
  *         },
  *         "delete" = {
  *             "security" = "is_granted('IS_AUTHENTICATED_FULLY')",
  *             "path" = "/greenlight/permits/{identifier}",
  *             "openapi_context" = {
- *                 "tags" = {"Electronic Covid Access Permits"},
+ *                 "tags" = {"Electronic Covid Access Permits"}
  *             },
  *         }
  *     },
@@ -80,7 +64,15 @@ class Permit
 
     /**
      * @ApiProperty(iri="https://schema.org/validFrom")
-     * @Groups({"GreenlightPermit:output", "GreenlightPermit:input"})
+     * @Groups({"GreenlightPermit:output"})
+     *
+     * @var string
+     */
+    private $personId = "";
+
+    /**
+     * @ApiProperty(iri="https://schema.org/validFrom")
+     * @Groups({"GreenlightPermit:output"})
      *
      * @var \DateTime
      */
@@ -88,7 +80,7 @@ class Permit
 
     /**
      * @ApiProperty(iri="https://schema.org/validUntil")
-     * @Groups({"GreenlightPermit:output", "GreenlightPermit:input"})
+     * @Groups({"GreenlightPermit:output"})
      *
      * @var \DateTime
      */
@@ -100,15 +92,31 @@ class Permit
      *
      * @var string
      */
-    private $place;
+    private $place = "";
 
     /**
      * @ApiProperty(iri="https://schema.org/image")
-     * @Groups({"GreenlightPermit:output", "GreenlightPermit:input"})
+     * @Groups({"GreenlightPermit:output"})
      *
      * @var string
      */
-    private $image;
+    private $image = "";
+
+    /**
+     * @ApiProperty(iri="https://schema.org/Boolean")
+     * @Groups({"GreenlightPermit:output", "GreenlightPermit:input"})
+     *
+     * @var bool
+     */
+    private $consentAssurance;
+
+    /**
+     * @ApiProperty(iri="https://schema.org/Boolean")
+     * @Groups({"GreenlightPermit:output", "GreenlightPermit:input"})
+     *
+     * @var bool
+     */
+    private $manualCheckRequired;
 
     public function getIdentifier(): string
     {
@@ -120,22 +128,22 @@ class Permit
         $this->identifier = $identifier;
     }
 
-    public function setValidFrom(string $validFrom): void
+    public function setValidFrom(\DateTime $validFrom): void
     {
         $this->validFrom = $validFrom;
     }
 
-    public function getValidFrom(): \DateTime
+    public function getValidFrom(): ?\DateTime
     {
         return $this->validFrom;
     }
 
-    public function setValidUntil(string $validUntil): void
+    public function setValidUntil(\DateTime $validUntil): void
     {
         $this->validUntil = $validUntil;
     }
 
-    public function getValidUntil(): \DateTime
+    public function getValidUntil(): ?\DateTime
     {
         return $this->validUntil;
     }
@@ -180,5 +188,69 @@ class Permit
     public function setPlace(string $place): void
     {
         $this->place = $place;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getConsentAssurance(): bool
+    {
+        return $this->consentAssurance;
+    }
+
+    /**
+     * @param bool $consentAssurance
+     */
+    public function setConsentAssurance(bool $consentAssurance): void
+    {
+        $this->consentAssurance = $consentAssurance;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getManualCheckRequired(): bool
+    {
+        return $this->manualCheckRequired;
+    }
+
+    /**
+     * @param bool $manualCheckRequired
+     */
+    public function setManualCheckRequired(bool $manualCheckRequired): void
+    {
+        $this->manualCheckRequired = $manualCheckRequired;
+    }
+
+    /**
+     * @param PermitPersistence $permitPersistence
+     * @return Permit
+     */
+    static public function fromPermitPersistence(PermitPersistence $permitPersistence): Permit {
+        $permit = new Permit();
+        $permit->setIdentifier($permitPersistence->getIdentifier());
+        $permit->setPlace($permitPersistence->getPlace());
+        $permit->setPersonId($permitPersistence->getPersonId());
+        $permit->setImage($permitPersistence->getImage());
+        $permit->setValidUntil($permitPersistence->getValidUntil());
+        $permit->setValidFrom($permitPersistence->getValidFrom());
+        $permit->setManualCheckRequired($permitPersistence->getManualCheckRequired());
+        $permit->setConsentAssurance($permitPersistence->getConsentAssurance());
+
+        return $permit;
+    }
+
+    /**
+     * @param PermitPersistence[] $permitPersistences
+     * @return Permit[]
+     */
+    static public function fromPermitPersistences(array $permitPersistences): array {
+        $permits = [];
+
+        foreach($permitPersistences as $permitPersistence) {
+            $permits[] = self::fromPermitPersistence($permitPersistence);
+        }
+
+        return $permits;
     }
 }
