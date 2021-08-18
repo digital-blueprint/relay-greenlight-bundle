@@ -86,3 +86,20 @@ Run this script to migrate the database.
 ```bash
 php bin/console doctrine:migrations:migrate --em=dbp_relay_greenlight_bundle
 ```
+
+## Error codes
+
+### General
+
+| relay:errorId                         | Description                  | relay:errorDetails | Example |
+| ------------------------------------- | ---------------------------- | ------------------ | ------- |
+| `greenlight:current-person-not-found` | Current person wasn't found. |                    |         |
+
+### `/greenlight/permits/{identifier}`
+
+#### GET
+
+| relay:errorId                           | Description                             | relay:errorDetails | Example |
+| --------------------------------------- | --------------------------------------- | ------------------ | ------- |
+| `greenlight:permit-not-found`           | Permit was not found.                   |                    |         |
+| `greenlight:person-does-not-own-permit` | Current person doesn't own this permit. |                    |         |

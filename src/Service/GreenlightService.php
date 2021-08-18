@@ -38,8 +38,7 @@ class GreenlightService
         $person = $this->personProvider->getCurrentPerson();
 
         if (!$person) {
-            // TODO: Use correct exception
-            throw new ApiError(Response::HTTP_FORBIDDEN, "Person wasn't found!");
+            throw ApiError::withDetails(Response::HTTP_FORBIDDEN, "Current person wasn't found!", 'greenlight:current-person-not-found');
         }
 
         return $person;
@@ -56,8 +55,7 @@ class GreenlightService
             ->find($identifier);
 
         if (!$permitPersistence) {
-            // TODO: Use correct exception
-            throw new ApiError(Response::HTTP_NOT_FOUND, 'Permit was not found!');
+            throw ApiError::withDetails(Response::HTTP_NOT_FOUND, "Permit was not found!", 'greenlight:permit-not-found');
         }
 
         return Permit::fromPermitPersistence($permitPersistence);
@@ -106,8 +104,7 @@ class GreenlightService
         $person = $this->getCurrentPerson();
 
         if ($person->getIdentifier() !== $permit->getPersonId()) {
-            // TODO: Use correct exception
-            throw new ApiError(Response::HTTP_FORBIDDEN, "Person doesn't own this permit!");
+            throw ApiError::withDetails(Response::HTTP_FORBIDDEN, "Current person doesn't own this permit!", 'greenlight:person-does-not-own-permit');
         }
 
         return $permit;
