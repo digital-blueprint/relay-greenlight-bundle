@@ -11,10 +11,19 @@ class VizHashTest extends TestCase
 {
     public function testGenerateBackground()
     {
-        $image = VizHash::generateBackground('test', 400, 400);
-        $this->assertNotNull($image);
-        $png = VizHash::imageToPng($image);
+        // Generate the background
+        $background = VizHash::generateBackground('test', 400, 400);
+        $this->assertNotNull($background);
+
+        // Blend in the photo
+        $photo = imagecreatefromjpeg(__DIR__.'/erika.jpg');
+        VizHash::blendPhoto($background, $photo, 0.85, 0.9);
+        imagedestroy($photo);
+
+        // Save to png
+        $png = VizHash::imageToPng($background);
         $this->assertNotNull($png);
-        imagedestroy($image);
+
+        imagedestroy($background);
     }
 }

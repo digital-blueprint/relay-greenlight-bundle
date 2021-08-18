@@ -1,7 +1,7 @@
 <?php
 /**
  * Based on https://framagit.org/framasoft/framabin/blob/master/lib/vizhash_gd_zero.php
- * SPDX-License-Identifier: Zlib
+ * SPDX-License-Identifier: Zlib.
  */
 
 declare(strict_types=1);
@@ -106,6 +106,44 @@ class VizHash
         $drawshape($image, $getInt(), $color);
 
         return $image;
+    }
+
+    /**
+     * Blend $src on top of $dest, centered, with variable padding and alpha.
+     *
+     * @param mixed $dest  The image to blend on top of
+     * @param mixed $src   The image to to onto $dest
+     * @param float $fill  The amount of space $src should occupy in $dest: 0=nothing, 1=all
+     * @param float $alpha How transparent $src should be: 0=fully transparent, 1=fully visible
+     */
+    public static function blendPhoto(&$dest, &$src, float $fill, float $alpha)
+    {
+        $destWidth = imagesx($dest);
+        $destHeight = imagesy($dest);
+        $srcWidth = imagesx($src);
+        $srcHeight = imagesy($src);
+        $boundingWidth = $destWidth * $fill;
+        $boundingHeight = $destHeight * $fill;
+
+        if ($boundingWidth === 0.0 || $boundingHeight === 0.0 || $srcWidth === 0 || $srcHeight === 0) {
+            return;
+        }
+
+        $boundingRatio = $boundingWidth / $boundingHeight;
+        $photoRatio = $srcWidth / $srcHeight;
+
+        if ($photoRatio > $boundingRatio) {
+            $scaleWith = (int) $boundingWidth;
+            $scaleHeight = (int) ($boundingWidth / $photoRatio);
+        } else {
+            $scaleWith = (int) ($boundingHeight * $photoRatio);
+            $scaleHeight = (int) $boundingHeight;
+        }
+        $offsetX = (int) (($destWidth - $scaleWith) / 2);
+        $offsetY = (int) (($destHeight - $scaleHeight) / 2);
+
+        $scaled = imagescale($src, $scaleWith, $scaleHeight);
+        imagecopymerge($dest, $scaled, $offsetX, $offsetY, 0, 0, $scaleWith, $scaleHeight, (int) ($alpha * 100));
     }
 
     // Gradient function taken from:
