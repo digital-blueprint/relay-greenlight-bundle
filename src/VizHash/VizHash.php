@@ -118,12 +118,11 @@ class VizHash
      * @param int    $maxHeight The max height of the text
      * @param int    $padding   The padding around the text
      * @param string $fontFile  The font file to use
-     * @param float  $alpha     0=fully transparent, 1=fully opaque
+     * @param float  $alpha     How transparent the text background should be: 0=fully transparent, 1=fully opaque
      */
     public static function addBottomText(&$dest, string $text, int $maxHeight, int $padding, string $fontFile, float $alpha)
     {
         $maxWidth = imagesx($dest);
-        $color = imagecolorallocatealpha($dest, 255, 255, 255, 127 - (int) ($alpha * 127));
 
         $getBoundingBox = function ($size, $fontFile, $text) {
             $values = imagettfbbox($size, 0, $fontFile, $text);
@@ -148,11 +147,18 @@ class VizHash
         [$w, $h] = $getBoundingBox($selectedSize, $fontFile, $text);
         $x = (int) (($maxWidth - $w) / 2);
         $y = imagesy($dest) - (int) (($maxHeight - $h) / 2);
+        // XXX: There is no API to figure out the baseline offset, guess from the size for now
+        $baseline = $y - (int) ($selectedSize * 0.1);
 
-        // Draw things
-        // XXX: There is no API to figure out the baseline offset, guess from the height for now
-        $baseline = $y - (int) ($h * 0.25);
-        imagettftext($dest, $selectedSize, 0, $x, $baseline, $color, $fontFile, $text);
+        // Add a semi transparent background box
+        $backgroundBox = imagecreatetruecolor(imagesx($dest), $maxHeight);
+        imagefill($backgroundBox, 0, 0, imagecolorallocatealpha($backgroundBox, 0, 0, 0, 127));
+        imagecopymerge($dest, $backgroundBox, 0, imagesy($dest) - $maxHeight, 0, 0,
+            imagesx($backgroundBox), imagesy($backgroundBox), (int) ($alpha * 100));
+
+        // Finally, draw the text in white on top
+        $white = imagecolorallocatealpha($dest, 255, 255, 255, 0);
+        imagettftext($dest, $selectedSize, 0, $x, $baseline, $white, $fontFile, $text);
     }
 
     /**
@@ -161,7 +167,7 @@ class VizHash
      * @param mixed $dest    The image to blend on top of
      * @param mixed $src     The image to to onto $dest
      * @param array $padding array with padding values (top, right, bottom, left)
-     * @param float $alpha   How transparent $src should be: 0=fully transparent, 1=fully visible
+     * @param float $alpha   How transparent $src should be: 0=fully transparent, 1=fully opaque
      */
     public static function blendPhoto(&$dest, &$src, array $padding, float $alpha)
     {
@@ -191,6 +197,14 @@ class VizHash
         $offsetY = (int) (($destHeight - $top - $bottom - $scaleHeight) / 2) + $top;
 
         $scaled = imagescale($src, $scaleWith, $scaleHeight);
+
+        // To avoid the color making the photo not recognizable make the background grayscale. To compensate
+        // for the lower difference increase the contrast a bit
+        $cropped = imagecrop($dest, ['x' => $offsetX, 'y' => $offsetY, 'width' => $scaleWith, 'height' => $scaleHeight]);
+        imagefilter($cropped, IMG_FILTER_GRAYSCALE);
+        imagefilter($cropped, IMG_FILTER_CONTRAST, -50);
+        imagecopymerge($dest, $cropped, $offsetX, $offsetY, 0, 0, $scaleWith, $scaleHeight, (int) ($alpha * 100));
+
         imagecopymerge($dest, $scaled, $offsetX, $offsetY, 0, 0, $scaleWith, $scaleHeight, (int) ($alpha * 100));
     }
 
