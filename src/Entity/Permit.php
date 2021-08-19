@@ -68,7 +68,7 @@ class Permit
      *
      * @var string
      */
-    private $personId = "";
+    private $personId = '';
 
     /**
      * @ApiProperty(iri="https://schema.org/validFrom")
@@ -87,20 +87,12 @@ class Permit
     private $validUntil;
 
     /**
-     * @ApiProperty(iri="https://schema.org/Place")
-     * @Groups({"GreenlightPermit:output", "GreenlightPermit:input"})
-     *
-     * @var string
-     */
-    private $place = "";
-
-    /**
      * @ApiProperty(iri="https://schema.org/image")
      * @Groups({"GreenlightPermit:output"})
      *
      * @var string
      */
-    private $image = "";
+    private $image = '';
 
     /**
      * @ApiProperty(iri="https://schema.org/Boolean")
@@ -158,78 +150,40 @@ class Permit
         $this->personId = $personId;
     }
 
-    /**
-     * @return string
-     */
     public function getImage(): string
     {
         return $this->image;
     }
 
-    /**
-     * @param string $image
-     */
     public function setImage(string $image): void
     {
         $this->image = $image;
     }
 
-    /**
-     * @return string
-     */
-    public function getPlace(): string
-    {
-        return $this->place;
-    }
-
-    /**
-     * @param string $place
-     */
-    public function setPlace(string $place): void
-    {
-        $this->place = $place;
-    }
-
-    /**
-     * @return bool
-     */
     public function getConsentAssurance(): bool
     {
         return $this->consentAssurance;
     }
 
-    /**
-     * @param bool $consentAssurance
-     */
     public function setConsentAssurance(bool $consentAssurance): void
     {
         $this->consentAssurance = $consentAssurance;
     }
 
-    /**
-     * @return bool
-     */
     public function getManualCheckRequired(): bool
     {
         return $this->manualCheckRequired;
     }
 
-    /**
-     * @param bool $manualCheckRequired
-     */
     public function setManualCheckRequired(bool $manualCheckRequired): void
     {
         $this->manualCheckRequired = $manualCheckRequired;
     }
 
-    /**
-     * @param PermitPersistence $permitPersistence
-     * @return Permit
-     */
-    static public function fromPermitPersistence(PermitPersistence $permitPersistence): Permit {
+    public static function fromPermitPersistence(PermitPersistence $permitPersistence): Permit
+    {
         $permit = new Permit();
         $permit->setIdentifier($permitPersistence->getIdentifier());
-        $permit->setPlace($permitPersistence->getPlace());
         $permit->setPersonId($permitPersistence->getPersonId());
         $permit->setImage($permitPersistence->getImage());
         $permit->setValidUntil($permitPersistence->getValidUntil());
@@ -242,12 +196,14 @@ class Permit
 
     /**
      * @param PermitPersistence[] $permitPersistences
+     *
      * @return Permit[]
      */
-    static public function fromPermitPersistences(array $permitPersistences): array {
+    public static function fromPermitPersistences(array $permitPersistences): array
+    {
         $permits = [];
 
-        foreach($permitPersistences as $permitPersistence) {
+        foreach ($permitPersistences as $permitPersistence) {
             $permits[] = self::fromPermitPersistence($permitPersistence);
         }
 

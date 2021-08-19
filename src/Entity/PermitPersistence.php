@@ -40,13 +40,6 @@ class PermitPersistence
     private $personId;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     *
-     * @var string
-     */
-    private $place;
-
-    /**
      * @ORM\Column(type="text")
      *
      * @var string
@@ -107,78 +100,40 @@ class PermitPersistence
         $this->personId = $personId;
     }
 
-    /**
-     * @return bool
-     */
     public function getConsentAssurance(): bool
     {
         return $this->consentAssurance;
     }
 
-    /**
-     * @param bool $consentAssurance
-     */
     public function setConsentAssurance(bool $consentAssurance): void
     {
         $this->consentAssurance = $consentAssurance;
     }
 
-    /**
-     * @return string
-     */
     public function getImage(): string
     {
         return $this->image;
     }
 
-    /**
-     * @param string $image
-     */
     public function setImage(string $image): void
     {
         $this->image = $image;
     }
 
-    /**
-     * @return bool
-     */
     public function getManualCheckRequired(): bool
     {
         return $this->manualCheckRequired;
     }
 
-    /**
-     * @param bool $manualCheckRequired
-     */
     public function setManualCheckRequired(bool $manualCheckRequired): void
     {
         $this->manualCheckRequired = $manualCheckRequired;
     }
 
-    /**
-     * @return string
-     */
-    public function getPlace(): string
+    public static function fromPermit(Permit $permit): PermitPersistence
     {
-        return $this->place;
-    }
-
-    /**
-     * @param string $place
-     */
-    public function setPlace(string $place): void
-    {
-        $this->place = $place;
-    }
-
-    /**
-     * @param Permit $permit
-     * @return PermitPersistence
-     */
-    static public function fromPermit(Permit $permit): PermitPersistence {
         $permitPersistence = new PermitPersistence();
         $permitPersistence->setIdentifier($permit->getIdentifier());
-        $permitPersistence->setPlace($permit->getPlace() === null ? '' : $permit->getPlace());
         $permitPersistence->setPersonId($permit->getPersonId() === null ? '' : $permit->getPersonId());
         $permitPersistence->setImage($permit->getImage() === null ? '' : $permit->getImage());
 
