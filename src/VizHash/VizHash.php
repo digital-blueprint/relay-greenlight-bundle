@@ -109,21 +109,69 @@ class VizHash
     }
 
     /**
+     * Draws text at the bottom of $dest.
+     * The text size will be automatically adjusted to fit the whole text and the text will be
+     * horizontally and vertically centered.
+     *
+     * @param mixed  $dest      The GDImage to draw to
+     * @param string $text      The text to draw
+     * @param int    $maxHeight The max height of the text
+     * @param int    $padding   The padding around the text
+     * @param string $fontFile  The font file to use
+     * @param float  $alpha     0=fully transparent, 1=fully opaque
+     */
+    public static function addBottomText(&$dest, string $text, int $maxHeight, int $padding, string $fontFile, float $alpha)
+    {
+        $maxWidth = imagesx($dest);
+        $color = imagecolorallocatealpha($dest, 255, 255, 255, 127 - (int) ($alpha * 127));
+
+        $getBoundingBox = function ($size, $fontFile, $text) {
+            $values = imagettfbbox($size, 0, $fontFile, $text);
+            if ($values === false) {
+                return [0, 0];
+            }
+
+            return [$values[2] - $values[0], $values[3] - $values[5]];
+        };
+
+        // Select the best font size for the bounding box
+        $selectedSize = 0;
+        for ($i = 0; $i < $maxHeight; ++$i) {
+            [$w, $h] = $getBoundingBox($i, $fontFile, $text);
+            if ($w >= ($maxWidth - $padding * 2) || $h >= ($maxHeight - $padding * 2)) {
+                break;
+            }
+            $selectedSize = $i;
+        }
+
+        // Center at the bottom
+        [$w, $h] = $getBoundingBox($selectedSize, $fontFile, $text);
+        $x = (int) (($maxWidth - $w) / 2);
+        $y = imagesy($dest) - (int) (($maxHeight - $h) / 2);
+
+        // Draw things
+        // XXX: There is no API to figure out the baseline offset, guess from the height for now
+        $baseline = $y - (int) ($h * 0.25);
+        imagettftext($dest, $selectedSize, 0, $x, $baseline, $color, $fontFile, $text);
+    }
+
+    /**
      * Blend $src on top of $dest, centered, with variable padding and alpha.
      *
-     * @param mixed $dest  The image to blend on top of
-     * @param mixed $src   The image to to onto $dest
-     * @param float $fill  The amount of space $src should occupy in $dest: 0=nothing, 1=all
-     * @param float $alpha How transparent $src should be: 0=fully transparent, 1=fully visible
+     * @param mixed $dest    The image to blend on top of
+     * @param mixed $src     The image to to onto $dest
+     * @param array $padding array with padding values (top, right, bottom, left)
+     * @param float $alpha   How transparent $src should be: 0=fully transparent, 1=fully visible
      */
-    public static function blendPhoto(&$dest, &$src, float $fill, float $alpha)
+    public static function blendPhoto(&$dest, &$src, array $padding, float $alpha)
     {
         $destWidth = imagesx($dest);
         $destHeight = imagesy($dest);
         $srcWidth = imagesx($src);
         $srcHeight = imagesy($src);
-        $boundingWidth = $destWidth * $fill;
-        $boundingHeight = $destHeight * $fill;
+        [$top, $right, $bottom, $left] = $padding;
+        $boundingWidth = $destWidth - ($left + $right);
+        $boundingHeight = $destHeight - ($top + $bottom);
 
         if ($boundingWidth === 0.0 || $boundingHeight === 0.0 || $srcWidth === 0 || $srcHeight === 0) {
             return;
@@ -139,8 +187,8 @@ class VizHash
             $scaleWith = (int) ($boundingHeight * $photoRatio);
             $scaleHeight = (int) $boundingHeight;
         }
-        $offsetX = (int) (($destWidth - $scaleWith) / 2);
-        $offsetY = (int) (($destHeight - $scaleHeight) / 2);
+        $offsetX = (int) (($destWidth - $left - $right - $scaleWith) / 2) + $left;
+        $offsetY = (int) (($destHeight - $top - $bottom - $scaleHeight) / 2) + $top;
 
         $scaled = imagescale($src, $scaleWith, $scaleHeight);
         imagecopymerge($dest, $scaled, $offsetX, $offsetY, 0, 0, $scaleWith, $scaleHeight, (int) ($alpha * 100));

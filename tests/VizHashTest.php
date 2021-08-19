@@ -17,8 +17,12 @@ class VizHashTest extends TestCase
 
         // Blend in the photo
         $photo = imagecreatefromjpeg(__DIR__.'/erika.jpg');
-        VizHash::blendPhoto($background, $photo, 0.85, 0.9);
+        VizHash::blendPhoto($background, $photo, [20, 20, 80, 20], 0.8);
         imagedestroy($photo);
+
+        // Add text to Bottom
+        $font = __DIR__.'/sourcesanspro.ttf';
+        VizHash::addBottomText($background, 'Erika Musterfrau 1970', 80, 10, $font, 0.8);
 
         // Save to png
         $png = VizHash::imageToPng($background);
