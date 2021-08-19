@@ -10,10 +10,46 @@ namespace Dbp\Relay\GreenlightBundle\VizHash;
 
 class VizHash
 {
-    public static function imageToPng($image): string
+    /**
+     * This is the main function for creating a full visual hash, including a "random" background, a photo
+     * in the middle and a text at the bottom.
+     *
+     * @param string $hash        The input for the hash background
+     * @param string $photoData   The photo to include
+     * @param int    $size        The width/height of the result in pixels
+     * @param string $text        The text to include
+     * @param string $fontFile    A path to a .ttf file
+     * @param int    $jpegQuality The quality of the resulting jpeg file
+     *
+     * @return string A jpeg image
+     */
+    public static function create(string $hash, string $photoData, int $size, string $text, string $fontFile, int $jpegQuality): string
+    {
+        $p = $size / 100;
+
+        // Generate the background
+        $background = VizHash::generateBackground($hash, $size, $size);
+
+        // Blend in the photo
+        $photo = imagecreatefromstring($photoData);
+        imagefilter($photo, IMG_FILTER_GRAYSCALE);
+        imagefilter($photo, IMG_FILTER_CONTRAST, -30);
+        VizHash::blendPhoto($background, $photo, [5 * $p, 5 * $p, 20 * $p, 5], 0.8);
+        imagedestroy($photo);
+
+        // Add text to Bottom
+        VizHash::addBottomText($background, $text, 15 * $p, 2 * $p, $fontFile, 0.7);
+
+        $data = self::imageToJpeg($background, $jpegQuality);
+        imagedestroy($background);
+
+        return $data;
+    }
+
+    public static function imageToJpeg($image, int $quality): string
     {
         ob_start();
-        imagepng($image);
+        imagejpeg($image, null, $quality);
         $data = ob_get_contents();
         ob_end_clean();
 
@@ -197,13 +233,6 @@ class VizHash
         $offsetY = (int) (($destHeight - $top - $bottom - $scaleHeight) / 2) + $top;
 
         $scaled = imagescale($src, $scaleWith, $scaleHeight);
-
-        // To avoid the color making the photo not recognizable make the background grayscale. To compensate
-        // for the lower difference increase the contrast a bit
-        $cropped = imagecrop($dest, ['x' => $offsetX, 'y' => $offsetY, 'width' => $scaleWith, 'height' => $scaleHeight]);
-        imagefilter($cropped, IMG_FILTER_GRAYSCALE);
-        imagefilter($cropped, IMG_FILTER_CONTRAST, -50);
-        imagecopymerge($dest, $cropped, $offsetX, $offsetY, 0, 0, $scaleWith, $scaleHeight, (int) ($alpha * 100));
 
         imagecopymerge($dest, $scaled, $offsetX, $offsetY, 0, 0, $scaleWith, $scaleHeight, (int) ($alpha * 100));
     }
