@@ -146,7 +146,7 @@ class VizHash
 
     /**
      * Draws text at the bottom of $dest.
-     * The text size will be automatically adjusted to fit the whole text and the text will be
+     * The text size will be automatically adjusted to fit the whole box and the text will be
      * horizontally and vertically centered.
      *
      * @param mixed  $dest      The GDImage to draw to
@@ -201,7 +201,7 @@ class VizHash
      * Blend $src on top of $dest, centered, with variable padding and alpha.
      *
      * @param mixed $dest    The image to blend on top of
-     * @param mixed $src     The image to to onto $dest
+     * @param mixed $src     The image to blend onto $dest
      * @param array $padding array with padding values (top, right, bottom, left)
      * @param float $alpha   How transparent $src should be: 0=fully transparent, 1=fully opaque
      */
