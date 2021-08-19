@@ -7,12 +7,14 @@ namespace Dbp\Relay\GreenlightBundle\Service;
 use DBP\API\BaseBundle\API\PersonProviderInterface;
 use DBP\API\BaseBundle\Entity\Person;
 use Dbp\Relay\CoreBundle\Exception\ApiError;
+use Dbp\Relay\GreenlightBundle\API\PersonPhotoProviderInterface;
 use Dbp\Relay\GreenlightBundle\Entity\Permit;
 use Dbp\Relay\GreenlightBundle\Entity\PermitPersistence;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Uid\Uuid;
 
 class GreenlightService
@@ -27,10 +29,16 @@ class GreenlightService
      */
     private $em;
 
-    public function __construct(PersonProviderInterface $personProvider, ManagerRegistry $managerRegistry)
+    /**
+     * @var PersonPhotoProviderInterface
+     */
+    private $personPhotoProviderInterface;
+
+    public function __construct(PersonProviderInterface $personProvider, ManagerRegistry $managerRegistry, PersonPhotoProviderInterface $personPhotoProviderInterface)
     {
         $this->personProvider = $personProvider;
-        $this->em = $managerRegistry->getManager("dbp_relay_greenlight_bundle");
+        $this->personPhotoProviderInterface = $personPhotoProviderInterface;
+        $this->em = $managerRegistry->getManager('dbp_relay_greenlight_bundle');
     }
 
     private function getCurrentPerson(): Person
@@ -55,10 +63,20 @@ class GreenlightService
             ->find($identifier);
 
         if (!$permitPersistence) {
-            throw ApiError::withDetails(Response::HTTP_NOT_FOUND, "Permit was not found!", 'greenlight:permit-not-found');
+            throw ApiError::withDetails(Response::HTTP_NOT_FOUND, 'Permit was not found!', 'greenlight:permit-not-found');
         }
 
-        return Permit::fromPermitPersistence($permitPersistence);
+        $permit = Permit::fromPermitPersistence($permitPersistence);
+
+        // try to get a photo of the person
+        try {
+            $person = $this->personProvider->getPerson($permit->getPersonId());
+            $photo = $this->personPhotoProviderInterface->getPhotoData($person);
+            $permit->setImage($photo);
+        } catch (NotFoundHttpException $e) {
+        }
+
+        return $permit;
     }
 
     /**
