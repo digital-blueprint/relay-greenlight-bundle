@@ -157,7 +157,7 @@ class GreenlightService
         $this->em->flush();
     }
 
-    public function createPermitByIdForCurrentPerson(Permit $permit): Permit
+    public function createPermitForCurrentPerson(Permit $permit): Permit
     {
         $permitPersistence = PermitPersistence::fromPermit($permit);
 

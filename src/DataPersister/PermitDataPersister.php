@@ -36,7 +36,7 @@ class PermitDataPersister extends AbstractController implements ContextAwareData
      */
     public function persist($data, array $context = [])
     {
-        return $this->greenlightService->createPermitByIdForCurrentPerson($data);
+        return $this->greenlightService->createPermitForCurrentPerson($data);
     }
 
     /**
