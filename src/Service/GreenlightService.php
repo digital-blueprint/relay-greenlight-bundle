@@ -68,14 +68,6 @@ class GreenlightService
 
         $permit = Permit::fromPermitPersistence($permitPersistence);
 
-        // try to get a photo of the person
-        try {
-            $person = $this->personProvider->getPerson($permit->getPersonId());
-            $photo = $this->personPhotoProviderInterface->getPhotoData($person);
-            $permit->setImage($photo);
-        } catch (NotFoundHttpException $e) {
-        }
-
         return $permit;
     }
 
@@ -159,17 +151,48 @@ class GreenlightService
 
     public function createPermitForCurrentPerson(Permit $permit): Permit
     {
-        $permitPersistence = PermitPersistence::fromPermit($permit);
+        $personId = $this->personProvider->getCurrentPerson()->getIdentifier();
 
+        $permitPersistence = PermitPersistence::fromPermit($permit);
         $permitPersistence->setIdentifier((string) Uuid::v4());
-        $permitPersistence->setPersonId($this->personProvider->getCurrentPerson()->getIdentifier());
+        $permitPersistence->setPersonId($personId);
         $permitPersistence->setValidFrom(new \DateTime('now'));
         $permitPersistence->setValidUntil((new \DateTime('now'))->add(new \DateInterval('PT12H')));
-        $permitPersistence->setImage('');
+        $permitPersistence->setImage($this->fetchBase64PhotoForPersonId($personId));
 
         $this->em->persist($permitPersistence);
         $this->em->flush();
 
         return Permit::fromPermitPersistence($permitPersistence);
+    }
+
+    /**
+     * Returns the photo (or a fallback photo) of a person.
+     *
+     * @param string $personId
+     *
+     * @return string
+     */
+    protected function fetchBase64PhotoForPersonId(string $personId): string
+    {
+        $base64PhotoData = '';
+
+        // try to get a photo of the person
+        try {
+            $person = $this->personProvider->getPerson($personId);
+            $base64PhotoData = $this->personPhotoProviderInterface->getPhotoData($person);
+        } catch (NotFoundHttpException $e) {
+        }
+
+        // use missing_photo.png as fallback photo
+        if ($base64PhotoData === '') {
+            $photoData = file_get_contents(__DIR__.'/../src/Assets/missing_photo.png');
+
+            if ($photoData !== '') {
+                $base64PhotoData = base64_encode($photoData);
+            }
+        }
+
+        return $base64PhotoData;
     }
 }
