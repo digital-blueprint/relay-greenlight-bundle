@@ -183,8 +183,10 @@ class VizHash
         [$w, $h] = $getBoundingBox($selectedSize, $fontFile, $text);
         $x = (int) (($maxWidth - $w) / 2);
         $y = imagesy($dest) - (int) (($maxHeight - $h) / 2);
+
         // XXX: There is no API to figure out the baseline offset, guess from the size for now
-        $baseline = $y - (int) ($selectedSize * 0.1);
+        $small = $getBoundingBox($selectedSize, $fontFile, 'ABCI')[1];
+        $baseline = $y - ($h - $small);
 
         // Add a semi transparent background box
         $backgroundBox = imagecreatetruecolor(imagesx($dest), $maxHeight);
