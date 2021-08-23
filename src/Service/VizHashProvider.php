@@ -57,8 +57,11 @@ class VizHashProvider
      */
     public function getCurrentInput(): string
     {
+        if (!$this->parameters->has('kernel.secret')) {
+            throw new \RuntimeException('secret required');
+        }
         // Returns a different string on every server.
-        $serverInput = $this->parameters->has('kernel.secret') ? $this->parameters->get('kernel.secret') : '';
+        $serverInput = $this->parameters->get('kernel.secret');
         assert(is_string($serverInput));
 
         // This returns a different string 20 minutes after every hour.

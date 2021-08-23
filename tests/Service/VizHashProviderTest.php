@@ -34,7 +34,7 @@ class VizHashProviderTest extends TestCase
 
     public function testGetCurrentInput()
     {
-        $prov = new VizHashProvider(new ParameterBag());
+        $prov = new VizHashProvider(new ParameterBag(['kernel.secret' => 'mysecret']));
         $input = $prov->getCurrentInput();
         $this->assertIsString($input);
     }
