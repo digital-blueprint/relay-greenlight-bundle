@@ -38,7 +38,9 @@ class GreenlightService
     {
         $this->personProvider = $personProvider;
         $this->personPhotoProviderInterface = $personPhotoProviderInterface;
-        $this->em = $managerRegistry->getManager('dbp_relay_greenlight_bundle');
+        $manager = $managerRegistry->getManager('dbp_relay_greenlight_bundle');
+        assert($manager instanceof EntityManagerInterface);
+        $this->em = $manager;
     }
 
     private function getCurrentPerson(): Person

@@ -21,9 +21,6 @@ class PermitDataPersister extends AbstractController implements ContextAwareData
         $this->greenlightService = $greenlightService;
     }
 
-    /**
-     * @param $data
-     */
     public function supports($data, array $context = []): bool
     {
         return $data instanceof Permit;

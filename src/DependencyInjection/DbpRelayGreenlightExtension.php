@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace Dbp\Relay\GreenlightBundle\DependencyInjection;
 
-use Dbp\Relay\GreenlightBundle\DependencyInjection\Configuration;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
-use Symfony\Component\DependencyInjection\Loader\FileLoader;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\ConfigurableExtension;
 
@@ -16,6 +14,7 @@ class DbpRelayGreenlightExtension extends ConfigurableExtension implements Prepe
 {
     /**
      * @return void
+     *
      * @throws \Exception
      */
     public function loadInternal(array $mergedConfig, ContainerBuilder $container)
@@ -63,8 +62,8 @@ class DbpRelayGreenlightExtension extends ConfigurableExtension implements Prepe
                 'dbal' => [
                     'connections' => [
                         'dbp_relay_greenlight_bundle' => [
-                            'url' => $config['database_url']
-                        ]
+                            'url' => $config['database_url'],
+                        ],
                     ],
                 ],
                 'orm' => [
@@ -73,9 +72,9 @@ class DbpRelayGreenlightExtension extends ConfigurableExtension implements Prepe
                             'naming_strategy' => 'doctrine.orm.naming_strategy.underscore_number_aware',
                             'connection' => 'dbp_relay_greenlight_bundle',
                             'mappings' => [
-                                'DbpRelayGreenlightBundle' => null
+                                'DbpRelayGreenlightBundle' => null,
                             ],
-                        ]
+                        ],
                     ],
                 ],
             ]);
@@ -84,8 +83,8 @@ class DbpRelayGreenlightExtension extends ConfigurableExtension implements Prepe
         if (isset($container->getExtensions()['doctrine_migrations'])) {
             $container->prependExtensionConfig('doctrine_migrations', [
                 'migrations_paths' => [
-                    'Dbp\Relay\GreenlightBundle\Migrations' => 'vendor/dbp/relay-greenlight-bundle/src/Migrations'
-                ]
+                    'Dbp\Relay\GreenlightBundle\Migrations' => 'vendor/dbp/relay-greenlight-bundle/src/Migrations',
+                ],
             ]);
         }
     }

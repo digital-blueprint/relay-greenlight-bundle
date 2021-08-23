@@ -7,7 +7,6 @@ namespace Dbp\Relay\GreenlightBundle\DataProvider;
 use ApiPlatform\Core\DataProvider\CollectionDataProviderInterface;
 use ApiPlatform\Core\DataProvider\RestrictedDataProviderInterface;
 use Dbp\Relay\CoreBundle\Helpers\ArrayFullPaginator;
-use Dbp\Relay\CoreBundle\Helpers\ArrayPaginator;
 use Dbp\Relay\GreenlightBundle\Entity\Permit;
 use Dbp\Relay\GreenlightBundle\Service\GreenlightService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
