@@ -9,7 +9,7 @@ use Dbp\Relay\GreenlightBundle\API\PersonPhotoProviderInterface;
 
 class DummyPersonPhotoProvider implements PersonPhotoProviderInterface
 {
-    public function getPhotoData(Person $person): ?string
+    public function getPhotoData(Person $person): string
     {
         return 'Test';
     }

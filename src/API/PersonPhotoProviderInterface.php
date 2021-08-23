@@ -8,5 +8,5 @@ use DBP\API\BaseBundle\Entity\Person;
 
 interface PersonPhotoProviderInterface
 {
-    public function getPhotoData(Person $person): ?string;
+    public function getPhotoData(Person $person): string;
 }
