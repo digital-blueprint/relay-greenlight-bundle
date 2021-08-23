@@ -20,6 +20,9 @@ class VizHashProvider
         $this->parameters = $parameters;
     }
 
+    /**
+     * Create a jpeg image with a centered photo.
+     */
     public function createImageWithPhoto(string $input, string $photoData, int $size): string
     {
         $font = __DIR__.'/../Assets/sourcesanspro.ttf';
@@ -27,6 +30,9 @@ class VizHashProvider
         return VizHash::create($input, $photoData, $size, null, $font, 80);
     }
 
+    /**
+     * Create a jpeg image with a centered image indicating a missing photo.
+     */
     public function createImageMissingPhoto(string $input, int $size): string
     {
         $font = __DIR__.'/../Assets/sourcesanspro.ttf';
@@ -35,7 +41,10 @@ class VizHashProvider
         return VizHash::create($input, $photoData, $size, null, $font, 80);
     }
 
-    public function createReferenceImage(string $input, string $photoData, int $size): string
+    /**
+     * Create a jpeg image with an example photo and a watermark.
+     */
+    public function createReferenceImage(string $input, int $size): string
     {
         $font = __DIR__.'/../Assets/sourcesanspro.ttf';
         $photoData = file_get_contents(__DIR__.'/../Assets/example_photo.jpg');
@@ -44,7 +53,7 @@ class VizHashProvider
     }
 
     /**
-     * This can be passed to createImage() as $input.
+     * This can be passed to createImage() as $input. The result changes ~ every hour.
      */
     public function getCurrentInput(): string
     {
