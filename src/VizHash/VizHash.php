@@ -14,16 +14,16 @@ class VizHash
      * This is the main function for creating a full visual hash, including a "random" background, a photo
      * in the middle and a text at the bottom.
      *
-     * @param string $hash        The input for the hash background
-     * @param string $photoData   The photo to include
-     * @param int    $size        The width/height of the result in pixels
-     * @param string $text        The text to include
-     * @param string $fontFile    A path to a .ttf file
-     * @param int    $jpegQuality The quality of the resulting jpeg file
+     * @param string  $hash        The input for the hash background
+     * @param string  $photoData   The photo to include
+     * @param int     $size        The width/height of the result in pixels
+     * @param ?string $watermark   The watermark text to include
+     * @param string  $fontFile    A path to a .ttf file
+     * @param int     $jpegQuality The quality of the resulting jpeg file
      *
      * @return string A jpeg image
      */
-    public static function create(string $hash, string $photoData, int $size, string $text, string $fontFile, int $jpegQuality): string
+    public static function create(string $hash, string $photoData, int $size, ?string $watermark, string $fontFile, int $jpegQuality): string
     {
         $p = $size / 100;
 
@@ -34,11 +34,12 @@ class VizHash
         $photo = imagecreatefromstring($photoData);
         imagefilter($photo, IMG_FILTER_GRAYSCALE);
         imagefilter($photo, IMG_FILTER_CONTRAST, -30);
-        VizHash::blendPhoto($background, $photo, [5 * $p, 5 * $p, 20 * $p, 5], 0.8);
+        VizHash::blendPhoto($background, $photo, [5 * $p, 5 * $p, 5 * $p, 5], 0.8);
         imagedestroy($photo);
 
-        // Add text to Bottom
-        VizHash::addBottomText($background, $text, 15 * $p, 2 * $p, $fontFile, 0.7);
+        if ($watermark !== null) {
+            self::addWatermark($background, $watermark, $fontFile);
+        }
 
         $data = self::imageToJpeg($background, $jpegQuality);
         imagedestroy($background);
@@ -54,6 +55,54 @@ class VizHash
         ob_end_clean();
 
         return $data;
+    }
+
+    /**
+     * Adds a watermark text across the $dest image.
+     */
+    public static function addWatermark(&$dest, string $text, string $fontFile)
+    {
+        // XXX: not generalized, assumes a square image and a minimum text length
+        $maxWidth = sqrt(imagesx($dest) ** 2 + imagesy($dest) ** 2) * 0.92;
+        $padding = (int) ($maxWidth / 80);
+
+        $getBoundingBox = function ($size, $fontFile, $text) {
+            $values = imagettfbbox($size, 0, $fontFile, $text);
+            if ($values === false) {
+                return [0, 0];
+            }
+
+            return [$values[2] - $values[0], $values[3] - $values[5]];
+        };
+
+        // Select the best font size for the bounding box
+        $selectedSize = 0;
+        for ($i = 0; $i < $maxWidth; ++$i) {
+            [$w, $h] = $getBoundingBox($i, $fontFile, $text);
+            if ($w >= ($maxWidth - $padding * 2)) {
+                break;
+            }
+            $selectedSize = $i;
+        }
+
+        $temp = imagecreatetruecolor(imagesx($dest), imagesy($dest));
+        imagefill($temp, 0, 0, imagecolorallocatealpha($temp, 0, 0, 0, 127));
+
+        // Add some kind of text border
+        $white = imagecolorallocatealpha($temp, 0, 0, 0, 0);
+        imagettftext($temp, $selectedSize, 45, (int) ($selectedSize / 2) + $padding, imagesy($dest), $white, $fontFile, $text);
+        imagefilter($temp, IMG_FILTER_GAUSSIAN_BLUR);
+        imageflip($temp, IMG_FLIP_HORIZONTAL);
+        imagefilter($temp, IMG_FILTER_GAUSSIAN_BLUR);
+        imageflip($temp, IMG_FLIP_HORIZONTAL);
+
+        $white = imagecolorallocatealpha($temp, 255, 255, 255, 0);
+        imagettftext($temp, $selectedSize, 45, (int) ($selectedSize / 2) + $padding, imagesy($dest), $white, $fontFile, $text);
+
+        // Three rows of text
+        imagecopy($dest, $temp, 0, 0, 0, 0, imagesx($dest), imagesy($dest));
+        imagecopy($dest, $temp, imagesx($dest) / 4, imagesy($dest) / 4, 0, 0, imagesx($dest), imagesy($dest));
+        imagecopy($dest, $temp, -imagesx($dest) / 4, -imagesy($dest) / 4, 0, 0, imagesx($dest), imagesy($dest));
     }
 
     public static function generateBackground(string $input, int $width, int $height)
@@ -156,7 +205,7 @@ class VizHash
      * @param string $fontFile  The font file to use
      * @param float  $alpha     How transparent the text background should be: 0=fully transparent, 1=fully opaque
      */
-    public static function addBottomText(&$dest, string $text, int $maxHeight, int $padding, string $fontFile, float $alpha)
+    public static function addDescription(&$dest, string $text, int $maxHeight, int $padding, string $fontFile, float $alpha)
     {
         $maxWidth = imagesx($dest);
 

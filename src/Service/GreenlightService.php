@@ -170,10 +170,6 @@ class GreenlightService
 
     /**
      * Returns the photo (or a fallback photo) of a person.
-     *
-     * @param string $personId
-     *
-     * @return string
      */
     protected function fetchBase64PhotoForPersonId(string $personId): string
     {
