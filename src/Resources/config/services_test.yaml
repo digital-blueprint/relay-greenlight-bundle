@@ -1,0 +1,7 @@
+services:
+  Dbp\Relay\GreenlightBundle\TestUtils\DummyPersonPhotoProvider:
+    autowire: true
+    autoconfigure: true
+
+  Dbp\Relay\GreenlightBundle\API\PersonPhotoProviderInterface:
+    '@Dbp\Relay\GreenlightBundle\TestUtils\DummyPersonPhotoProvider'

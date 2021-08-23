@@ -46,6 +46,7 @@ class Kernel extends BaseKernel
     protected function configureContainer(ContainerConfigurator $container, LoaderInterface $loader)
     {
         $container->import('@DbpRelayCoreBundle/Resources/config/services_test.yaml');
+        $container->import('@DbpRelayGreenlightBundle/Resources/config/services_test.yaml');
         $container->extension('framework', [
             'test' => true,
             'secret' => '',

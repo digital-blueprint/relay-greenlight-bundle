@@ -7,6 +7,7 @@ namespace Dbp\Relay\GreenlightBundle\Tests\Service;
 use DBP\API\BaseBundle\Entity\Person;
 use DBP\API\BaseBundle\TestUtils\DummyPersonProvider;
 use Dbp\Relay\GreenlightBundle\Service\GreenlightService;
+use Dbp\Relay\GreenlightBundle\TestUtils\DummyPersonPhotoProvider;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
@@ -27,12 +28,13 @@ class GreenlightServiceTest extends WebTestCase
         $personProvider = new DummyPersonProvider($person);
         $entityManager = $this->createMock(EntityManagerInterface::class);
         $managerRegistry = $this->createMock(ManagerRegistry::class);
+        $personPhotoProvider = new DummyPersonPhotoProvider();
 
         $managerRegistry->expects($this->any())
             ->method('getManager')
             ->willReturnOnConsecutiveCalls($entityManager);
 
-        $this->greenlightService = new GreenlightService($personProvider, $managerRegistry);
+        $this->greenlightService = new GreenlightService($personProvider, $managerRegistry, $personPhotoProvider);
     }
 
     public function testNothing()
