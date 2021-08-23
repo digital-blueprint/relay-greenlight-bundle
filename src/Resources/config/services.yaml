@@ -24,3 +24,7 @@ services:
   Dbp\Relay\GreenlightBundle\Service\GreenlightService:
     autowire: true
     autoconfigure: true
+
+  Dbp\Relay\GreenlightBundle\Service\VizHashProvider:
+    autowire: true
+    autoconfigure: true
