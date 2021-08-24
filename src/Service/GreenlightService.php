@@ -228,4 +228,13 @@ class GreenlightService
 
         throw ApiError::withDetails(Response::HTTP_NOT_FOUND, 'ReferencePermit was not found!');
     }
+
+    public function removeAllPermitsForCurrentPerson()
+    {
+        $reviews = $this->getPermitsForCurrentPerson();
+
+        foreach ($reviews as $permit) {
+            $this->removePermit($permit);
+        }
+    }
 }
