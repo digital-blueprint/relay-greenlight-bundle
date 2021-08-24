@@ -82,9 +82,10 @@ class GreenlightService
             throw ApiError::withDetails(Response::HTTP_NOT_FOUND, 'Permit was not found!', 'greenlight:permit-not-found');
         }
 
-        $permit = Permit::fromPermitPersistence($permitPersistence);
+        // Update the generated image if it needs an update
+        $this->updateGeneratedImageForPermitPersistenceIfNeeded($permitPersistence);
 
-        return $permit;
+        return Permit::fromPermitPersistence($permitPersistence);
     }
 
     /**
@@ -181,7 +182,35 @@ class GreenlightService
         $this->em->persist($permitPersistence);
         $this->em->flush();
 
+        // Fetch the generated image
+        $this->updateGeneratedImageForPermitPersistenceIfNeeded($permitPersistence);
+
         return Permit::fromPermitPersistence($permitPersistence);
+    }
+
+    public function updateGeneratedImageForPermitPersistenceIfNeeded(PermitPersistence $permitPersistence): bool
+    {
+        $currentInput = $this->vizHashProvider->getCurrentInput();
+
+        if ($currentInput === $permitPersistence->getInputHash()) {
+            return false;
+        }
+
+        // TODO: Use blob and migrate data
+        return false;
+
+        $image = $this->vizHashProvider->createImageWithPhoto(
+            $currentInput, $permitPersistence->getImageOriginal(), 600);
+        $mimeType = MimeTools::getMimeType($image);
+        $imageText = MimeTools::getDataURI($image, $mimeType);
+
+        $permitPersistence->setImageGenerated($imageText);
+        $permitPersistence->setInputHash($currentInput);
+
+        $this->em->persist($permitPersistence);
+        $this->em->flush();
+
+        return true;
     }
 
     /**
