@@ -203,7 +203,8 @@ class GreenlightService
             $photoData = file_get_contents(__DIR__.'/../src/Assets/missing_photo.png');
 
             if ($photoData !== '') {
-                $base64PhotoData = base64_encode($photoData);
+                $mimeType = MimeTools::getMimeType($photoData);
+                $base64PhotoData = MimeTools::getDataURI($photoData, $mimeType);
             }
         }
 
