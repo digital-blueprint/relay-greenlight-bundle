@@ -174,7 +174,9 @@ class GreenlightService
         $permitPersistence->setPersonId($personId);
         $permitPersistence->setValidFrom(new \DateTime('now'));
         $permitPersistence->setValidUntil((new \DateTime('now'))->add(new \DateInterval('PT12H')));
-        $permitPersistence->setImage($this->fetchBase64PhotoForPersonId($personId));
+        $permitPersistence->setImageOriginal($this->fetchBase64PhotoForPersonId($personId));
+        $permitPersistence->setImageGenerated($permitPersistence->getImageOriginal());
+        $permitPersistence->setInputHash('');
 
         $this->em->persist($permitPersistence);
         $this->em->flush();

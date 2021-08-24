@@ -63,7 +63,7 @@ class Permit
         $permit = new Permit();
         $permit->setIdentifier($permitPersistence->getIdentifier());
         $permit->setPersonId($permitPersistence->getPersonId());
-        $permit->setImage($permitPersistence->getImage());
+        $permit->setImage($permitPersistence->getImageGenerated());
         $permit->setValidUntil($permitPersistence->getValidUntil());
         $permit->setValidFrom($permitPersistence->getValidFrom());
         $permit->setManualCheckRequired($permitPersistence->getManualCheckRequired());

@@ -44,7 +44,21 @@ class PermitPersistence
      *
      * @var string
      */
-    private $image;
+    private $imageOriginal;
+
+    /**
+     * @ORM\Column(type="text")
+     *
+     * @var string
+     */
+    private $imageGenerated;
+
+    /**
+     * @ORM\Column(type="string", length=64)
+     *
+     * @var string
+     */
+    private $inputHash;
 
     /**
      * @ORM\Column(type="boolean")
@@ -110,14 +124,14 @@ class PermitPersistence
         $this->consentAssurance = $consentAssurance;
     }
 
-    public function getImage(): string
+    public function getImageOriginal(): string
     {
-        return $this->image;
+        return $this->imageOriginal;
     }
 
-    public function setImage(string $image): void
+    public function setImageOriginal(string $imageOriginal): void
     {
-        $this->image = $image;
+        $this->imageOriginal = $imageOriginal;
     }
 
     public function getManualCheckRequired(): bool
@@ -130,12 +144,44 @@ class PermitPersistence
         $this->manualCheckRequired = $manualCheckRequired;
     }
 
+    /**
+     * @return string
+     */
+    public function getImageGenerated(): string
+    {
+        return $this->imageGenerated;
+    }
+
+    /**
+     * @param string $imageGenerated
+     */
+    public function setImageGenerated(string $imageGenerated): void
+    {
+        $this->imageGenerated = $imageGenerated;
+    }
+
+    /**
+     * @return string
+     */
+    public function getInputHash(): string
+    {
+        return $this->inputHash;
+    }
+
+    /**
+     * @param string $inputHash
+     */
+    public function setInputHash(string $inputHash): void
+    {
+        $this->inputHash = $inputHash;
+    }
+
     public static function fromPermit(Permit $permit): PermitPersistence
     {
         $permitPersistence = new PermitPersistence();
         $permitPersistence->setIdentifier($permit->getIdentifier());
         $permitPersistence->setPersonId($permit->getPersonId() === null ? '' : $permit->getPersonId());
-        $permitPersistence->setImage($permit->getImage() === null ? '' : $permit->getImage());
+        $permitPersistence->setImageOriginal($permit->getImage() === null ? '' : $permit->getImage());
 
         if ($permit->getValidUntil() !== null) {
             $permitPersistence->setValidUntil($permit->getValidUntil());
