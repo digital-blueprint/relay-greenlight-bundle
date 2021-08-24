@@ -7,9 +7,11 @@ namespace Dbp\Relay\GreenlightBundle\Service;
 use DBP\API\BaseBundle\API\PersonProviderInterface;
 use DBP\API\BaseBundle\Entity\Person;
 use Dbp\Relay\CoreBundle\Exception\ApiError;
+use Dbp\Relay\CoreBundle\Helpers\MimeTools;
 use Dbp\Relay\GreenlightBundle\API\PersonPhotoProviderInterface;
 use Dbp\Relay\GreenlightBundle\Entity\Permit;
 use Dbp\Relay\GreenlightBundle\Entity\PermitPersistence;
+use Dbp\Relay\GreenlightBundle\Entity\ReferencePermit;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
@@ -19,6 +21,8 @@ use Symfony\Component\Uid\Uuid;
 
 class GreenlightService
 {
+    public const REFERENCE_PERMIT_ID = '95c1d1fe-45c5-459f-bcd7-1f4c41fd7692';
+
     /**
      * @var PersonProviderInterface
      */
@@ -34,13 +38,23 @@ class GreenlightService
      */
     private $personPhotoProviderInterface;
 
-    public function __construct(PersonProviderInterface $personProvider, ManagerRegistry $managerRegistry, PersonPhotoProviderInterface $personPhotoProviderInterface)
-    {
+    /**
+     * @var VizHashProvider
+     */
+    private $vizHashProvider;
+
+    public function __construct(
+        PersonProviderInterface $personProvider,
+        ManagerRegistry $managerRegistry,
+        PersonPhotoProviderInterface $personPhotoProviderInterface,
+        VizHashProvider $vizHashProvider
+    ) {
         $this->personProvider = $personProvider;
         $this->personPhotoProviderInterface = $personPhotoProviderInterface;
         $manager = $managerRegistry->getManager('dbp_relay_greenlight_bundle');
         assert($manager instanceof EntityManagerInterface);
         $this->em = $manager;
+        $this->vizHashProvider = $vizHashProvider;
     }
 
     private function getCurrentPerson(): Person
@@ -192,5 +206,26 @@ class GreenlightService
         }
 
         return $base64PhotoData;
+    }
+
+    public function getReferencePermitById(string $id): ReferencePermit
+    {
+        switch ($id) {
+            case self::REFERENCE_PERMIT_ID:
+                $currentInput = $this->vizHashProvider->getCurrentInput();
+                $image = $this->vizHashProvider->createReferenceImage($currentInput, 600);
+                $mimeType = MimeTools::getMimeType($image);
+                $imageText = MimeTools::getDataURI($image, $mimeType);
+
+                $referencePermit = new ReferencePermit();
+                $referencePermit->setIdentifier($id);
+                $referencePermit->setConsentAssurance(false);
+                $referencePermit->setManualCheckRequired(false);
+                $referencePermit->setImage($imageText);
+
+                return $referencePermit;
+        }
+
+        throw ApiError::withDetails(Response::HTTP_NOT_FOUND, 'ReferencePermit was not found!');
     }
 }

@@ -15,6 +15,8 @@ class ApiTest extends ApiTestCase
             ['GET', '/greenlight/permits', 401],
             ['GET', '/greenlight/permits/123', 401],
             ['DELETE', '/greenlight/permits/123', 401],
+            ['GET', '/greenlight/reference-permits', 200],
+            ['GET', '/greenlight/reference-permits/123', 404],
         ];
 
         foreach ($endpoints as $ep) {

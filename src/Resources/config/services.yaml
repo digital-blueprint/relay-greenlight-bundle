@@ -17,7 +17,15 @@ services:
     tags: [{ name: 'api_platform.collection_data_provider'}]
     autowire: true
 
+  Dbp\Relay\GreenlightBundle\DataProvider\ReferencePermitCollectionDataProvider:
+    tags: [{ name: 'api_platform.collection_data_provider'}]
+    autowire: true
+
   Dbp\Relay\GreenlightBundle\DataProvider\PermitItemDataProvider:
+    tags: ['api_platform.item_data_provider']
+    autowire: true
+
+  Dbp\Relay\GreenlightBundle\DataProvider\ReferencePermitItemDataProvider:
     tags: ['api_platform.item_data_provider']
     autowire: true
 
