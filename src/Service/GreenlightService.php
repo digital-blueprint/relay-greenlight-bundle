@@ -175,8 +175,8 @@ class GreenlightService
         $permitPersistence->setPersonId($personId);
         $permitPersistence->setValidFrom(new \DateTime('now'));
         $permitPersistence->setValidUntil((new \DateTime('now'))->add(new \DateInterval('PT12H')));
-        $permitPersistence->setImageOriginal($this->fetchBase64PhotoForPersonId($personId));
-        $permitPersistence->setImageGenerated($permitPersistence->getImageOriginal());
+        $permitPersistence->setImageOriginal($this->fetchPhotoForPersonId($personId));
+        $permitPersistence->setImageGenerated('');
         $permitPersistence->setInputHash('');
 
         $this->em->persist($permitPersistence);
@@ -192,13 +192,12 @@ class GreenlightService
     {
         $currentInput = $this->vizHashProvider->getCurrentInput();
 
+        // Check if the input hash has changed
         if ($currentInput === $permitPersistence->getInputHash()) {
             return false;
         }
 
-        // TODO: Use blob and migrate data
-        return false;
-
+        // Fetch VizHash image based on original image
         $image = $this->vizHashProvider->createImageWithPhoto(
             $currentInput, $permitPersistence->getImageOriginal(), 600);
         $mimeType = MimeTools::getMimeType($image);
@@ -216,28 +215,23 @@ class GreenlightService
     /**
      * Returns the photo (or a fallback photo) of a person.
      */
-    protected function fetchBase64PhotoForPersonId(string $personId): string
+    protected function fetchPhotoForPersonId(string $personId): string
     {
-        $base64PhotoData = '';
+        $photoData = '';
 
         // try to get a photo of the person
         try {
             $person = $this->personProvider->getPerson($personId);
-            $base64PhotoData = $this->personPhotoProviderInterface->getPhotoData($person);
+            $photoData = $this->personPhotoProviderInterface->getPhotoData($person);
         } catch (NotFoundHttpException $e) {
         }
 
         // use missing_photo.png as fallback photo
-        if ($base64PhotoData === '') {
+        if ($photoData === '') {
             $photoData = file_get_contents(__DIR__.'/../src/Assets/missing_photo.png');
-
-            if ($photoData !== '') {
-                $mimeType = MimeTools::getMimeType($photoData);
-                $base64PhotoData = MimeTools::getDataURI($photoData, $mimeType);
-            }
         }
 
-        return $base64PhotoData;
+        return $photoData;
     }
 
     public function getReferencePermitById(string $id): ReferencePermit

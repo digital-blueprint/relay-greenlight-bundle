@@ -40,7 +40,7 @@ class PermitPersistence
     private $personId;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="binary", length=10485760)
      *
      * @var string
      */
@@ -144,33 +144,21 @@ class PermitPersistence
         $this->manualCheckRequired = $manualCheckRequired;
     }
 
-    /**
-     * @return string
-     */
     public function getImageGenerated(): string
     {
         return $this->imageGenerated;
     }
 
-    /**
-     * @param string $imageGenerated
-     */
     public function setImageGenerated(string $imageGenerated): void
     {
         $this->imageGenerated = $imageGenerated;
     }
 
-    /**
-     * @return string
-     */
     public function getInputHash(): string
     {
         return $this->inputHash;
     }
 
-    /**
-     * @param string $inputHash
-     */
     public function setInputHash(string $inputHash): void
     {
         $this->inputHash = $inputHash;
