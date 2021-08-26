@@ -101,6 +101,11 @@ class GreenlightService
             ->getRepository(PermitPersistence::class)
             ->findBy(['personId' => $person->getIdentifier()]);
 
+        foreach ($permitPersistences as $permitPersistence) {
+            // Update the generated image if it needs an update
+            $this->updateGeneratedImageForPermitPersistenceIfNeeded($permitPersistence);
+        }
+
         return Permit::fromPermitPersistences($permitPersistences);
     }
 
