@@ -31,6 +31,9 @@ final class PermitItemDataProvider extends AbstractController implements ItemDat
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
-        return $this->greenlightService->getPermitByIdForCurrentPerson($id);
+        $filters = $context['filters'] ?? [];
+        $additionalInformation = $filters['additional-information'] ?? '';
+
+        return $this->greenlightService->getPermitByIdForCurrentPerson($id, $additionalInformation);
     }
 }

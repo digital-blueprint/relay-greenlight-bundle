@@ -54,6 +54,13 @@ class PermitPersistence
     private $imageGenerated;
 
     /**
+     * @ORM\Column(type="text")
+     *
+     * @var string
+     */
+    private $imageGeneratedGray;
+
+    /**
      * @ORM\Column(type="string", length=64)
      *
      * @var string
@@ -153,6 +160,22 @@ class PermitPersistence
     public function setImageGenerated(string $imageGenerated): void
     {
         $this->imageGenerated = $imageGenerated;
+    }
+
+    /**
+     * @return string
+     */
+    public function getImageGeneratedGray(): string
+    {
+        return $this->imageGeneratedGray;
+    }
+
+    /**
+     * @param string $imageGeneratedGray
+     */
+    public function setImageGeneratedGray(string $imageGeneratedGray): void
+    {
+        $this->imageGeneratedGray = $imageGeneratedGray;
     }
 
     public function getInputHash(): string

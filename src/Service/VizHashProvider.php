@@ -23,11 +23,11 @@ class VizHashProvider
     /**
      * Create a jpeg image with a centered photo.
      */
-    public function createImageWithPhoto(string $input, string $photoData, int $size): string
+    public function createImageWithPhoto(string $input, string $photoData, int $size, $grayScale = false): string
     {
         $font = __DIR__.'/../Assets/sourcesanspro.ttf';
 
-        return VizHash::create($input, $photoData, $size, null, $font, 80);
+        return VizHash::create($input, $photoData, $size, null, $font, 80, $grayScale);
     }
 
     /**

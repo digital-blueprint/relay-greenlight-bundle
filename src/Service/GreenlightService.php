@@ -71,7 +71,7 @@ class GreenlightService
     /**
      * Fetches a Permit.
      */
-    public function getPermitById(string $identifier): ?Permit
+    public function getPermitById(string $identifier, ?string $additionalInformation = null): ?Permit
     {
         /** @var PermitPersistence $permitPersistence */
         $permitPersistence = $this->em
@@ -85,7 +85,7 @@ class GreenlightService
         // Update the generated image if it needs an update
         $this->updateGeneratedImageForPermitPersistenceIfNeeded($permitPersistence);
 
-        return Permit::fromPermitPersistence($permitPersistence);
+        return Permit::fromPermitPersistence($permitPersistence, $additionalInformation);
     }
 
     /**
@@ -93,7 +93,7 @@ class GreenlightService
      *
      * @return Permit[]
      */
-    public function getPermitsForCurrentPerson(): array
+    public function getPermitsForCurrentPerson(?string $additionalInformation = null): array
     {
         $person = $this->getCurrentPerson();
 
@@ -106,7 +106,7 @@ class GreenlightService
             $this->updateGeneratedImageForPermitPersistenceIfNeeded($permitPersistence);
         }
 
-        return Permit::fromPermitPersistences($permitPersistences);
+        return Permit::fromPermitPersistences($permitPersistences, $additionalInformation);
     }
 
     /**
@@ -130,9 +130,9 @@ class GreenlightService
     /**
      * Fetches a Permit for the current person.
      */
-    public function getPermitByIdForCurrentPerson(string $identifier): ?Permit
+    public function getPermitByIdForCurrentPerson(string $identifier, ?string $additionalInformation = null): ?Permit
     {
-        $permit = $this->getPermitById($identifier);
+        $permit = $this->getPermitById($identifier, $additionalInformation);
         $person = $this->getCurrentPerson();
 
         if ($person->getIdentifier() !== $permit->getPersonId()) {
@@ -186,6 +186,7 @@ class GreenlightService
         $permitPersistence->setValidUntil((new \DateTime('now'))->add(new \DateInterval('PT24H')));
         $permitPersistence->setImageOriginal($this->fetchPhotoForPersonId($personId));
         $permitPersistence->setImageGenerated('');
+        $permitPersistence->setImageGeneratedGray('');
         $permitPersistence->setInputHash('');
 
         $this->em->persist($permitPersistence);
@@ -206,13 +207,17 @@ class GreenlightService
             return false;
         }
 
-        // Fetch VizHash image based on original image
-        $image = $this->vizHashProvider->createImageWithPhoto(
-            $currentInput, $permitPersistence->getImageOriginal(), 600);
-        $mimeType = MimeTools::getMimeType($image);
-        $imageText = MimeTools::getDataURI($image, $mimeType);
+        $imageOriginal = $permitPersistence->getImageOriginal();
 
+        // Fetch VizHash image based on original image (in "color")
+        $imageText = $this->createVizHashImage($currentInput, $imageOriginal);
         $permitPersistence->setImageGenerated($imageText);
+
+        // Fetch VizHash image based on original image (in "gray")
+        $imageText = $this->createVizHashImage($currentInput, $imageOriginal, true);
+        $permitPersistence->setImageGeneratedGray($imageText);
+
+        // Store input hash to later check if we need to regenerate the images
         $permitPersistence->setInputHash($currentInput);
 
         $this->em->persist($permitPersistence);
@@ -271,5 +276,13 @@ class GreenlightService
         foreach ($reviews as $permit) {
             $this->removePermit($permit);
         }
+    }
+
+    protected function createVizHashImage(string $currentInput, string $imageOriginal, bool $grayScale = false): string
+    {
+        $image = $this->vizHashProvider->createImageWithPhoto($currentInput, $imageOriginal, 600, $grayScale);
+        $mimeType = MimeTools::getMimeType($image);
+
+        return MimeTools::getDataURI($image, $mimeType);
     }
 }

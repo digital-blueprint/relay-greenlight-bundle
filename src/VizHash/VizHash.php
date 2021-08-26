@@ -20,15 +20,20 @@ class VizHash
      * @param ?string $watermark   The watermark text to include
      * @param string  $fontFile    A path to a .ttf file
      * @param int     $jpegQuality The quality of the resulting jpeg file
+     * @param bool    $grayScale   If true the background will be done in grayscale
      *
      * @return string A jpeg image
      */
-    public static function create(string $hash, string $photoData, int $size, ?string $watermark, string $fontFile, int $jpegQuality): string
+    public static function create(string $hash, string $photoData, int $size, ?string $watermark, string $fontFile, int $jpegQuality, bool $grayScale = false): string
     {
         $p = $size / 100;
 
         // Generate the background
         $background = VizHash::generateBackground($hash, $size, $size);
+
+        if ($grayScale) {
+            imagefilter($background, IMG_FILTER_GRAYSCALE);
+        }
 
         // Blend in the photo
         $photo = imagecreatefromstring($photoData);

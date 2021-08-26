@@ -30,6 +30,9 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *             "path" = "/greenlight/permits",
  *             "openapi_context" = {
  *                 "tags" = {"Electronic Covid Access Permits"},
+ *                 "parameters" = {
+ *                     {"name" = "additional-information", "in" = "query", "description" = "Set an additional information", "type" = "string", "enum" = {"local-proof", ""}, "example" = "local-proof"}
+ *                 }
  *             },
  *         }
  *     },
@@ -38,7 +41,10 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *             "security" = "is_granted('IS_AUTHENTICATED_FULLY')",
  *             "path" = "/greenlight/permits/{identifier}",
  *             "openapi_context" = {
- *                 "tags" = {"Electronic Covid Access Permits"}
+ *                 "tags" = {"Electronic Covid Access Permits"},
+ *                 "parameters" = {
+ *                     {"name" = "additional-information", "in" = "query", "description" = "Set an additional information", "type" = "string", "enum" = {"local-proof", ""}, "example" = "local-proof"}
+ *                 }
  *             },
  *         },
  *         "delete" = {
@@ -66,12 +72,22 @@ class Permit
     use PermitTrait;
     public const ADDITIONAL_INFORMATION_LOCAL_PROOF = 'local-proof';
 
-    public static function fromPermitPersistence(PermitPersistence $permitPersistence): Permit
+    public static function fromPermitPersistence(PermitPersistence $permitPersistence, ?string $additionalInformation = null): Permit
     {
+        if (is_null($additionalInformation)) {
+            $additionalInformation = $permitPersistence->getAdditionalInformation();
+        }
+
+        // The additional information must be set to "local-proof" in the $permitPersistence entity AND in the
+        // $additionalInformation parameter for the image to be in color, instead of grayscale
+        $image = $additionalInformation === self::ADDITIONAL_INFORMATION_LOCAL_PROOF &&
+        $permitPersistence->getAdditionalInformation() === self::ADDITIONAL_INFORMATION_LOCAL_PROOF ?
+            $permitPersistence->getImageGenerated() : $permitPersistence->getImageGeneratedGray();
+
         $permit = new Permit();
         $permit->setIdentifier($permitPersistence->getIdentifier());
         $permit->setPersonId($permitPersistence->getPersonId());
-        $permit->setImage($permitPersistence->getImageGenerated());
+        $permit->setImage($image);
         $permit->setValidUntil($permitPersistence->getValidUntil());
         $permit->setValidFrom($permitPersistence->getValidFrom());
         $permit->setAdditionalInformation($permitPersistence->getAdditionalInformation());
@@ -85,12 +101,12 @@ class Permit
      *
      * @return Permit[]
      */
-    public static function fromPermitPersistences(array $permitPersistences): array
+    public static function fromPermitPersistences(array $permitPersistences, ?string $additionalInformation = null): array
     {
         $permits = [];
 
         foreach ($permitPersistences as $permitPersistence) {
-            $permits[] = self::fromPermitPersistence($permitPersistence);
+            $permits[] = self::fromPermitPersistence($permitPersistence, $additionalInformation);
         }
 
         return $permits;

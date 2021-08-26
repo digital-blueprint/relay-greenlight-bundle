@@ -36,6 +36,8 @@ final class PermitCollectionDataProvider extends AbstractController implements C
         $page = 1;
 
         $filters = $context['filters'] ?? [];
+        $additionalInformation = $filters['additional-information'] ?? '';
+
         if (isset($filters['page'])) {
             $page = (int) $filters['page'];
         }
@@ -43,6 +45,9 @@ final class PermitCollectionDataProvider extends AbstractController implements C
             $perPage = (int) $filters['perPage'];
         }
 
-        return new ArrayFullPaginator($this->greenlightService->getPermitsForCurrentPerson(), $page, $perPage);
+        return new ArrayFullPaginator(
+            $this->greenlightService->getPermitsForCurrentPerson($additionalInformation),
+            $page,
+            $perPage);
     }
 }
