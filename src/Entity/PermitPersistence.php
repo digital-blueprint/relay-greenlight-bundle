@@ -42,7 +42,7 @@ class PermitPersistence
     /**
      * @ORM\Column(type="binary", length=10485760)
      *
-     * @var string
+     * @var string|resource
      */
     private $imageOriginal;
 
@@ -126,7 +126,8 @@ class PermitPersistence
 
     public function getImageOriginal(): string
     {
-        return $this->imageOriginal;
+        return gettype($this->imageOriginal) === 'resource' ?
+            stream_get_contents($this->imageOriginal) : $this->imageOriginal;
     }
 
     public function setImageOriginal(string $imageOriginal): void
