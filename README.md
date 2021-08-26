@@ -95,6 +95,14 @@ php bin/console doctrine:migrations:migrate --em=dbp_relay_greenlight_bundle
 | ------------------------------------- | ---------------------------- | ------------------ | ------- |
 | `greenlight:current-person-not-found` | Current person wasn't found. |                    |         |
 
+### `/greenlight/permits`
+
+#### POST
+
+| relay:errorId                                 | Description                                                         | relay:errorDetails | Example |
+| --------------------------------------------- | ------------------------------------------------------------------- | ------------------ | ------- |
+| `greenlight:additional-information-not-valid` | The content of the `additionalInformation` attribute was not valid. |                    |         |
+
 ### `/greenlight/permits/{identifier}`
 
 #### GET

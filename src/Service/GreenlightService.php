@@ -173,6 +173,10 @@ class GreenlightService
 
     public function createPermitForCurrentPerson(Permit $permit): Permit
     {
+        if (!$permit->isAdditionalInformationValid()) {
+            throw ApiError::withDetails(Response::HTTP_BAD_REQUEST, 'Additional information is not valid!', 'greenlight:additional-information-not-valid');
+        }
+
         $personId = $this->personProvider->getCurrentPerson()->getIdentifier();
 
         $permitPersistence = PermitPersistence::fromPermit($permit);
@@ -251,7 +255,7 @@ class GreenlightService
                 $referencePermit = new ReferencePermit();
                 $referencePermit->setIdentifier($id);
                 $referencePermit->setConsentAssurance(false);
-                $referencePermit->setManualCheckRequired(false);
+                $referencePermit->setAdditionalInformation('');
                 $referencePermit->setImage($imageText);
 
                 return $referencePermit;
