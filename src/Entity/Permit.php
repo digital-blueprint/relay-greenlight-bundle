@@ -19,7 +19,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *                     "content" = {
  *                         "application/json" = {
  *                             "schema" = {"type" = "object"},
- *                             "example" = {"consentAssurance" = true, "additionalInformation" = ""}
+ *                             "example" = {"consentAssurance" = true, "additionalInformation" = "local-proof"}
  *                         }
  *                     }
  *                 }
