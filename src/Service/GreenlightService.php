@@ -179,7 +179,7 @@ class GreenlightService
         $permitPersistence->setIdentifier((string) Uuid::v4());
         $permitPersistence->setPersonId($personId);
         $permitPersistence->setValidFrom(new \DateTime('now'));
-        $permitPersistence->setValidUntil((new \DateTime('now'))->add(new \DateInterval('PT12H')));
+        $permitPersistence->setValidUntil((new \DateTime('now'))->add(new \DateInterval('PT24H')));
         $permitPersistence->setImageOriginal($this->fetchPhotoForPersonId($personId));
         $permitPersistence->setImageGenerated('');
         $permitPersistence->setInputHash('');
