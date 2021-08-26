@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Dbp\Relay\GreenlightBundle\Entity;
 
-use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
 
@@ -57,6 +56,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 class Permit
 {
     use PermitTrait;
+    public const ADDITIONAL_INFORMATION_LOCAL_PROOF = 'local-proof';
 
     public static function fromPermitPersistence(PermitPersistence $permitPersistence): Permit
     {
@@ -66,7 +66,7 @@ class Permit
         $permit->setImage($permitPersistence->getImageGenerated());
         $permit->setValidUntil($permitPersistence->getValidUntil());
         $permit->setValidFrom($permitPersistence->getValidFrom());
-        $permit->setManualCheckRequired($permitPersistence->getManualCheckRequired());
+        $permit->setAdditionalInformation($permitPersistence->getAdditionalInformation());
         $permit->setConsentAssurance($permitPersistence->getConsentAssurance());
 
         return $permit;
@@ -86,5 +86,23 @@ class Permit
         }
 
         return $permits;
+    }
+
+    /**
+     * Check if the additional information is valid.
+     */
+    public static function isAdditionalInformationValidForText(string $text): bool
+    {
+        $additionalInformationList = ['', self::ADDITIONAL_INFORMATION_LOCAL_PROOF];
+
+        return in_array($text, $additionalInformationList, true);
+    }
+
+    /**
+     * Check if the current additional information is valid.
+     */
+    public function isAdditionalInformationValid(): bool
+    {
+        return self::isAdditionalInformationValidForText($this->additionalInformation);
     }
 }

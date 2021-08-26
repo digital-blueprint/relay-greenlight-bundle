@@ -68,11 +68,11 @@ class PermitPersistence
     private $consentAssurance;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="string", length=255)
      *
-     * @var bool
+     * @var string
      */
-    private $manualCheckRequired;
+    private $additionalInformation;
 
     public function getIdentifier(): string
     {
@@ -135,14 +135,14 @@ class PermitPersistence
         $this->imageOriginal = $imageOriginal;
     }
 
-    public function getManualCheckRequired(): bool
+    public function getAdditionalInformation(): string
     {
-        return $this->manualCheckRequired;
+        return $this->additionalInformation;
     }
 
-    public function setManualCheckRequired(bool $manualCheckRequired): void
+    public function setAdditionalInformation(string $additionalInformation): void
     {
-        $this->manualCheckRequired = $manualCheckRequired;
+        $this->additionalInformation = $additionalInformation;
     }
 
     public function getImageGenerated(): string
@@ -180,7 +180,7 @@ class PermitPersistence
             $permitPersistence->setValidFrom($permit->getValidFrom());
         }
 
-        $permitPersistence->setManualCheckRequired($permit->getManualCheckRequired());
+        $permitPersistence->setAdditionalInformation($permit->getAdditionalInformation());
         $permitPersistence->setConsentAssurance($permit->getConsentAssurance());
 
         return $permitPersistence;

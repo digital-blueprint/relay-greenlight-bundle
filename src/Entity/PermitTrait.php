@@ -59,9 +59,9 @@ trait PermitTrait
      * @ApiProperty(iri="https://schema.org/Boolean")
      * @Groups({"GreenlightPermit:output", "GreenlightPermit:input"})
      *
-     * @var bool
+     * @var string
      */
-    private $manualCheckRequired;
+    private $additionalInformation;
 
     public function getIdentifier(): string
     {
@@ -123,13 +123,13 @@ trait PermitTrait
         $this->consentAssurance = $consentAssurance;
     }
 
-    public function getManualCheckRequired(): bool
+    public function getAdditionalInformation(): string
     {
-        return $this->manualCheckRequired;
+        return $this->additionalInformation;
     }
 
-    public function setManualCheckRequired(bool $manualCheckRequired): void
+    public function setAdditionalInformation(string $additionalInformation): void
     {
-        $this->manualCheckRequired = $manualCheckRequired;
+        $this->additionalInformation = $additionalInformation;
     }
 }
