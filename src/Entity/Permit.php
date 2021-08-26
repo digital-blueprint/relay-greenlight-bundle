@@ -14,7 +14,15 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *             "security" = "is_granted('IS_AUTHENTICATED_FULLY')",
  *             "path" = "/greenlight/permits",
  *             "openapi_context" = {
- *                 "tags" = {"Electronic Covid Access Permits"}
+ *                 "tags" = {"Electronic Covid Access Permits"},
+ *                 "requestBody" = {
+ *                     "content" = {
+ *                         "application/json" = {
+ *                             "schema" = {"type" = "object"},
+ *                             "example" = {"consentAssurance" = true, "additionalInformation" = ""}
+ *                         }
+ *                     }
+ *                 }
  *             }
  *         },
  *         "get" = {
