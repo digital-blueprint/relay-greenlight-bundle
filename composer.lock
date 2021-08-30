@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c17e4584e10c0b045a14a5a3f039e203",
+    "content-hash": "18332fbde8c6ed39887bdd58bd38a69d",
     "packages": [
         {
             "name": "api-platform/core",
@@ -240,11 +240,11 @@
         },
         {
             "name": "dbp/api-base-bundle",
-            "version": "dev-main",
+            "version": "v0.1.1",
             "source": {
                 "type": "git",
-                "url": "git@gitlab.tugraz.at:dbp/dbp-api/api-base-bundle.git",
-                "reference": "810e90946ef1c03421b884a6b6d868b0a40acfce"
+                "url": "https://gitlab.tugraz.at/dbp/relay/api-base-bundle",
+                "reference": "1436d7e59626ab97bfb2a691693d2ac61dba4666"
             },
             "require": {
                 "api-platform/core": "^2.6.3",
@@ -274,49 +274,17 @@
                 "symfony/phpunit-bridge": "^5.2",
                 "vimeo/psalm": "^4.4"
             },
-            "default-branch": true,
             "type": "symfony-bundle",
             "autoload": {
                 "psr-4": {
                     "DBP\\API\\BaseBundle\\": "src/"
                 }
             },
-            "autoload-dev": {
-                "psr-4": {
-                    "DBP\\API\\BaseBundle\\Tests\\": "tests/"
-                }
-            },
-            "scripts": {
-                "test": [
-                    "@php vendor/bin/simple-phpunit"
-                ],
-                "phpstan": [
-                    "@php vendor/bin/simple-phpunit --atleast-version 0",
-                    "@php vendor/bin/phpstan analyze --ansi"
-                ],
-                "psalm": [
-                    "@php vendor/bin/simple-phpunit --atleast-version 0",
-                    "@php vendor/bin/psalm"
-                ],
-                "lint": [
-                    "@composer run cs",
-                    "@composer run phpstan",
-                    "@composer run psalm"
-                ],
-                "cs-fix": [
-                    "@php vendor/bin/php-cs-fixer --ansi fix"
-                ],
-                "cs": [
-                    "@php vendor/bin/php-cs-fixer --ansi fix --dry-run --diff"
-                ],
-                "coverage": [
-                    "@php -dxdebug.mode=coverage vendor/bin/simple-phpunit --coverage-html _coverage"
-                ]
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "AGPL-3.0-or-later"
             ],
-            "time": "2021-08-16T09:08:34+00:00"
+            "time": "2021-08-28T08:02:15+00:00"
         },
         {
             "name": "dbp/relay-core-bundle",
@@ -9376,9 +9344,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "dbp/api-base-bundle": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
