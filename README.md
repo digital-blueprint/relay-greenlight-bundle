@@ -69,6 +69,50 @@ The value gets read in `DbpRelayGreenlightExtension` and passed when creating th
 
 For more info on bundle configuration see <https://symfony.com/doc/current/bundles/configuration.html>.
 
+## PersonPhotoProvider service
+
+For this bundle to work you need to create a service that implements
+[PersonPhotoProviderInterface](https://gitlab.tugraz.at/dbp/greenlight/dbp-relay-greenlight-bundle/-/blob/main/src/API/PersonPhotoProviderInterface.php)
+in your application.
+
+### Example
+
+#### Service class
+
+You can for example put below code into `src/Service/PersonPhotoProvider.php`:
+
+```php
+declare(strict_types=1);
+
+namespace YourUniversity\Service;
+
+use DBP\API\BaseBundle\Entity\Person;
+use Dbp\Relay\GreenlightBundle\API\PersonPhotoProviderInterface;
+
+class PersonPhotoProvider implements PersonPhotoProviderInterface
+{
+    /**
+     * Returns the photo of a person as binary data.
+     */
+    public function getPhotoData(Person $person): string
+    {
+        // TODO: Add some code to fetch the photo for $person
+        $data = your_fetch_method($person);
+
+        return $data;
+    }
+}
+```
+
+#### Services configuration
+
+For above class you need to add this to your `src/Resources/config/services.yaml`:
+
+```yaml
+  Dbp\Relay\GreenlightBundle\API\PersonPhotoProviderInterface:
+    '@YourUniversity\Service\PersonPhotoProvider'
+```
+
 ## Development & Testing
 
 * Install dependencies: `composer install`
