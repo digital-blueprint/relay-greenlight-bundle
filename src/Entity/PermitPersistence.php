@@ -162,17 +162,11 @@ class PermitPersistence
         $this->imageGenerated = $imageGenerated;
     }
 
-    /**
-     * @return string
-     */
     public function getImageGeneratedGray(): string
     {
         return $this->imageGeneratedGray;
     }
 
-    /**
-     * @param string $imageGeneratedGray
-     */
     public function setImageGeneratedGray(string $imageGeneratedGray): void
     {
         $this->imageGeneratedGray = $imageGeneratedGray;

@@ -36,7 +36,10 @@ class VizHash
         }
 
         // Blend in the photo
-        $photo = imagecreatefromstring($photoData);
+        $photo = @imagecreatefromstring($photoData);
+        if ($photo === false) {
+            throw new \RuntimeException(\error_get_last()['message']);
+        }
         imagefilter($photo, IMG_FILTER_GRAYSCALE);
         imagefilter($photo, IMG_FILTER_CONTRAST, -30);
         VizHash::blendPhoto($background, $photo, [5 * $p, 5 * $p, 5 * $p, 5], 0.8);
@@ -72,7 +75,7 @@ class VizHash
         $padding = (int) ($maxWidth / 80);
 
         $getBoundingBox = function ($size, $fontFile, $text) {
-            $values = imagettfbbox($size, 0, $fontFile, $text);
+            $values = @imagettfbbox($size, 0, $fontFile, $text);
             if ($values === false) {
                 return [0, 0];
             }
@@ -95,14 +98,20 @@ class VizHash
 
         // Add some kind of text border
         $white = imagecolorallocatealpha($temp, 0, 0, 0, 0);
-        imagettftext($temp, $selectedSize, 45, (int) ($selectedSize / 2) + $padding, imagesy($dest), $white, $fontFile, $text);
+        $res = @imagettftext($temp, $selectedSize, 45, (int) ($selectedSize / 2) + $padding, imagesy($dest), $white, $fontFile, $text);
+        if ($res === false) {
+            throw new \RuntimeException(\error_get_last()['message']);
+        }
         imagefilter($temp, IMG_FILTER_GAUSSIAN_BLUR);
         imageflip($temp, IMG_FLIP_HORIZONTAL);
         imagefilter($temp, IMG_FILTER_GAUSSIAN_BLUR);
         imageflip($temp, IMG_FLIP_HORIZONTAL);
 
         $white = imagecolorallocatealpha($temp, 255, 255, 255, 0);
-        imagettftext($temp, $selectedSize, 45, (int) ($selectedSize / 2) + $padding, imagesy($dest), $white, $fontFile, $text);
+        $res = @imagettftext($temp, $selectedSize, 45, (int) ($selectedSize / 2) + $padding, imagesy($dest), $white, $fontFile, $text);
+        if ($res === false) {
+            throw new \RuntimeException(\error_get_last()['message']);
+        }
 
         // Three rows of text
         imagecopy($dest, $temp, 0, 0, 0, 0, imagesx($dest), imagesy($dest));
@@ -215,7 +224,7 @@ class VizHash
         $maxWidth = imagesx($dest);
 
         $getBoundingBox = function ($size, $fontFile, $text) {
-            $values = imagettfbbox($size, 0, $fontFile, $text);
+            $values = @imagettfbbox($size, 0, $fontFile, $text);
             if ($values === false) {
                 return [0, 0];
             }
@@ -250,7 +259,10 @@ class VizHash
 
         // Finally, draw the text in white on top
         $white = imagecolorallocatealpha($dest, 255, 255, 255, 0);
-        imagettftext($dest, $selectedSize, 0, $x, $baseline, $white, $fontFile, $text);
+        $res = @imagettftext($dest, $selectedSize, 0, $x, $baseline, $white, $fontFile, $text);
+        if ($res === false) {
+            throw new \RuntimeException(\error_get_last()['message']);
+        }
     }
 
     /**

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Dbp\Relay\GreenlightBundle\Entity;
 
-use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
 

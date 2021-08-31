@@ -28,4 +28,18 @@ class VizHashTest extends TestCase
         $this->assertSame($t1, $t2);
         $this->assertNotSame($t2, $t3);
     }
+
+    public function testInvalidPhotoData()
+    {
+        $font = __DIR__.'/../src/Assets/sourcesanspro.ttf';
+        $this->expectException(\RuntimeException::class);
+        VizHash::create('foobar', 'foobar', 600, 'REFERENCE TICKET', $font, 80);
+    }
+
+    public function testInvalidFont()
+    {
+        $photoData = file_get_contents(__DIR__.'/../src/Assets/example_photo.jpg');
+        $this->expectException(\RuntimeException::class);
+        VizHash::create('foobar', $photoData, 600, 'REFERENCE TICKET', '', 80);
+    }
 }
