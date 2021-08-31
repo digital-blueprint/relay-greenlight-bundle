@@ -1,6 +1,12 @@
 # DbpRelayGreenlightBundle
 
-## Integration into the API Server
+This bundle allows you to create permits for the Covid19 certificate evaluation process.
+
+You will need a database that is compatible with Doctrine (for example MariaDB) to store the permits.
+
+## Bundle installation
+
+### For Development
 
 * Add the repository to your composer.json:
 
@@ -15,9 +21,20 @@
 
 * Add the bundle package as a dependency:
 
-```
+```bash
 composer require dbp/relay-greenlight-bundle=dev-main
 ```
+
+### For production
+
+If you don't want to install the bundle directly from git you can install it from
+[packagist.org](https://packagist.org/packages/dbp/relay-greenlight-bundle).
+
+```bash
+composer require dbp/relay-greenlight-bundle
+```
+
+## Integration into the API Server
 
 * Add the bundle to your `config/bundles.php`:
 
@@ -50,8 +67,7 @@ dbp_relay_greenlight:
 The value gets read in `DbpRelayGreenlightExtension` and passed when creating the
 `MyCustomService` service.
 
-For more info on bundle configuration see
-https://symfony.com/doc/current/bundles/configuration.html
+For more info on bundle configuration see <https://symfony.com/doc/current/bundles/configuration.html>.
 
 ## Development & Testing
 
@@ -81,7 +97,8 @@ php bin/console dbp:relay-greenlight:cleanup
 
 ### Database migration
 
-Run this script to migrate the database.
+Run this script to migrate the database. Run this script after installation of the bundle and
+after every update to adapt the database to the new source code.
 
 ```bash
 php bin/console doctrine:migrations:migrate --em=dbp_relay_greenlight_bundle
