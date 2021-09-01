@@ -288,30 +288,4 @@ class GreenlightService
 
         return MimeTools::getDataURI($image, $mimeType);
     }
-//
-//
-//    /**
-//     * @param PermitPersistence[] $permitPersistences
-//     *
-//     * @return Permit[]
-//     */
-//    public function getPermitsFromPermitPersistences(array $permitPersistences, ?string $additionalInformation = null): array
-//    {
-//        $permits = [];
-//
-//        foreach ($permitPersistences as $permitPersistence) {
-//            $permits[] = self::fromPermitPersistence($permitPersistence, $additionalInformation);
-//        }
-//
-//        return $permits;
-//    }
-//
-//
-//    public static function getPermitFromPermitPersistence(PermitPersistence $permitPersistence, ?string $additionalInformation = null): Permit
-//    {
-//        $permit = Permit::fromPermitPersistence($permitPersistence, $additionalInformation);
-//        $permit->setImageValidFor(17);
-//
-//        return $permit;
-//    }
 }
