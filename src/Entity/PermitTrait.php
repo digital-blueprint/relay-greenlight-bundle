@@ -40,6 +40,13 @@ trait PermitTrait
     private $validUntil;
 
     /**
+     * @Groups({"GreenlightPermit:output"})
+     *
+     * @var int
+     */
+    private $imageValidFor;
+
+    /**
      * @ApiProperty(iri="https://schema.org/image")
      * @Groups({"GreenlightPermit:output"})
      *
@@ -131,5 +138,21 @@ trait PermitTrait
     public function setAdditionalInformation(string $additionalInformation): void
     {
         $this->additionalInformation = $additionalInformation;
+    }
+
+    /**
+     * @return int
+     */
+    public function getImageValidFor(): int
+    {
+        return $this->imageValidFor;
+    }
+
+    /**
+     * @param int $imageValidFor
+     */
+    public function setImageValidFor(int $imageValidFor): void
+    {
+        $this->imageValidFor = $imageValidFor;
     }
 }

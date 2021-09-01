@@ -14,4 +14,19 @@ class Utils
 
         return $currentTime->format("Y-m-d\TH");
     }
+
+    /**
+     * Returns the amount of seconds an image from getRollingInput20MinPastHour is still valid.
+     */
+    public static function getRollingInput20MinPastHourValidFor(\DateTimeImmutable $currentTime): int
+    {
+        $minutes = (int) date('i', $currentTime->getTimestamp());
+        $seconds = (int) date('s', $currentTime->getTimestamp());
+
+        if ($minutes >= 20) {
+            return 3600 - (60 * ($minutes - 20) + $seconds);
+        } else {
+            return 60 * (20 - $minutes) - $seconds;
+        }
+    }
 }

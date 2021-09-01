@@ -12,6 +12,7 @@ use Dbp\Relay\GreenlightBundle\API\PersonPhotoProviderInterface;
 use Dbp\Relay\GreenlightBundle\Entity\Permit;
 use Dbp\Relay\GreenlightBundle\Entity\PermitPersistence;
 use Dbp\Relay\GreenlightBundle\Entity\ReferencePermit;
+use Dbp\Relay\GreenlightBundle\VizHash\Utils;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
@@ -255,6 +256,8 @@ class GreenlightService
 
                 $referencePermit = new ReferencePermit();
                 $referencePermit->setIdentifier($id);
+                $referencePermit->setImageValidFor(Utils::getRollingInput20MinPastHourValidFor(
+                    new \DateTimeImmutable('now', new \DateTimeZone('UTC'))));
                 $referencePermit->setConsentAssurance(false);
                 $referencePermit->setAdditionalInformation('');
                 $referencePermit->setImage($imageText);
@@ -285,4 +288,30 @@ class GreenlightService
 
         return MimeTools::getDataURI($image, $mimeType);
     }
+//
+//
+//    /**
+//     * @param PermitPersistence[] $permitPersistences
+//     *
+//     * @return Permit[]
+//     */
+//    public function getPermitsFromPermitPersistences(array $permitPersistences, ?string $additionalInformation = null): array
+//    {
+//        $permits = [];
+//
+//        foreach ($permitPersistences as $permitPersistence) {
+//            $permits[] = self::fromPermitPersistence($permitPersistence, $additionalInformation);
+//        }
+//
+//        return $permits;
+//    }
+//
+//
+//    public static function getPermitFromPermitPersistence(PermitPersistence $permitPersistence, ?string $additionalInformation = null): Permit
+//    {
+//        $permit = Permit::fromPermitPersistence($permitPersistence, $additionalInformation);
+//        $permit->setImageValidFor(17);
+//
+//        return $permit;
+//    }
 }

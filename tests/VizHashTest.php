@@ -29,6 +29,21 @@ class VizHashTest extends TestCase
         $this->assertNotSame($t2, $t3);
     }
 
+    public function testGetRollingInput20MinPastHourValidFor()
+    {
+        $t1 = Utils::getRollingInput20MinPastHourValidFor(new \DateTimeImmutable('2021-08-23T13:25:59Z'));
+        $t2 = Utils::getRollingInput20MinPastHourValidFor(new \DateTimeImmutable('2021-08-23T14:19:59Z'));
+        $t3 = Utils::getRollingInput20MinPastHourValidFor(new \DateTimeImmutable('2021-08-23T14:20:59Z'));
+        $t4 = Utils::getRollingInput20MinPastHourValidFor(new \DateTimeImmutable('2021-08-23T14:00:00Z'));
+        $t5 = Utils::getRollingInput20MinPastHourValidFor(new \DateTimeImmutable('2021-08-23T14:20:00Z'));
+
+        $this->assertSame($t1, 3241);
+        $this->assertSame($t2, 1);
+        $this->assertSame($t3, 3541);
+        $this->assertSame($t4, 1200);
+        $this->assertSame($t5, 3600);
+    }
+
     public function testInvalidPhotoData()
     {
         $font = __DIR__.'/../src/Assets/sourcesanspro.ttf';

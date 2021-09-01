@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Dbp\Relay\GreenlightBundle\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use Dbp\Relay\GreenlightBundle\VizHash\Utils;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
@@ -90,6 +91,7 @@ class Permit
         $permit->setImage($image);
         $permit->setValidUntil($permitPersistence->getValidUntil());
         $permit->setValidFrom($permitPersistence->getValidFrom());
+        $permit->setImageValidFor(Utils::getRollingInput20MinPastHourValidFor(new \DateTimeImmutable('now', new \DateTimeZone('UTC'))));
         $permit->setAdditionalInformation($permitPersistence->getAdditionalInformation());
         $permit->setConsentAssurance($permitPersistence->getConsentAssurance());
 
