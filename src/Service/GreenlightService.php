@@ -228,6 +228,7 @@ class GreenlightService
 
     /**
      * Returns the photo (or a fallback photo) of a person.
+     * Or an empty string in case none was available.
      */
     protected function fetchPhotoForPersonId(string $personId): string
     {
@@ -238,11 +239,6 @@ class GreenlightService
             $person = $this->personProvider->getPerson($personId);
             $photoData = $this->personPhotoProviderInterface->getPhotoData($person);
         } catch (NotFoundHttpException $e) {
-        }
-
-        // use missing_photo.png as fallback photo
-        if ($photoData === '') {
-            $photoData = file_get_contents(__DIR__.'/../src/Assets/missing_photo.png');
         }
 
         return $photoData;
@@ -280,7 +276,11 @@ class GreenlightService
 
     protected function createVizHashImage(string $currentInput, string $imageOriginal, bool $grayScale = false): string
     {
-        $image = $this->vizHashProvider->createImageWithPhoto($currentInput, $imageOriginal, 600, $grayScale);
+        if ($imageOriginal === '') {
+            $image = $this->vizHashProvider->createImageMissingPhoto($currentInput, 600, $grayScale);
+        } else {
+            $image = $this->vizHashProvider->createImageWithPhoto($currentInput, $imageOriginal, 600, $grayScale);
+        }
         $mimeType = MimeTools::getMimeType($image);
 
         return MimeTools::getDataURI($image, $mimeType);
