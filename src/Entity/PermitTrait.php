@@ -140,17 +140,11 @@ trait PermitTrait
         $this->additionalInformation = $additionalInformation;
     }
 
-    /**
-     * @return int
-     */
     public function getImageValidFor(): int
     {
         return $this->imageValidFor;
     }
 
-    /**
-     * @param int $imageValidFor
-     */
     public function setImageValidFor(int $imageValidFor): void
     {
         $this->imageValidFor = $imageValidFor;
