@@ -42,7 +42,7 @@ class VizHash
         }
         imagefilter($photo, IMG_FILTER_GRAYSCALE);
         imagefilter($photo, IMG_FILTER_CONTRAST, -30);
-        VizHash::blendPhoto($background, $photo, [5 * $p, 5 * $p, 5 * $p, 5], 0.8);
+        VizHash::blendPhoto($background, $photo, [5 * $p, 5 * $p, 5 * $p, 5], 0.7);
         imagedestroy($photo);
 
         if ($watermark !== null) {
