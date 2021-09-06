@@ -15,6 +15,7 @@ class VizHash
      * in the middle and a text at the bottom.
      *
      * @param string  $hash        The input for the hash background
+     * @param string  $description The description shown below the photo
      * @param string  $photoData   The photo to include
      * @param int     $size        The width/height of the result in pixels
      * @param ?string $watermark   The watermark text to include
@@ -24,7 +25,7 @@ class VizHash
      *
      * @return string A jpeg image
      */
-    public static function create(string $hash, string $photoData, int $size, ?string $watermark, string $fontFile, int $jpegQuality, bool $grayScale = false): string
+    public static function create(string $hash, string $description, string $photoData, int $size, ?string $watermark, string $fontFile, int $jpegQuality, bool $grayScale = false): string
     {
         $p = $size / 100;
 
@@ -42,8 +43,10 @@ class VizHash
         }
         imagefilter($photo, IMG_FILTER_GRAYSCALE);
         imagefilter($photo, IMG_FILTER_CONTRAST, -30);
-        VizHash::blendPhoto($background, $photo, [5 * $p, 5 * $p, 5 * $p, 5], 0.7);
+        VizHash::blendPhoto($background, $photo, [5 * $p, 5 * $p, 20 * $p, 5], 0.7);
         imagedestroy($photo);
+
+        self::addDescription($background, $description, 15 * $p, 2 * $p, $fontFile, 0.6);
 
         if ($watermark !== null) {
             self::addWatermark($background, $watermark, $fontFile);

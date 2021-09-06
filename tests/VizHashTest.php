@@ -15,7 +15,7 @@ class VizHashTest extends TestCase
         $photoData = file_get_contents(__DIR__.'/../src/Assets/example_photo.jpg');
         $font = __DIR__.'/../src/Assets/sourcesanspro.ttf';
 
-        $jpeg = VizHash::create('foobar', $photoData, 600, 'REFERENCE TICKET', $font, 80);
+        $jpeg = VizHash::create('foobar', 'description', $photoData, 600, 'REFERENCE TICKET', $font, 80);
         $this->assertNotNull($jpeg);
     }
 
@@ -48,13 +48,13 @@ class VizHashTest extends TestCase
     {
         $font = __DIR__.'/../src/Assets/sourcesanspro.ttf';
         $this->expectException(\RuntimeException::class);
-        VizHash::create('foobar', 'foobar', 600, 'REFERENCE TICKET', $font, 80);
+        VizHash::create('foobar', 'description', 'foobar', 600, 'REFERENCE TICKET', $font, 80);
     }
 
     public function testInvalidFont()
     {
         $photoData = file_get_contents(__DIR__.'/../src/Assets/example_photo.jpg');
         $this->expectException(\RuntimeException::class);
-        VizHash::create('foobar', $photoData, 600, 'REFERENCE TICKET', '', 80);
+        VizHash::create('foobar', 'description', $photoData, 600, 'REFERENCE TICKET', '', 80);
     }
 }

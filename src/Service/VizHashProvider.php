@@ -23,33 +23,33 @@ class VizHashProvider
     /**
      * Create a jpeg image with a centered photo.
      */
-    public function createImageWithPhoto(string $input, string $photoData, int $size, $grayScale = false): string
+    public function createImageWithPhoto(string $input, string $description, string $photoData, int $size, $grayScale = false): string
     {
         $font = __DIR__.'/../Assets/sourcesanspro.ttf';
 
-        return VizHash::create($input, $photoData, $size, null, $font, 80, $grayScale);
+        return VizHash::create($input, $description, $photoData, $size, null, $font, 80, $grayScale);
     }
 
     /**
      * Create a jpeg image with a centered image indicating a missing photo.
      */
-    public function createImageMissingPhoto(string $input, int $size, $grayScale = false): string
+    public function createImageMissingPhoto(string $input, string $description, int $size, $grayScale = false): string
     {
         $font = __DIR__.'/../Assets/sourcesanspro.ttf';
         $photoData = file_get_contents(__DIR__.'/../Assets/missing_photo.png');
 
-        return VizHash::create($input, $photoData, $size, null, $font, 80, $grayScale);
+        return VizHash::create($input, $description, $photoData, $size, null, $font, 80, $grayScale);
     }
 
     /**
      * Create a jpeg image with an example photo and a watermark.
      */
-    public function createReferenceImage(string $input, int $size, $grayScale = false): string
+    public function createReferenceImage(string $input, string $description, int $size, $grayScale = false): string
     {
         $font = __DIR__.'/../Assets/sourcesanspro.ttf';
         $photoData = file_get_contents(__DIR__.'/../Assets/example_photo.jpg');
 
-        return VizHash::create($input, $photoData, $size, 'REFERENCE TICKET', $font, 80, $grayScale);
+        return VizHash::create($input, $description, $photoData, $size, 'REFERENCE TICKET', $font, 80, $grayScale);
     }
 
     /**

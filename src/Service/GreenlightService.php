@@ -172,6 +172,13 @@ class GreenlightService
         $this->em->flush();
     }
 
+    private function getImageDescription(): string
+    {
+        $person = $this->getCurrentPerson();
+
+        return ($person->getGivenName() ?? '').' '.($person->getFamilyName() ?? '');
+    }
+
     public function createPermitForCurrentPerson(Permit $permit): Permit
     {
         if (!$permit->isAdditionalInformationValid()) {
@@ -250,7 +257,7 @@ class GreenlightService
         switch ($id) {
             case self::REFERENCE_PERMIT_ID:
                 $currentInput = $this->vizHashProvider->getCurrentInput();
-                $image = $this->vizHashProvider->createReferenceImage($currentInput, 600);
+                $image = $this->vizHashProvider->createReferenceImage($currentInput, 'Erika Musterfrau', 600);
                 $mimeType = MimeTools::getMimeType($image);
                 $imageText = MimeTools::getDataURI($image, $mimeType);
 
@@ -279,10 +286,11 @@ class GreenlightService
 
     protected function createVizHashImage(string $currentInput, string $imageOriginal, bool $grayScale = false): string
     {
+        $description = $this->getImageDescription();
         if ($imageOriginal === '') {
-            $image = $this->vizHashProvider->createImageMissingPhoto($currentInput, 600, $grayScale);
+            $image = $this->vizHashProvider->createImageMissingPhoto($currentInput, $description, 600, $grayScale);
         } else {
-            $image = $this->vizHashProvider->createImageWithPhoto($currentInput, $imageOriginal, 600, $grayScale);
+            $image = $this->vizHashProvider->createImageWithPhoto($currentInput, $description, $imageOriginal, 600, $grayScale);
         }
         $mimeType = MimeTools::getMimeType($image);
 

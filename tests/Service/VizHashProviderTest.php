@@ -13,14 +13,14 @@ class VizHashProviderTest extends TestCase
     public function testCreateReferenceImage()
     {
         $prov = new VizHashProvider(new ParameterBag());
-        $res = $prov->createReferenceImage('test', 100);
+        $res = $prov->createReferenceImage('test', 'foo', 100);
         $this->assertNotEmpty(imagecreatefromstring($res));
     }
 
     public function testCreateImageMissingPhoto()
     {
         $prov = new VizHashProvider(new ParameterBag());
-        $res = $prov->createImageMissingPhoto('test', 100);
+        $res = $prov->createImageMissingPhoto('test', 'foo', 100);
         $this->assertNotEmpty(imagecreatefromstring($res));
     }
 
@@ -28,7 +28,7 @@ class VizHashProviderTest extends TestCase
     {
         $prov = new VizHashProvider(new ParameterBag());
         $photoData = file_get_contents(__DIR__.'/../../src/Assets/example_photo.jpg');
-        $res = $prov->createImageWithPhoto('test', $photoData, 100);
+        $res = $prov->createImageWithPhoto('test', 'foo', $photoData, 100);
         $this->assertNotEmpty(imagecreatefromstring($res));
     }
 
