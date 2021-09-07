@@ -10,6 +10,7 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 class VizHashProvider
 {
+    private const FONTPATH = __DIR__.'/../Assets/SourceSansPro-SemiBold.ttf';
     /**
      * @var ParameterBagInterface
      */
@@ -25,9 +26,7 @@ class VizHashProvider
      */
     public function createImageWithPhoto(string $input, string $description, string $photoData, int $size, $grayScale = false): string
     {
-        $font = __DIR__.'/../Assets/sourcesanspro.ttf';
-
-        return VizHash::create($input, $description, $photoData, $size, null, $font, 80, $grayScale);
+        return VizHash::create($input, $description, $photoData, $size, null, self::FONTPATH, 80, $grayScale);
     }
 
     /**
@@ -35,10 +34,9 @@ class VizHashProvider
      */
     public function createImageMissingPhoto(string $input, string $description, int $size, $grayScale = false): string
     {
-        $font = __DIR__.'/../Assets/sourcesanspro.ttf';
         $photoData = file_get_contents(__DIR__.'/../Assets/missing_photo.png');
 
-        return VizHash::create($input, $description, $photoData, $size, null, $font, 80, $grayScale);
+        return VizHash::create($input, $description, $photoData, $size, null, self::FONTPATH, 80, $grayScale);
     }
 
     /**
@@ -46,10 +44,9 @@ class VizHashProvider
      */
     public function createReferenceImage(string $input, string $description, int $size, $grayScale = false): string
     {
-        $font = __DIR__.'/../Assets/sourcesanspro.ttf';
         $photoData = file_get_contents(__DIR__.'/../Assets/example_photo.jpg');
 
-        return VizHash::create($input, $description, $photoData, $size, 'REFERENCE TICKET', $font, 80, $grayScale);
+        return VizHash::create($input, $description, $photoData, $size, 'REFERENCE TICKET', self::FONTPATH, 80, $grayScale);
     }
 
     /**

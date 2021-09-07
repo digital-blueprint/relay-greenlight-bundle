@@ -13,7 +13,7 @@ class VizHashTest extends TestCase
     public function testGenerateVizHash()
     {
         $photoData = file_get_contents(__DIR__.'/../src/Assets/example_photo.jpg');
-        $font = __DIR__.'/../src/Assets/sourcesanspro.ttf';
+        $font = __DIR__.'/../src/Assets/SourceSansPro-SemiBold.ttf';
 
         $jpeg = VizHash::create('foobar', 'description', $photoData, 600, 'REFERENCE TICKET', $font, 80);
         $this->assertNotNull($jpeg);
@@ -46,7 +46,7 @@ class VizHashTest extends TestCase
 
     public function testInvalidPhotoData()
     {
-        $font = __DIR__.'/../src/Assets/sourcesanspro.ttf';
+        $font = __DIR__.'/../src/Assets/SourceSansPro-SemiBold.ttf';
         $this->expectException(\RuntimeException::class);
         VizHash::create('foobar', 'description', 'foobar', 600, 'REFERENCE TICKET', $font, 80);
     }
