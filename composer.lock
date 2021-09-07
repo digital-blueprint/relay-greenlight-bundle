@@ -288,15 +288,16 @@
         },
         {
             "name": "dbp/relay-core-bundle",
-            "version": "v0.1.14",
+            "version": "v0.1.15",
             "source": {
                 "type": "git",
                 "url": "https://gitlab.tugraz.at/dbp/relay/dbp-relay-core-bundle",
-                "reference": "3f2ff460f2c40f31f33e84bd9bdb7e48ff78b0c6"
+                "reference": "28c689401432e4e9c6c9f088fa0b63508906b2e3"
             },
             "require": {
                 "api-platform/core": "^2.6.3",
                 "doctrine/annotations": "^1.0",
+                "dragonmantank/cron-expression": "^3.1",
                 "ext-fileinfo": "*",
                 "ext-json": "*",
                 "guzzlehttp/guzzle": "^7.0",
@@ -305,6 +306,7 @@
                 "phpdocumentor/reflection-docblock": "^3.0 || ^4.0 || ^5.0",
                 "symfony/asset": "^5.3",
                 "symfony/config": "^5.3",
+                "symfony/event-dispatcher": "^5.3",
                 "symfony/expression-language": "^5.3",
                 "symfony/framework-bundle": "^5.3",
                 "symfony/mime": "^5.3",
@@ -316,6 +318,7 @@
                 "symfony/yaml": "^5.3"
             },
             "require-dev": {
+                "brainmaestro/composer-git-hooks": "^2.8",
                 "friendsofphp/php-cs-fixer": "^3.0",
                 "phpstan/phpstan": "^0.12.33",
                 "phpstan/phpstan-phpunit": "^0.12.13",
@@ -325,6 +328,13 @@
                 "vimeo/psalm": "^4.4"
             },
             "type": "symfony-bundle",
+            "extra": {
+                "hooks": {
+                    "pre-commit": [
+                        "composer lint"
+                    ]
+                }
+            },
             "autoload": {
                 "psr-4": {
                     "Dbp\\Relay\\CoreBundle\\": "src/"
@@ -334,7 +344,7 @@
             "license": [
                 "AGPL-3.0-or-later"
             ],
-            "time": "2021-08-24T08:59:17+00:00"
+            "time": "2021-09-07T12:02:36+00:00"
         },
         {
             "name": "doctrine/annotations",
@@ -1694,6 +1704,67 @@
                 "source": "https://github.com/doctrine/sql-formatter/tree/1.1.x"
             },
             "time": "2020-07-30T16:57:33+00:00"
+        },
+        {
+            "name": "dragonmantank/cron-expression",
+            "version": "v3.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/dragonmantank/cron-expression.git",
+                "reference": "7a8c6e56ab3ffcc538d05e8155bb42269abf1a0c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/dragonmantank/cron-expression/zipball/7a8c6e56ab3ffcc538d05e8155bb42269abf1a0c",
+                "reference": "7a8c6e56ab3ffcc538d05e8155bb42269abf1a0c",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.2|^8.0",
+                "webmozart/assert": "^1.7.0"
+            },
+            "replace": {
+                "mtdowling/cron-expression": "^1.0"
+            },
+            "require-dev": {
+                "phpstan/extension-installer": "^1.0",
+                "phpstan/phpstan": "^0.12",
+                "phpstan/phpstan-webmozart-assert": "^0.12.7",
+                "phpunit/phpunit": "^7.0|^8.0|^9.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Cron\\": "src/Cron/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Chris Tankersley",
+                    "email": "chris@ctankersley.com",
+                    "homepage": "https://github.com/dragonmantank"
+                }
+            ],
+            "description": "CRON for PHP: Calculate the next or previous run date and determine if a CRON expression is due",
+            "keywords": [
+                "cron",
+                "schedule"
+            ],
+            "support": {
+                "issues": "https://github.com/dragonmantank/cron-expression/issues",
+                "source": "https://github.com/dragonmantank/cron-expression/tree/v3.1.0"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/dragonmantank",
+                    "type": "github"
+                }
+            ],
+            "time": "2020-11-24T19:55:57+00:00"
         },
         {
             "name": "fig/link-util",
