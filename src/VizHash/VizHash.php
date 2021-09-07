@@ -45,12 +45,11 @@ class VizHash
         imagefilter($photo, IMG_FILTER_CONTRAST, -30);
         VizHash::blendPhoto($background, $photo, [5 * $p, 5 * $p, 20 * $p, 5], 0.7);
         imagedestroy($photo);
-
-        self::addDescription($background, $description, 15 * $p, 2 * $p, $fontFile, 0.6);
-
         if ($watermark !== null) {
             self::addWatermark($background, $watermark, $fontFile);
         }
+
+        self::addDescription($background, $description, 15 * $p, 2 * $p, $fontFile, 0.6);
 
         $data = self::imageToJpeg($background, $jpegQuality);
         imagedestroy($background);
