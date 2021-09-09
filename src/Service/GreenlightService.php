@@ -16,6 +16,7 @@ use Dbp\Relay\GreenlightBundle\VizHash\Utils;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
+use Psr\Cache\CacheItemPoolInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Uid\Uuid;
@@ -23,6 +24,8 @@ use Symfony\Component\Uid\Uuid;
 class GreenlightService
 {
     public const REFERENCE_PERMIT_ID = '95c1d1fe-45c5-459f-bcd7-1f4c41fd7692';
+    private const REFERENCE_DESCRIPTION = 'Erika Musterfrau';
+    private const IMAGE_SIZE = 600;
 
     /**
      * @var PersonProviderInterface
@@ -44,6 +47,11 @@ class GreenlightService
      */
     private $vizHashProvider;
 
+    /**
+     * @var ?CacheItemPoolInterface
+     */
+    private $cachePool;
+
     public function __construct(
         PersonProviderInterface $personProvider,
         ManagerRegistry $managerRegistry,
@@ -56,6 +64,11 @@ class GreenlightService
         assert($manager instanceof EntityManagerInterface);
         $this->em = $manager;
         $this->vizHashProvider = $vizHashProvider;
+    }
+
+    public function setCache(?CacheItemPoolInterface $cachePool)
+    {
+        $this->cachePool = $cachePool;
     }
 
     private function getCurrentPerson(): Person
@@ -256,12 +269,30 @@ class GreenlightService
         return $photoData;
     }
 
+    public function getReferenceImageCached(): string
+    {
+        assert($this->cachePool !== null);
+        $currentInput = $this->vizHashProvider->getCurrentInput();
+        $cacheKey = $currentInput;
+        $item = $this->cachePool->getItem($cacheKey);
+        $image = $item->get();
+        if ($image === null) {
+            $image = $this->vizHashProvider->createReferenceImage($currentInput, self::REFERENCE_DESCRIPTION, self::IMAGE_SIZE);
+            $item->set($image);
+            $expiresAfter = Utils::getRollingInput20MinPastHourValidFor(
+                new \DateTimeImmutable('now', new \DateTimeZone('UTC')));
+            $item->expiresAfter($expiresAfter);
+            $this->cachePool->save($item);
+        }
+
+        return $image;
+    }
+
     public function getReferencePermitById(string $id): ReferencePermit
     {
         switch ($id) {
             case self::REFERENCE_PERMIT_ID:
-                $currentInput = $this->vizHashProvider->getCurrentInput();
-                $image = $this->vizHashProvider->createReferenceImage($currentInput, 'Erika Musterfrau', 600);
+                $image = $this->getReferenceImageCached();
                 $mimeType = MimeTools::getMimeType($image);
                 $imageText = MimeTools::getDataURI($image, $mimeType);
 
@@ -292,9 +323,9 @@ class GreenlightService
     {
         $description = $this->getImageDescription();
         if ($imageOriginal === '') {
-            $image = $this->vizHashProvider->createImageMissingPhoto($currentInput, $description, 600, $grayScale);
+            $image = $this->vizHashProvider->createImageMissingPhoto($currentInput, $description, self::IMAGE_SIZE, $grayScale);
         } else {
-            $image = $this->vizHashProvider->createImageWithPhoto($currentInput, $description, $imageOriginal, 600, $grayScale);
+            $image = $this->vizHashProvider->createImageWithPhoto($currentInput, $description, $imageOriginal, self::IMAGE_SIZE, $grayScale);
         }
         $mimeType = MimeTools::getMimeType($image);
 

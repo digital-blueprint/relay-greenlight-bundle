@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Dbp\Relay\GreenlightBundle\DependencyInjection;
 
+use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
@@ -28,9 +29,12 @@ class DbpRelayGreenlightExtension extends ConfigurableExtension implements Prepe
         );
         $loader->load('services.yaml');
 
-        // Inject the config value into the GreenlightService service
-//        $definition = $container->getDefinition('Dbp\Relay\GreenlightBundle\Service\GreenlightService');
-//        $definition->addArgument($mergedConfig['database_url']);
+        $cacheDef = $container->register('dbp.relay.cache.greenlight', FilesystemAdapter::class);
+        $cacheDef->setArguments(['greenlight', 3600, '%kernel.cache_dir%/dbp/greenlight']);
+        $cacheDef->addTag('cache.pool');
+
+        $definition = $container->getDefinition('Dbp\Relay\GreenlightBundle\Service\GreenlightService');
+        $definition->addMethodCall('setCache', [$cacheDef]);
     }
 
     private function extendArrayParameter(ContainerBuilder $container, string $parameter, array $values): void
