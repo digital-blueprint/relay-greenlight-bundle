@@ -9,6 +9,7 @@ use ApiPlatform\Core\DataProvider\RestrictedDataProviderInterface;
 use Dbp\Relay\GreenlightBundle\Entity\Permit;
 use Dbp\Relay\GreenlightBundle\Service\GreenlightService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 final class PermitItemDataProvider extends AbstractController implements ItemDataProviderInterface, RestrictedDataProviderInterface
 {
@@ -17,9 +18,15 @@ final class PermitItemDataProvider extends AbstractController implements ItemDat
      */
     private $greenlightService;
 
-    public function __construct(GreenlightService $greenlightService)
+    /**
+     * @var RequestStack
+     */
+    private $requestStack;
+
+    public function __construct(GreenlightService $greenlightService, RequestStack $requestStack)
     {
         $this->greenlightService = $greenlightService;
+        $this->requestStack = $requestStack;
     }
 
     public function supports(string $resourceClass, string $operationName = null, array $context = []): bool
@@ -33,6 +40,7 @@ final class PermitItemDataProvider extends AbstractController implements ItemDat
 
         $filters = $context['filters'] ?? [];
         $additionalInformation = $filters['additional-information'] ?? '';
+        $additionalInformation = Utils::securityByObscurity($this->requestStack->getCurrentRequest(), $additionalInformation);
 
         return $this->greenlightService->getPermitByIdForCurrentPerson($id, $additionalInformation);
     }

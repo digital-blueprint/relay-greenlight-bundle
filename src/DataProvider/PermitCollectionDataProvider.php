@@ -10,6 +10,7 @@ use Dbp\Relay\CoreBundle\Helpers\ArrayFullPaginator;
 use Dbp\Relay\GreenlightBundle\Entity\Permit;
 use Dbp\Relay\GreenlightBundle\Service\GreenlightService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 final class PermitCollectionDataProvider extends AbstractController implements CollectionDataProviderInterface, RestrictedDataProviderInterface
 {
@@ -18,9 +19,15 @@ final class PermitCollectionDataProvider extends AbstractController implements C
      */
     private $greenlightService;
 
-    public function __construct(GreenlightService $greenlightService)
+    /**
+     * @var RequestStack
+     */
+    private $requestStack;
+
+    public function __construct(GreenlightService $greenlightService, RequestStack $requestStack)
     {
         $this->greenlightService = $greenlightService;
+        $this->requestStack = $requestStack;
     }
 
     public function supports(string $resourceClass, string $operationName = null, array $context = []): bool
@@ -37,6 +44,7 @@ final class PermitCollectionDataProvider extends AbstractController implements C
 
         $filters = $context['filters'] ?? [];
         $additionalInformation = $filters['additional-information'] ?? '';
+        $additionalInformation = Utils::securityByObscurity($this->requestStack->getCurrentRequest(), $additionalInformation);
 
         if (isset($filters['page'])) {
             $page = (int) $filters['page'];
