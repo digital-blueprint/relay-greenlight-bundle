@@ -185,6 +185,10 @@ class GreenlightService
             throw ApiError::withDetails(Response::HTTP_BAD_REQUEST, 'Additional information is not valid!', 'greenlight:additional-information-not-valid');
         }
 
+        if (!$permit->getConsentAssurance()) {
+            throw ApiError::withDetails(Response::HTTP_BAD_REQUEST, 'Consent assurance must be true!', 'greenlight:consent-assurance-not-true');
+        }
+
         $personId = $this->personProvider->getCurrentPerson()->getIdentifier();
 
         $permitPersistence = PermitPersistence::fromPermit($permit);

@@ -163,6 +163,7 @@ php bin/console doctrine:migrations:migrate --em=dbp_relay_greenlight_bundle
 | relay:errorId                                 | Description                                                         | relay:errorDetails | Example |
 | --------------------------------------------- | ------------------------------------------------------------------- | ------------------ | ------- |
 | `greenlight:additional-information-not-valid` | The content of the `additionalInformation` attribute was not valid. |                    |         |
+| `greenlight:consent-assurance-not-true`       | The content of the `consentAssurance` attribute was not true.       |                    |         |
 
 ### `/greenlight/permits/{identifier}`
 
