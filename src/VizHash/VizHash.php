@@ -270,7 +270,7 @@ class VizHash
 
         $transparent = imagecolorallocatealpha($image, 0, 0, 0, 127);
         for ($i = 0; $i < 4; ++$i) {
-            for ($j = 0; $j < intdiv($size, 30); ++$j) {
+            for ($j = 0; $j < max(intdiv($size, 30), 1); ++$j) {
                 imagefilter($image, IMG_FILTER_GAUSSIAN_BLUR);
             }
             $image = imagerotate($image, 90, $transparent);
