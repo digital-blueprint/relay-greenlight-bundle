@@ -11,6 +11,8 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 class VizHashProvider
 {
     private const FONTPATH = __DIR__.'/../Assets/SourceSansPro-SemiBold.ttf';
+    private const JPEG_QUALITY = 85;
+
     /**
      * @var ParameterBagInterface
      */
@@ -26,7 +28,7 @@ class VizHashProvider
      */
     public function createImageWithPhoto(string $input, string $description, string $photoData, int $size, $grayScale = false): string
     {
-        return VizHash::create($input, $description, $photoData, $size, null, self::FONTPATH, 80, $grayScale);
+        return VizHash::create($input, $description, $photoData, $size, null, self::FONTPATH, self::JPEG_QUALITY, $grayScale);
     }
 
     /**
@@ -36,7 +38,7 @@ class VizHashProvider
     {
         $photoData = file_get_contents(__DIR__.'/../Assets/missing_photo.png');
 
-        return VizHash::create($input, $description, $photoData, $size, null, self::FONTPATH, 80, $grayScale);
+        return VizHash::create($input, $description, $photoData, $size, null, self::FONTPATH, self::JPEG_QUALITY, $grayScale);
     }
 
     /**
@@ -46,7 +48,7 @@ class VizHashProvider
     {
         $photoData = file_get_contents(__DIR__.'/../Assets/example_photo.jpg');
 
-        return VizHash::create($input, $description, $photoData, $size, 'REFERENCE TICKET', self::FONTPATH, 80, $grayScale);
+        return VizHash::create($input, $description, $photoData, $size, 'REFERENCE TICKET', self::FONTPATH, self::JPEG_QUALITY, $grayScale);
     }
 
     /**
