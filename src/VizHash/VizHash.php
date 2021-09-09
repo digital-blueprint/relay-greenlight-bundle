@@ -49,7 +49,7 @@ class VizHash
             self::addWatermark($background, $watermark, $fontFile);
         }
 
-        self::addDescription($background, $description, 15 * $p, 2 * $p, $fontFile, 0.6);
+        self::addDescription($background, $description, 15 * $p, 2 * $p, $fontFile, 0.45);
 
         $data = self::imageToJpeg($background, $jpegQuality);
         imagedestroy($background);
@@ -99,21 +99,8 @@ class VizHash
         imagefill($temp, 0, 0, imagecolorallocatealpha($temp, 0, 0, 0, 127));
 
         // Add some kind of text border
-        $white = imagecolorallocatealpha($temp, 0, 0, 0, 0);
-        $res = @imagettftext($temp, $selectedSize, 45, (int) ($selectedSize / 2) + $padding, imagesy($dest), $white, $fontFile, $text);
-        if ($res === false) {
-            throw new \RuntimeException(\error_get_last()['message']);
-        }
-        imagefilter($temp, IMG_FILTER_GAUSSIAN_BLUR);
-        imageflip($temp, IMG_FLIP_HORIZONTAL);
-        imagefilter($temp, IMG_FILTER_GAUSSIAN_BLUR);
-        imageflip($temp, IMG_FLIP_HORIZONTAL);
-
         $white = imagecolorallocatealpha($temp, 255, 255, 255, 0);
-        $res = @imagettftext($temp, $selectedSize, 45, (int) ($selectedSize / 2) + $padding, imagesy($dest), $white, $fontFile, $text);
-        if ($res === false) {
-            throw new \RuntimeException(\error_get_last()['message']);
-        }
+        $temp = self::textWithBorder($temp, $selectedSize, 45, (int) ($selectedSize / 2) + $padding, imagesy($dest), $white, $fontFile, $text);
 
         // Three rows of text
         imagecopy($dest, $temp, 0, 0, 0, 0, imagesx($dest), imagesy($dest));
@@ -260,11 +247,42 @@ class VizHash
             imagesx($backgroundBox), imagesy($backgroundBox), (int) ($alpha * 100));
 
         // Finally, draw the text in white on top
-        $white = imagecolorallocatealpha($dest, 255, 255, 255, 0);
-        $res = @imagettftext($dest, $selectedSize, 0, $x, $baseline, $white, $fontFile, $text);
+        $relBaseline = $baseline - imagesy($dest) + $maxHeight;
+        $temp = imagecreatetruecolor(imagesx($dest), $maxHeight);
+        imagefill($temp, 0, 0, imagecolorallocatealpha($temp, 0, 0, 0, 127));
+
+        $white = imagecolorallocatealpha($temp, 255, 255, 255, 0);
+        $temp = self::textWithBorder($temp, $selectedSize, 0, $x, $relBaseline, $white, $fontFile, $text);
+
+        imagecopy($dest, $temp, 0, imagesy($dest) - $maxHeight, 0, 0, imagesx($dest), imagesy($dest));
+    }
+
+    /**
+     * Like imagettftext(), but draws a black-ish border around the text.
+     */
+    public static function textWithBorder($image, $size, $angle, $x, $y, $color, $fontfile, $text)
+    {
+        $black = imagecolorallocatealpha($image, 0, 0, 0, 0);
+        $res = @imagettftext($image, $size, $angle, $x, $y, $black, $fontfile, $text);
         if ($res === false) {
             throw new \RuntimeException(\error_get_last()['message']);
         }
+
+        $transparent = imagecolorallocatealpha($image, 0, 0, 0, 127);
+        for ($i = 0; $i < 4; ++$i) {
+            for ($j = 0; $j < intdiv($size, 30); ++$j) {
+                imagefilter($image, IMG_FILTER_GAUSSIAN_BLUR);
+            }
+            $image = imagerotate($image, 90, $transparent);
+        }
+        imagefilter($image, IMG_FILTER_BRIGHTNESS, 20);
+
+        $res = @imagettftext($image, $size, $angle, $x, $y, $color, $fontfile, $text);
+        if ($res === false) {
+            throw new \RuntimeException(\error_get_last()['message']);
+        }
+
+        return $image;
     }
 
     /**
