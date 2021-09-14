@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Dbp\Relay\GreenlightBundle\DataPersister;
 
 use ApiPlatform\Core\DataPersister\ContextAwareDataPersisterInterface;
-use Dbp\Relay\GreenlightBundle\DataProvider\Utils;
 use Dbp\Relay\GreenlightBundle\Entity\Permit;
 use Dbp\Relay\GreenlightBundle\Service\GreenlightService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -45,7 +44,7 @@ class PermitDataPersister extends AbstractController implements ContextAwareData
         $this->greenlightService->removeAllPermitsForCurrentPerson();
 
         $data->setAdditionalInformation(
-            Utils::securityByObscurity($this->requestStack->getCurrentRequest(), $data->getAdditionalInformation()));
+            Utils::decodeAdditionalInformation($this->requestStack->getCurrentRequest(), $data->getAdditionalInformation()));
 
         return $this->greenlightService->createPermitForCurrentPerson($data);
     }
