@@ -208,7 +208,7 @@ class GreenlightService
         $permitPersistence->setIdentifier((string) Uuid::v4());
         $permitPersistence->setPersonId($personId);
         $permitPersistence->setValidFrom(new \DateTime('now'));
-        $permitPersistence->setValidUntil((new \DateTime('now'))->add(new \DateInterval('PT1Y')));
+        $permitPersistence->setValidUntil((new \DateTime('now'))->add(new \DateInterval('P1Y')));
         $permitPersistence->setImageOriginal($this->fetchPhotoForPersonId($personId));
         $permitPersistence->setImageGenerated('');
         $permitPersistence->setImageGeneratedGray('');
