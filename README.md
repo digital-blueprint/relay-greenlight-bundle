@@ -154,24 +154,24 @@ php bin/console doctrine:migrations:migrate --em=dbp_relay_greenlight_bundle
 
 ### General
 
-| relay:errorId                         | Description                  | relay:errorDetails | Example |
-| ------------------------------------- | ---------------------------- | ------------------ | ------- |
-| `greenlight:current-person-not-found` | Current person wasn't found. |                    |         |
+| relay:errorId                         | Status code | Description                  | relay:errorDetails | Example |
+| ------------------------------------- | ----------- | ---------------------------- | ------------------ | ------- |
+| `greenlight:current-person-not-found` | 403         | Current person wasn't found. |                    |         |
 
 ### `/greenlight/permits`
 
 #### POST
 
-| relay:errorId                                 | Description                                                         | relay:errorDetails | Example |
-| --------------------------------------------- | ------------------------------------------------------------------- | ------------------ | ------- |
-| `greenlight:additional-information-not-valid` | The content of the `additionalInformation` attribute was not valid. |                    |         |
-| `greenlight:consent-assurance-not-true`       | The content of the `consentAssurance` attribute was not true.       |                    |         |
+| relay:errorId                                 | Status code | Description                                                         | relay:errorDetails | Example |
+| --------------------------------------------- | ----------- | ------------------------------------------------------------------- | ------------------ | ------- |
+| `greenlight:additional-information-not-valid` | 400         | The content of the `additionalInformation` attribute was not valid. |                    |         |
+| `greenlight:consent-assurance-not-true`       | 400         | The content of the `consentAssurance` attribute was not true.       |                    |         |
 
 ### `/greenlight/permits/{identifier}`
 
 #### GET
 
-| relay:errorId                           | Description                             | relay:errorDetails | Example |
-| --------------------------------------- | --------------------------------------- | ------------------ | ------- |
-| `greenlight:permit-not-found`           | Permit was not found.                   |                    |         |
-| `greenlight:person-does-not-own-permit` | Current person doesn't own this permit. |                    |         |
+| relay:errorId                           | Status code | Description                             | relay:errorDetails | Example |
+| --------------------------------------- | ----------- | --------------------------------------- | ------------------ | ------- |
+| `greenlight:permit-not-found`           | 404         | Permit was not found.                   |                    |         |
+| `greenlight:person-does-not-own-permit` | 403         | Current person doesn't own this permit. |                    |         |
