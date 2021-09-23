@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Dbp\Relay\GreenlightBundle\DataPersister;
 
 use Base64Url\Base64Url;
+use Dbp\Relay\CoreBundle\Exception\ApiError;
 use Jose\Component\Core\AlgorithmManager;
 use Jose\Component\Core\JWK;
 use Jose\Component\Encryption\Algorithm\ContentEncryption\A256GCM;
@@ -16,6 +17,7 @@ use Jose\Component\Encryption\JWELoader;
 use Jose\Component\Encryption\Serializer\CompactSerializer;
 use Jose\Component\Encryption\Serializer\JWESerializerManager;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class Utils
@@ -62,7 +64,7 @@ class Utils
         try {
             $jwe = $jweLoader->loadAndDecryptWithKey($token, $jwk, $recipient);
         } catch (\Exception $e) {
-            throw new AccessDeniedException();
+            throw ApiError::withDetails(Response::HTTP_FORBIDDEN, 'Additional information could not be decoded!', 'greenlight:additional-information-not-decoded');
         }
 
         $res = $jwe->getPayload();
