@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Dbp\Relay\GreenlightBundle\Tests;
 
+use Dbp\Relay\CoreBundle\Exception\ApiError;
 use Dbp\Relay\GreenlightBundle\DataPersister\Utils;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,7 +26,7 @@ class UtilsTest extends TestCase
         $token = 'nope';
         $request = new Request();
         $request->headers->set('Authorization', 'Bearer test');
-        $this->expectException(AccessDeniedException::class);
+        $this->expectException(ApiError::class);
         Utils::decodeAdditionalInformation($request, $token);
     }
 }
