@@ -31,6 +31,7 @@ final class PermitCollectionDataProvider extends AbstractController implements C
     public function getCollection(string $resourceClass, string $operationName = null, array $context = []): ArrayFullPaginator
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('ROLE_SCOPE_GREENLIGHT');
 
         $perPage = 30;
         $page = 1;

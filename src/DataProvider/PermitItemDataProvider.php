@@ -30,6 +30,7 @@ final class PermitItemDataProvider extends AbstractController implements ItemDat
     public function getItem(string $resourceClass, $id, string $operationName = null, array $context = []): ?Permit
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('ROLE_SCOPE_GREENLIGHT');
 
         $filters = $context['filters'] ?? [];
         $additionalInformation = $filters['additional-information'] ?? '';

@@ -177,3 +177,7 @@ php bin/console doctrine:migrations:migrate --em=dbp_relay_greenlight_bundle
 | --------------------------------------- | ----------- | --------------------------------------- | ------------------ | ------- |
 | `greenlight:permit-not-found`           | 404         | Permit was not found.                   |                    |         |
 | `greenlight:person-does-not-own-permit` | 403         | Current person doesn't own this permit. |                    |         |
+
+## Roles
+
+This bundle needs the role `ROLE_SCOPE_GREENLIGHT` assigned to the user to get permissions for the api.

@@ -40,6 +40,9 @@ class PermitDataPersister extends AbstractController implements ContextAwareData
      */
     public function persist($data, array $context = [])
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('ROLE_SCOPE_GREENLIGHT');
+
         $data->setAdditionalInformation(
             Utils::decodeAdditionalInformation($this->requestStack->getCurrentRequest(), $data->getAdditionalInformation()));
 
@@ -53,6 +56,9 @@ class PermitDataPersister extends AbstractController implements ContextAwareData
      */
     public function remove($data, array $context = [])
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('ROLE_SCOPE_GREENLIGHT');
+
         $this->greenlightService->removePermitByIdForCurrentPerson($data->getIdentifier());
     }
 }
