@@ -162,11 +162,12 @@ php bin/console doctrine:migrations:migrate --em=dbp_relay_greenlight_bundle
 
 #### POST
 
-| relay:errorId                                   | Status code | Description                                                                | relay:errorDetails | Example |
-| ----------------------------------------------- | ----------- | -------------------------------------------------------------------------- | ------------------ | ------- |
-| `greenlight:additional-information-not-valid`   | 400         | The content of the `additionalInformation` attribute was not valid.        |                    |         |
-| `greenlight:additional-information-not-decoded` | 403         | The content of the `additionalInformation` attribute could not be decoded. |                    |         |
-| `greenlight:consent-assurance-not-true`         | 400         | The content of the `consentAssurance` attribute was not true.              |                    |         |
+| relay:errorId                                   | Status code | Description                                                                | relay:errorDetails | Example                          |
+| ----------------------------------------------- | ----------- | -------------------------------------------------------------------------- | ------------------ | -------------------------------- |
+| `greenlight:additional-information-not-valid`   | 400         | The content of the `additionalInformation` attribute was not valid.        |                    |                                  |
+| `greenlight:additional-information-not-decoded` | 403         | The content of the `additionalInformation` attribute could not be decoded. |                    |                                  |
+| `greenlight:consent-assurance-not-true`         | 400         | The content of the `consentAssurance` attribute was not true.              |                    |                                  |
+| `greenlight:permit-not-created`                 | 500         | The permit could not be created.                                           | `message`          | `['message' => 'Error message']` |
 
 ### `/greenlight/permits/{identifier}`
 

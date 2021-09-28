@@ -214,8 +214,22 @@ class GreenlightService
         $permitPersistence->setImageGeneratedGray('');
         $permitPersistence->setInputHash('');
 
-        $this->em->persist($permitPersistence);
-        $this->em->flush();
+        // Do the creating and removing in a transaction
+        $this->em->getConnection()->beginTransaction();
+
+        try {
+            // Remove all previous permits of the current person before creating a new permit
+            $this->removeAllPermitsForCurrentPerson();
+
+            $this->em->persist($permitPersistence);
+            $this->em->flush();
+
+            $this->em->getConnection()->commit();
+        } catch (\Exception $e) {
+            $this->em->getConnection()->rollBack();
+
+            throw ApiError::withDetails(Response::HTTP_INTERNAL_SERVER_ERROR, 'Permit could not be created!', 'greenlight:permit-not-created', ['message' => $e->getMessage()]);
+        }
 
         // Fetch the generated image
         $this->updateGeneratedImageForPermitPersistenceIfNeeded($permitPersistence);
@@ -310,6 +324,12 @@ class GreenlightService
         throw ApiError::withDetails(Response::HTTP_NOT_FOUND, 'ReferencePermit was not found!');
     }
 
+    /**
+     * Removes all permits of the current person.
+     *
+     * Because of the unique key only a maximum of one permit should be removed,
+     * so there is no real need to do that in one query.
+     */
     public function removeAllPermitsForCurrentPerson()
     {
         $reviews = $this->getPermitsForCurrentPerson();

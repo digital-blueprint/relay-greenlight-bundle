@@ -40,9 +40,6 @@ class PermitDataPersister extends AbstractController implements ContextAwareData
      */
     public function persist($data, array $context = [])
     {
-        // Remove all previous permits of the current person before creating a new permit
-        $this->greenlightService->removeAllPermitsForCurrentPerson();
-
         $data->setAdditionalInformation(
             Utils::decodeAdditionalInformation($this->requestStack->getCurrentRequest(), $data->getAdditionalInformation()));
 
