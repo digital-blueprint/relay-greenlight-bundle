@@ -347,7 +347,10 @@ class GreenlightService
     {
         $description = $this->getImageDescription();
         if ($imageOriginal === '') {
-            $image = $this->vizHashProvider->createImageMissingPhoto($currentInput, $description, self::IMAGE_SIZE, $grayScale);
+            // Fail if no photo is available
+            throw ApiError::withDetails(Response::HTTP_SERVICE_UNAVAILABLE, 'Photo for current person could not be loaded!', 'greenlight:current-person-no-photo');
+
+//            $image = $this->vizHashProvider->createImageMissingPhoto($currentInput, $description, self::IMAGE_SIZE, $grayScale);
         } else {
             $image = $this->vizHashProvider->createImageWithPhoto($currentInput, $description, $imageOriginal, self::IMAGE_SIZE, $grayScale);
         }
