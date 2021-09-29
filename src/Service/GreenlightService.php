@@ -204,8 +204,22 @@ class GreenlightService
 
         $personId = $this->personProvider->getCurrentPerson()->getIdentifier();
 
-        $permitPersistence = PermitPersistence::fromPermit($permit);
-        $permitPersistence->setIdentifier((string) Uuid::v4());
+        // We try look for an existing permit and reuse it instead if deleting the existing one to gain a speed
+        // improvement and to not get "Duplicate entry" errors when benchmarking with high load on the same person
+        $permitPersistences = $this->em
+            ->getRepository(PermitPersistence::class)
+            ->findBy(['personId' => $personId]);
+
+        // If we can't reuse an existing permit we want to create a new one
+        if (count($permitPersistences) === 0) {
+            $permitPersistence = PermitPersistence::fromPermit($permit);
+            $permitPersistence->setIdentifier((string) Uuid::v4());
+        } else {
+            $permitPersistence = $permitPersistences[0];
+            $permitPersistence->setAdditionalInformation($permit->getAdditionalInformation());
+            $permitPersistence->setConsentAssurance($permit->getConsentAssurance());
+        }
+
         $permitPersistence->setPersonId($personId);
         $permitPersistence->setValidFrom(new \DateTime('now'));
         $permitPersistence->setValidUntil((new \DateTime('now'))->add(new \DateInterval('P1Y')));
@@ -214,20 +228,10 @@ class GreenlightService
         $permitPersistence->setImageGeneratedGray('');
         $permitPersistence->setInputHash('');
 
-        // Do the creating and removing in a transaction
-        $this->em->getConnection()->beginTransaction();
-
         try {
-            // Remove all previous permits of the current person before creating a new permit
-            $this->removeAllPermitsForCurrentPerson();
-
             $this->em->persist($permitPersistence);
             $this->em->flush();
-
-            $this->em->getConnection()->commit();
         } catch (\Exception $e) {
-            $this->em->getConnection()->rollBack();
-
             throw ApiError::withDetails(Response::HTTP_INTERNAL_SERVER_ERROR, 'Permit could not be created!', 'greenlight:permit-not-created', ['message' => $e->getMessage()]);
         }
 
