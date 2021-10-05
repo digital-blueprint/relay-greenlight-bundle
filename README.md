@@ -166,9 +166,11 @@ php bin/console doctrine:migrations:migrate --em=dbp_relay_greenlight_bundle
 | ----------------------------------------------- | ----------- | -------------------------------------------------------------------------- | ------------------ | -------------------------------- |
 | `greenlight:additional-information-not-valid`   | 400         | The content of the `additionalInformation` attribute was not valid.        |                    |                                  |
 | `greenlight:additional-information-not-decoded` | 403         | The content of the `additionalInformation` attribute could not be decoded. |                    |                                  |
+| `greenlight:current-person-no-photo`            | 503         | Photo for current person could not be loaded!                              |                    |                                  |
+| `greenlight:current-person-not-found`           | 403         | Current person wasn't found.                                               |                    |                                  |
 | `greenlight:consent-assurance-not-true`         | 400         | The content of the `consentAssurance` attribute was not true.              |                    |                                  |
 | `greenlight:permit-not-created`                 | 500         | The permit could not be created.                                           | `message`          | `['message' => 'Error message']` |
-| `greenlight:current-person-no-photo`            | 503         | Photo for current person could not be loaded!                              |                    |                                  |
+| `greenlight:photo-service-error`                | 500         | The photo service had an error!                                            |                    | `['message' => 'Error message']` |
 
 ### `/greenlight/permits/{identifier}`
 
