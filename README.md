@@ -170,7 +170,7 @@ php bin/console doctrine:migrations:migrate --em=dbp_relay_greenlight_bundle
 | `greenlight:current-person-not-found`           | 403         | Current person wasn't found.                                               |                    |                                  |
 | `greenlight:consent-assurance-not-true`         | 400         | The content of the `consentAssurance` attribute was not true.              |                    |                                  |
 | `greenlight:permit-not-created`                 | 500         | The permit could not be created.                                           | `message`          | `['message' => 'Error message']` |
-| `greenlight:photo-service-error`                | 500         | The photo service had an error!                                            |                    | `['message' => 'Error message']` |
+| `greenlight:photo-service-error`                | 500         | The photo service had an error!                                            | `message`          | `['message' => 'Error message']` |
 
 ### `/greenlight/permits/{identifier}`
 
