@@ -8,7 +8,6 @@ use Dbp\Relay\CoreBundle\Exception\ApiError;
 use Dbp\Relay\GreenlightBundle\DataPersister\Utils;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class UtilsTest extends TestCase
 {
