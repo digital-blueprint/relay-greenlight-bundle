@@ -8,29 +8,7 @@ You will need a database that is compatible with Doctrine (for example MariaDB) 
 
 ## Bundle installation
 
-### For Development
-
-* Add the repository to your composer.json:
-
-```json
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "git@gitlab.tugraz.at:dbp/relay/dbp-relay-greenlight-bundle.git"
-        }
-    ],
-```
-
-* Add the bundle package as a dependency:
-
-```bash
-composer require dbp/relay-greenlight-bundle=dev-main
-```
-
-### For production
-
-If you don't want to install the bundle directly from git you can install it from
-[packagist.org](https://packagist.org/packages/dbp/relay-greenlight-bundle).
+You can install the bundle directly from [packagist.org](https://packagist.org/packages/dbp/relay-greenlight-bundle).
 
 ```bash
 composer require dbp/relay-greenlight-bundle
