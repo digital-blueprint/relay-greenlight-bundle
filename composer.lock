@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "70da08b25c53a1059a3e4f9725c2ab07",
+    "content-hash": "dd7d19bbb7b8e2f4d51e3bf1068959b1",
     "packages": [
         {
             "name": "api-platform/core",
@@ -300,12 +300,12 @@
             "time": "2021-09-13T08:41:34+00:00"
         },
         {
-            "name": "dbp/api-base-bundle",
-            "version": "v0.1.1",
+            "name": "dbp/relay-base-bundle",
+            "version": "v0.1.2",
             "source": {
                 "type": "git",
-                "url": "https://gitlab.tugraz.at/dbp/relay/api-base-bundle",
-                "reference": "1436d7e59626ab97bfb2a691693d2ac61dba4666"
+                "url": "https://gitlab.tugraz.at/dbp/relay/dbp-relay-base-bundle",
+                "reference": "aa1a43d56a52b60efadd5ba929a2bd0a8c7dac3c"
             },
             "require": {
                 "api-platform/core": "^2.6.3",
@@ -338,14 +338,14 @@
             "type": "symfony-bundle",
             "autoload": {
                 "psr-4": {
-                    "DBP\\API\\BaseBundle\\": "src/"
+                    "Dbp\\Relay\\BaseBundle\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "AGPL-3.0-or-later"
             ],
-            "time": "2021-08-28T08:02:15+00:00"
+            "time": "2021-10-06T09:01:14+00:00"
         },
         {
             "name": "dbp/relay-core-bundle",

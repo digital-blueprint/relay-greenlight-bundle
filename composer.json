@@ -7,7 +7,7 @@
         "ext-gd": "*",
         "ext-json": "*",
         "api-platform/core": "^2.5",
-        "dbp/api-base-bundle": "^0.1.1",
+        "dbp/relay-base-bundle": "^0.1.2",
         "dbp/relay-core-bundle": "^0.1.15",
         "spomky-labs/base64url": "^2.0",
         "symfony/framework-bundle": "^5.2",

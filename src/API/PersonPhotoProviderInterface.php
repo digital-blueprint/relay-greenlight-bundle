@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Dbp\Relay\GreenlightBundle\API;
 
-use DBP\API\BaseBundle\Entity\Person;
+use Dbp\Relay\BaseBundle\Entity\Person;
 use Dbp\Relay\GreenlightBundle\Exception\PhotoServiceException;
 
 interface PersonPhotoProviderInterface

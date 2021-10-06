@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Dbp\Relay\GreenlightBundle\Tests\Service;
 
-use DBP\API\BaseBundle\Entity\Person;
-use DBP\API\BaseBundle\TestUtils\DummyPersonProvider;
+use Dbp\Relay\BaseBundle\Entity\Person;
+use Dbp\Relay\BaseBundle\TestUtils\DummyPersonProvider;
 use Dbp\Relay\GreenlightBundle\Service\GreenlightService;
 use Dbp\Relay\GreenlightBundle\Service\VizHashProvider;
 use Dbp\Relay\GreenlightBundle\TestUtils\DummyPersonPhotoProvider;
