@@ -16,7 +16,7 @@ composer require dbp/relay-greenlight-bundle
 
 ## Integration into the API Server
 
-* Add the bundle to your `config/bundles.php`:
+* Add the necessary bundles to your `config/bundles.php`:
 
 ```php
 ...
@@ -24,7 +24,7 @@ Doctrine\Bundle\DoctrineBundle\DoctrineBundle::class => ['all' => true],
 Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle::class => ['all' => true],
 Symfony\Bundle\MakerBundle\MakerBundle::class => ['dev' => true],
 Dbp\Relay\GreenlightBundle\DbpRelayGreenlightBundle::class => ['all' => true],
-DBP\API\CoreBundle\DbpCoreBundle::class => ['all' => true],
+Dbp\Relay\CoreBundle\DbpRelayCoreBundle::class => ['all' => true],
 ];
 ```
 
