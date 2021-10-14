@@ -44,9 +44,6 @@ dbp_relay_greenlight:
   # database_url: %env(EU_DCC_DATABASE_URL)%
 ```
 
-The value gets read in `DbpRelayGreenlightExtension` and passed when creating the
-`MyCustomService` service.
-
 For more info on bundle configuration see <https://symfony.com/doc/current/bundles/configuration.html>.
 
 ## PersonPhotoProvider service
