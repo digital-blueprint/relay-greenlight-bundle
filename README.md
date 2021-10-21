@@ -59,6 +59,8 @@ in your application.
 You can for example put below code into `src/Service/PersonPhotoProvider.php`:
 
 ```php
+<?php
+
 declare(strict_types=1);
 
 namespace YourUniversity\Service;
