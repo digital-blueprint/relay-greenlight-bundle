@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Dbp\Relay\GreenlightBundle\Tests;
 
 use ApiPlatform\Core\Bridge\Symfony\Bundle\ApiPlatformBundle;
-use Dbp\Relay\BaseBundle\DbpRelayBaseBundle;
+use Dbp\Relay\BasePersonBundle\DbpRelayBasePersonBundle;
 use Dbp\Relay\CoreBundle\DbpRelayCoreBundle;
 use Dbp\Relay\GreenlightBundle\DbpRelayGreenlightBundle;
 use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
@@ -36,7 +36,7 @@ class Kernel extends BaseKernel
         yield new DoctrineMigrationsBundle();
         yield new ApiPlatformBundle();
         yield new DbpRelayGreenlightBundle();
-        yield new DbpRelayBaseBundle();
+        yield new DbpRelayBasePersonBundle();
         yield new DbpRelayCoreBundle();
     }
 
