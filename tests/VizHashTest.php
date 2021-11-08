@@ -6,7 +6,7 @@ namespace Dbp\Relay\GreenlightBundle\Tests;
 
 use Dbp\Relay\GreenlightBundle\VizHash\Utils;
 use Dbp\Relay\GreenlightBundle\VizHash\VizHash;
-use PHPStan\Testing\TestCase;
+use PHPUnit\Framework\TestCase;
 
 class VizHashTest extends TestCase
 {
