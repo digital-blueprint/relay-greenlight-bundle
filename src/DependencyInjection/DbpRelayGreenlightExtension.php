@@ -55,11 +55,11 @@ class DbpRelayGreenlightExtension extends ConfigurableExtension implements Prepe
         $configs = $container->getExtensionConfig($this->getAlias());
         $config = $this->processConfiguration(new Configuration(), $configs);
 
-        foreach (['doctrine', 'doctrine_migrations'] as $extKey) {
-            if (!$container->hasExtension($extKey)) {
-                throw new \Exception("'".$this->getAlias()."' requires the '$extKey' bundle to be loaded!");
-            }
-        }
+//        foreach (['doctrine', 'doctrine_migrations'] as $extKey) {
+//            if (!$container->hasExtension($extKey)) {
+//                throw new \Exception("'".$this->getAlias()."' requires the '$extKey' bundle to be loaded!");
+//            }
+//        }
 
         if (isset($container->getExtensions()['doctrine'])) {
             $container->prependExtensionConfig('doctrine', [
