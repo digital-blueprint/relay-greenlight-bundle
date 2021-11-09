@@ -1,4 +1,11 @@
 services:
+  Dbp\Relay\GreenlightBundle\Service\DummyPersonPhotoProvider:
+    autowire: true
+    autoconfigure: true
+
+  Dbp\Relay\GreenlightBundle\API\PersonPhotoProviderInterface:
+    '@Dbp\Relay\GreenlightBundle\Service\DummyPersonPhotoProvider'
+
   Dbp\Relay\GreenlightBundle\Command\CleanupCommand:
     autowire: true
     autoconfigure: true
