@@ -66,7 +66,7 @@ class DbpRelayGreenlightExtension extends ConfigurableExtension implements Prepe
                 'dbal' => [
                     'connections' => [
                         'dbp_relay_greenlight_bundle' => [
-                            'url' => $config['database_url'],
+                            'url' => $config['database_url'] ?? '',
                         ],
                     ],
                 ],
