@@ -743,36 +743,38 @@
         },
         {
             "name": "doctrine/dbal",
-            "version": "3.1.4",
+            "version": "3.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/dbal.git",
-                "reference": "821b4f01a36ce63ed36c090ea74767b72db367e9"
+                "reference": "5d54f63541d7bed1156cb5c9b79274ced61890e4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/dbal/zipball/821b4f01a36ce63ed36c090ea74767b72db367e9",
-                "reference": "821b4f01a36ce63ed36c090ea74767b72db367e9",
+                "url": "https://api.github.com/repos/doctrine/dbal/zipball/5d54f63541d7bed1156cb5c9b79274ced61890e4",
+                "reference": "5d54f63541d7bed1156cb5c9b79274ced61890e4",
                 "shasum": ""
             },
             "require": {
                 "composer/package-versions-deprecated": "^1.11.99",
-                "doctrine/cache": "^1.0|^2.0",
+                "doctrine/cache": "^1.11|^2.0",
                 "doctrine/deprecations": "^0.5.3",
                 "doctrine/event-manager": "^1.0",
-                "php": "^7.3 || ^8.0"
+                "php": "^7.3 || ^8.0",
+                "psr/cache": "^1|^2|^3",
+                "psr/log": "^1|^2|^3"
             },
             "require-dev": {
                 "doctrine/coding-standard": "9.0.0",
                 "jetbrains/phpstorm-stubs": "2021.1",
-                "phpstan/phpstan": "1.1.1",
-                "phpstan/phpstan-strict-rules": "^1",
+                "phpstan/phpstan": "1.2.0",
+                "phpstan/phpstan-strict-rules": "^1.1",
                 "phpunit/phpunit": "9.5.10",
                 "psalm/plugin-phpunit": "0.16.1",
                 "squizlabs/php_codesniffer": "3.6.1",
                 "symfony/cache": "^5.2|^6.0",
                 "symfony/console": "^2.0.5|^3.0|^4.0|^5.0|^6.0",
-                "vimeo/psalm": "4.12.0"
+                "vimeo/psalm": "4.13.0"
             },
             "suggest": {
                 "symfony/console": "For helpful console commands such as SQL execution and import of files."
@@ -832,7 +834,7 @@
             ],
             "support": {
                 "issues": "https://github.com/doctrine/dbal/issues",
-                "source": "https://github.com/doctrine/dbal/tree/3.1.4"
+                "source": "https://github.com/doctrine/dbal/tree/3.2.0"
             },
             "funding": [
                 {
@@ -848,7 +850,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-11-15T16:44:33+00:00"
+            "time": "2021-11-26T21:00:12+00:00"
         },
         {
             "name": "doctrine/deprecations",
@@ -4030,16 +4032,16 @@
         },
         {
             "name": "symfony/doctrine-bridge",
-            "version": "v5.3.8",
+            "version": "v5.3.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/doctrine-bridge.git",
-                "reference": "212521017d81686bdc84a132fb5de2b03867a7e7"
+                "reference": "9b220ebc6fb4d5f15a8b74887c059b4d57ba85f8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/doctrine-bridge/zipball/212521017d81686bdc84a132fb5de2b03867a7e7",
-                "reference": "212521017d81686bdc84a132fb5de2b03867a7e7",
+                "url": "https://api.github.com/repos/symfony/doctrine-bridge/zipball/9b220ebc6fb4d5f15a8b74887c059b4d57ba85f8",
+                "reference": "9b220ebc6fb4d5f15a8b74887c059b4d57ba85f8",
                 "shasum": ""
             },
             "require": {
@@ -4124,7 +4126,7 @@
             "description": "Provides integration for Doctrine with various Symfony components",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/doctrine-bridge/tree/v5.3.8"
+                "source": "https://github.com/symfony/doctrine-bridge/tree/v5.3.11"
             },
             "funding": [
                 {
@@ -4140,7 +4142,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-09-11T18:11:56+00:00"
+            "time": "2021-11-12T11:38:27+00:00"
         },
         {
             "name": "symfony/doctrine-messenger",
@@ -6322,16 +6324,16 @@
         },
         {
             "name": "symfony/proxy-manager-bridge",
-            "version": "v5.3.4",
+            "version": "v5.3.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/proxy-manager-bridge.git",
-                "reference": "76e61f33f6a34a340bf6e02211214f466e8e1dba"
+                "reference": "c774a6a852fd702154414e76f8dcd4e96086c2a8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/proxy-manager-bridge/zipball/76e61f33f6a34a340bf6e02211214f466e8e1dba",
-                "reference": "76e61f33f6a34a340bf6e02211214f466e8e1dba",
+                "url": "https://api.github.com/repos/symfony/proxy-manager-bridge/zipball/c774a6a852fd702154414e76f8dcd4e96086c2a8",
+                "reference": "c774a6a852fd702154414e76f8dcd4e96086c2a8",
                 "shasum": ""
             },
             "require": {
@@ -6370,7 +6372,7 @@
             "description": "Provides integration for ProxyManager with various Symfony components",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/proxy-manager-bridge/tree/v5.3.4"
+                "source": "https://github.com/symfony/proxy-manager-bridge/tree/v5.3.11"
             },
             "funding": [
                 {
@@ -6386,7 +6388,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-07-21T12:38:00+00:00"
+            "time": "2021-11-17T12:16:12+00:00"
         },
         {
             "name": "symfony/redis-messenger",
@@ -6966,16 +6968,16 @@
         },
         {
             "name": "symfony/serializer",
-            "version": "v5.3.10",
+            "version": "v5.3.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/serializer.git",
-                "reference": "5d7f068253ac3e7c62964ebdda491b06d401059a"
+                "reference": "bf570839e289e0bdde69c9fa867d3a42f5e8fde1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/serializer/zipball/5d7f068253ac3e7c62964ebdda491b06d401059a",
-                "reference": "5d7f068253ac3e7c62964ebdda491b06d401059a",
+                "url": "https://api.github.com/repos/symfony/serializer/zipball/bf570839e289e0bdde69c9fa867d3a42f5e8fde1",
+                "reference": "bf570839e289e0bdde69c9fa867d3a42f5e8fde1",
                 "shasum": ""
             },
             "require": {
@@ -7048,7 +7050,7 @@
             "description": "Handles serializing and deserializing data structures, including object graphs, into array structures or other formats like XML and JSON.",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/serializer/tree/v5.3.10"
+                "source": "https://github.com/symfony/serializer/tree/v5.3.12"
             },
             "funding": [
                 {
@@ -7064,7 +7066,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-09-29T17:19:25+00:00"
+            "time": "2021-11-24T08:13:09+00:00"
         },
         {
             "name": "symfony/service-contracts",
@@ -10368,16 +10370,16 @@
         },
         {
             "name": "symfony/process",
-            "version": "v5.3.7",
+            "version": "v5.3.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/process.git",
-                "reference": "38f26c7d6ed535217ea393e05634cb0b244a1967"
+                "reference": "e498803a6e95ede78e9d5646ad32a2255c033a6a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/process/zipball/38f26c7d6ed535217ea393e05634cb0b244a1967",
-                "reference": "38f26c7d6ed535217ea393e05634cb0b244a1967",
+                "url": "https://api.github.com/repos/symfony/process/zipball/e498803a6e95ede78e9d5646ad32a2255c033a6a",
+                "reference": "e498803a6e95ede78e9d5646ad32a2255c033a6a",
                 "shasum": ""
             },
             "require": {
@@ -10410,7 +10412,7 @@
             "description": "Executes commands in sub-processes",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/process/tree/v5.3.7"
+                "source": "https://github.com/symfony/process/tree/v5.3.12"
             },
             "funding": [
                 {
@@ -10426,7 +10428,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-08-04T21:20:46+00:00"
+            "time": "2021-11-22T22:39:13+00:00"
         },
         {
             "name": "vimeo/psalm",
