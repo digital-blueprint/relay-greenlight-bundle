@@ -43,6 +43,9 @@ dbp_relay_greenlight:
   # database_url: %env(EU_DCC_DATABASE_URL)%
 ```
 
+If you were using the [DBP API Server Template](https://gitlab.tugraz.at/dbp/relay/dbp-relay-server-template)
+as template for your Symfony application, then the configuration file should have already been generated for you.
+
 For more info on bundle configuration see <https://symfony.com/doc/current/bundles/configuration.html>.
 
 ## PersonPhotoProvider service
