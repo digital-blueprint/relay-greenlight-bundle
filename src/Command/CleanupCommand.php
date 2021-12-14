@@ -33,7 +33,7 @@ class CleanupCommand extends Command
         $this->setDescription('Removes expired permits in the database');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $output->writeln('Removing expired permits...');
         $reviews = $this->greenlightService->getExpiredPermits();
