@@ -73,12 +73,15 @@ use Dbp\Relay\GreenlightBundle\API\PersonPhotoProviderInterface;
 class PersonPhotoProvider implements PersonPhotoProviderInterface
 {
     /**
-     * Returns the photo of a person as binary data.
+     * Returns the photo of the current user as binary data.
      */
-    public function getPhotoData(Person $person): string
+    public function getPhotoDataForCurrentUser(): string;
     {
-        // TODO: Add some code to fetch the photo for $person
-        $data = your_fetch_method($person);
+        // TODO: Add some code to fetch current user
+        $user = your_user_fetch_method();
+
+        // TODO: Add some code to fetch the photo for $user
+        $data = your_image_fetch_method($user);
 
         return $data;
     }
