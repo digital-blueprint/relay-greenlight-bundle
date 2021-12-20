@@ -224,7 +224,7 @@ class GreenlightService
         $permitPersistence->setPersonId($personId);
         $permitPersistence->setValidFrom(new \DateTime('now'));
         $permitPersistence->setValidUntil((new \DateTime('now'))->add(new \DateInterval('P1Y')));
-        $permitPersistence->setImageOriginal($this->fetchPhotoForPersonId($personId));
+        $permitPersistence->setImageOriginal($this->fetchPhotoForCurrentUser());
         $permitPersistence->setImageGenerated('');
         $permitPersistence->setImageGeneratedGray('');
         $permitPersistence->setInputHash('');
@@ -271,22 +271,13 @@ class GreenlightService
     }
 
     /**
-     * Returns the photo (or a fallback photo) of a person.
+     * Returns the photo (or a fallback photo) of the current user.
      * Or an empty string in case none was available.
      */
-    protected function fetchPhotoForPersonId(string $personId): string
+    protected function fetchPhotoForCurrentUser(): string
     {
-        $photoData = '';
-
-        // try to get a photo of the person
         try {
-            $person = $this->personProvider->getPerson($personId);
-        } catch (NotFoundHttpException $e) {
-            throw ApiError::withDetails(Response::HTTP_FORBIDDEN, "Current person wasn't found!", 'greenlight:current-person-not-found');
-        }
-
-        try {
-            $photoData = $this->personPhotoProviderInterface->getPhotoData($person);
+            $photoData = $this->personPhotoProviderInterface->getPhotoDataForCurrentUser();
         } catch (PhotoServiceException $e) {
             throw ApiError::withDetails(Response::HTTP_INTERNAL_SERVER_ERROR, 'The photo service had an error!', 'greenlight:photo-service-error', ['message' => $e->getMessage()]);
         }
