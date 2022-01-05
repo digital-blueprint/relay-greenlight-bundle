@@ -144,7 +144,9 @@ class PermitPersistence
 
     public function getAdditionalInformation(): string
     {
-        return $this->additionalInformation;
+        // transform the deprecated attribute value into the new one
+        return $this->additionalInformation === Permit::ADDITIONAL_INFORMATION_LOCAL_PROOF_DEPRECATED ?
+            Permit::ADDITIONAL_INFORMATION_FULL : $this->additionalInformation;
     }
 
     public function setAdditionalInformation(string $additionalInformation): void

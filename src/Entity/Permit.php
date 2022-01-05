@@ -32,7 +32,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *             "openapi_context" = {
  *                 "tags" = {"Electronic Covid Access Permits"},
  *                 "parameters" = {
- *                     {"name" = "additional-information", "in" = "query", "description" = "Set an additional information", "type" = "string", "enum" = {"local-proof", ""}, "example" = "local-proof"}
+ *                     {"name" = "additional-information", "in" = "query", "description" = "Set an additional information", "type" = "string", "enum" = {"full", "partial"}, "example" = "full"}
  *                 }
  *             },
  *         }
@@ -44,7 +44,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *             "openapi_context" = {
  *                 "tags" = {"Electronic Covid Access Permits"},
  *                 "parameters" = {
- *                     {"name" = "additional-information", "in" = "query", "description" = "Set an additional information", "type" = "string", "enum" = {"local-proof", ""}, "example" = "local-proof"}
+ *                     {"name" = "additional-information", "in" = "query", "description" = "Set an additional information", "type" = "string", "enum" = {"full", "partial"}, "example" = "full"}
  *                 }
  *             },
  *         },
@@ -71,18 +71,28 @@ use Symfony\Component\Serializer\Annotation\Groups;
 class Permit
 {
     use PermitTrait;
-    public const ADDITIONAL_INFORMATION_LOCAL_PROOF = 'local-proof';
+    public const ADDITIONAL_INFORMATION_FULL = 'full';
+    public const ADDITIONAL_INFORMATION_PARTIAL = 'partial';
+    public const ADDITIONAL_INFORMATION_LOCAL_PROOF_DEPRECATED = 'local-proof';
 
+    /**
+     * @throws \Exception
+     */
     public static function fromPermitPersistence(PermitPersistence $permitPersistence, ?string $additionalInformation = null): Permit
     {
         if (is_null($additionalInformation)) {
             $additionalInformation = $permitPersistence->getAdditionalInformation();
         }
 
-        // The additional information must be set to "local-proof" in the $permitPersistence entity AND in the
+        // transform the deprecated attribute value into the new one
+        if ($additionalInformation === self::ADDITIONAL_INFORMATION_LOCAL_PROOF_DEPRECATED) {
+            $additionalInformation = self::ADDITIONAL_INFORMATION_FULL;
+        }
+
+        // The additional information must be set to "full" in the $permitPersistence entity AND in the
         // $additionalInformation parameter for the image to be in color, instead of grayscale
-        $image = $additionalInformation === self::ADDITIONAL_INFORMATION_LOCAL_PROOF &&
-        $permitPersistence->getAdditionalInformation() === self::ADDITIONAL_INFORMATION_LOCAL_PROOF ?
+        $image = $additionalInformation === self::ADDITIONAL_INFORMATION_FULL &&
+        $permitPersistence->getAdditionalInformation() === self::ADDITIONAL_INFORMATION_FULL ?
             $permitPersistence->getImageGenerated() : $permitPersistence->getImageGeneratedGray();
 
         $permit = new Permit();
@@ -119,7 +129,12 @@ class Permit
      */
     public static function isAdditionalInformationValidForText(string $text): bool
     {
-        $additionalInformationList = ['', self::ADDITIONAL_INFORMATION_LOCAL_PROOF];
+        $additionalInformationList = [
+            '',
+            self::ADDITIONAL_INFORMATION_FULL,
+            self::ADDITIONAL_INFORMATION_LOCAL_PROOF_DEPRECATED,
+            self::ADDITIONAL_INFORMATION_PARTIAL,
+        ];
 
         return in_array($text, $additionalInformationList, true);
     }
