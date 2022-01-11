@@ -4,13 +4,12 @@ declare(strict_types=1);
 
 namespace Dbp\Relay\GreenlightBundle\Cron;
 
-use Dbp\Relay\CoreBundle\Cron\CronEvent;
+use Dbp\Relay\CoreBundle\Cron\CronJobInterface;
+use Dbp\Relay\CoreBundle\Cron\CronOptions;
 use Dbp\Relay\GreenlightBundle\Service\GreenlightService;
 
-class CleanupJob
+class CleanupJob implements CronJobInterface
 {
-    private const SCHEDULE = '0 * * * *'; // Every hour
-
     /** @var GreenlightService */
     private $greenlightService;
 
@@ -19,12 +18,18 @@ class CleanupJob
         $this->greenlightService = $greenlightService;
     }
 
-    public function onDbpRelayCron(CronEvent $event)
+    public function getName(): string
     {
-        if (!$event->isDue('greenlight-cleanup', self::SCHEDULE)) {
-            return;
-        }
+        return 'Greenlight Expired Permit DB Cleanup';
+    }
 
+    public function getInterval(): string
+    {
+        return '0 * * * *'; // Every hour
+    }
+
+    public function run(CronOptions $options): void
+    {
         $reviews = $this->greenlightService->getExpiredPermits();
         foreach ($reviews as $review) {
             $this->greenlightService->removePermit($review);

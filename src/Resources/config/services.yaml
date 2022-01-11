@@ -47,5 +47,3 @@ services:
   Dbp\Relay\GreenlightBundle\Cron\CleanupJob:
     autowire: true
     autoconfigure: true
-    tags:
-      - { name: kernel.event_listener, event: dbp.relay.cron }

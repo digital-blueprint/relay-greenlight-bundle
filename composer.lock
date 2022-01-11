@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fa07550c12f2949a3190b0930b8b6ef6",
+    "content-hash": "53a7b3b0aa3f4ce2c8d7341bc3e4badc",
     "packages": [
         {
             "name": "api-platform/core",
@@ -349,11 +349,11 @@
         },
         {
             "name": "dbp/relay-core-bundle",
-            "version": "v0.1.26",
+            "version": "v0.1.30",
             "source": {
                 "type": "git",
                 "url": "https://gitlab.tugraz.at/dbp/relay/dbp-relay-core-bundle",
-                "reference": "c0262c7e9771335cfffe5068e0cd4677d29bfe76"
+                "reference": "281710944f8621821e98db7797d2fb57e562905c"
             },
             "require": {
                 "api-platform/core": "^2.6.6",
@@ -376,6 +376,7 @@
                 "symfony/security-core": "^5.3",
                 "symfony/security-guard": "^5.3",
                 "symfony/twig-bundle": "^5.3",
+                "symfony/uid": "^5.4",
                 "symfony/validator": "^5.3",
                 "symfony/yaml": "^5.3"
             },
@@ -387,6 +388,7 @@
                 "friendsofphp/php-cs-fixer": "^3.0",
                 "phpstan/phpstan": "^1.0.0",
                 "phpstan/phpstan-phpunit": "^1.0.0",
+                "phpunit/phpunit": "^9",
                 "symfony/browser-kit": "^5.3",
                 "symfony/http-client": "^5.3",
                 "symfony/phpunit-bridge": "^5.3",
@@ -409,7 +411,7 @@
             "license": [
                 "AGPL-3.0-or-later"
             ],
-            "time": "2021-12-14T12:59:26+00:00"
+            "time": "2022-01-10T15:43:13+00:00"
         },
         {
             "name": "doctrine/annotations",
