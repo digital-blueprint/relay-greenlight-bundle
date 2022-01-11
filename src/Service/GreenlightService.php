@@ -82,6 +82,11 @@ class GreenlightService
         return $person;
     }
 
+    public function checkConnection()
+    {
+        $this->em->getConnection()->connect();
+    }
+
     /**
      * Fetches a Permit.
      */

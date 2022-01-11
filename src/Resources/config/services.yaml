@@ -44,6 +44,10 @@ services:
     autowire: true
     autoconfigure: true
 
+  Dbp\Relay\GreenlightBundle\HealthCheck\HealthCheck:
+    autowire: true
+    autoconfigure: true
+
   Dbp\Relay\GreenlightBundle\Cron\CleanupJob:
     autowire: true
     autoconfigure: true
