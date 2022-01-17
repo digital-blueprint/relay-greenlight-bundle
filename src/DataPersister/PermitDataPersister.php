@@ -34,7 +34,7 @@ class PermitDataPersister extends AbstractController implements ContextAwareData
     }
 
     /**
-     * @param Permit $data
+     * @param mixed $data
      *
      * @return Permit
      */
@@ -43,14 +43,17 @@ class PermitDataPersister extends AbstractController implements ContextAwareData
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $this->denyAccessUnlessGranted('ROLE_SCOPE_GREENLIGHT');
 
-        $data->setAdditionalInformation(
-            Utils::decodeAdditionalInformation($this->requestStack->getCurrentRequest(), $data->getAdditionalInformation()));
+        $permit = $data;
+        assert($permit instanceof Permit);
 
-        return $this->greenlightService->createPermitForCurrentPerson($data);
+        $data->setAdditionalInformation(
+            Utils::decodeAdditionalInformation($this->requestStack->getCurrentRequest(), $permit->getAdditionalInformation()));
+
+        return $this->greenlightService->createPermitForCurrentPerson($permit);
     }
 
     /**
-     * @param Permit $data
+     * @param mixed $data
      *
      * @return void
      */
@@ -59,6 +62,8 @@ class PermitDataPersister extends AbstractController implements ContextAwareData
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $this->denyAccessUnlessGranted('ROLE_SCOPE_GREENLIGHT');
 
-        $this->greenlightService->removePermitByIdForCurrentPerson($data->getIdentifier());
+        $permit = $data;
+        assert($permit instanceof Permit);
+        $this->greenlightService->removePermitByIdForCurrentPerson($permit->getIdentifier());
     }
 }
