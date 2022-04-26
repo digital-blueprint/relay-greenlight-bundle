@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Dbp\Relay\GreenlightBundle\DependencyInjection;
 
+use Dbp\Relay\CoreBundle\Extension\ExtensionTrait;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -13,15 +14,11 @@ use Symfony\Component\HttpKernel\DependencyInjection\ConfigurableExtension;
 
 class DbpRelayGreenlightExtension extends ConfigurableExtension implements PrependExtensionInterface
 {
-    /**
-     * @return void
-     *
-     * @throws \Exception
-     */
+    use ExtensionTrait;
+
     public function loadInternal(array $mergedConfig, ContainerBuilder $container)
     {
-        $this->extendArrayParameter(
-            $container, 'api_platform.resource_class_directories', [__DIR__.'/../Entity']);
+        $this->addResourceClassDirectory($container, __DIR__.'/../Entity');
 
         $loader = new YamlFileLoader(
             $container,
@@ -35,16 +32,6 @@ class DbpRelayGreenlightExtension extends ConfigurableExtension implements Prepe
 
         $definition = $container->getDefinition('Dbp\Relay\GreenlightBundle\Service\GreenlightService');
         $definition->addMethodCall('setCache', [$cacheDef]);
-    }
-
-    private function extendArrayParameter(ContainerBuilder $container, string $parameter, array $values): void
-    {
-        if (!$container->hasParameter($parameter)) {
-            $container->setParameter($parameter, []);
-        }
-        $oldValues = $container->getParameter($parameter);
-        assert(is_array($oldValues));
-        $container->setParameter($parameter, array_merge($oldValues, $values));
     }
 
     /**
