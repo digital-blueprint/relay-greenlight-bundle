@@ -5,12 +5,11 @@ declare(strict_types=1);
 namespace Dbp\Relay\GreenlightBundle\Migrations;
 
 use Doctrine\DBAL\Schema\Schema;
-use Doctrine\Migrations\AbstractMigration;
 
 /**
  * Add unique index on person_id.
  */
-final class Version20210928095618 extends AbstractMigration
+final class Version20210928095618 extends EntityManagerMigration
 {
     public function getDescription(): string
     {

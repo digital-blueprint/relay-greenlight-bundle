@@ -5,12 +5,11 @@ declare(strict_types=1);
 namespace Dbp\Relay\GreenlightBundle\Migrations;
 
 use Doctrine\DBAL\Schema\Schema;
-use Doctrine\Migrations\AbstractMigration;
 
 /**
  * Create table greenlight_permits.
  */
-final class Version20210817064626 extends AbstractMigration
+final class Version20210817064626 extends EntityManagerMigration
 {
     public function getDescription(): string
     {

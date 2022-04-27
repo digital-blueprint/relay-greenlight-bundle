@@ -5,12 +5,11 @@ declare(strict_types=1);
 namespace Dbp\Relay\GreenlightBundle\Migrations;
 
 use Doctrine\DBAL\Schema\Schema;
-use Doctrine\Migrations\AbstractMigration;
 
 /**
  * Set image_original to binary.
  */
-final class Version20210825070748 extends AbstractMigration
+final class Version20210825070748 extends EntityManagerMigration
 {
     public function getDescription(): string
     {

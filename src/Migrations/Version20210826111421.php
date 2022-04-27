@@ -5,12 +5,11 @@ declare(strict_types=1);
 namespace Dbp\Relay\GreenlightBundle\Migrations;
 
 use Doctrine\DBAL\Schema\Schema;
-use Doctrine\Migrations\AbstractMigration;
 
 /**
  * Add column image_generated_gray.
  */
-final class Version20210826111421 extends AbstractMigration
+final class Version20210826111421 extends EntityManagerMigration
 {
     public function getDescription(): string
     {

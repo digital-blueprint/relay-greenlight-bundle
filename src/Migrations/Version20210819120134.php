@@ -5,12 +5,11 @@ declare(strict_types=1);
 namespace Dbp\Relay\GreenlightBundle\Migrations;
 
 use Doctrine\DBAL\Schema\Schema;
-use Doctrine\Migrations\AbstractMigration;
 
 /**
  * Remove place from greenlight_permits.
  */
-final class Version20210819120134 extends AbstractMigration
+final class Version20210819120134 extends EntityManagerMigration
 {
     public function getDescription(): string
     {
