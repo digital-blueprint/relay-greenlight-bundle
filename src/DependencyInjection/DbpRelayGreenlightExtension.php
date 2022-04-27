@@ -63,7 +63,11 @@ class DbpRelayGreenlightExtension extends ConfigurableExtension implements Prepe
                             'naming_strategy' => 'doctrine.orm.naming_strategy.underscore_number_aware',
                             'connection' => 'dbp_relay_greenlight_bundle',
                             'mappings' => [
-                                'DbpRelayGreenlightBundle' => null,
+                                'dbp_relay_greenlight' => [
+                                    'type' => 'annotation',
+                                    'dir' => __DIR__.'/../Entity',
+                                    'prefix' => 'Dbp\Relay\GreenlightBundle\Entity',
+                                ],
                             ],
                         ],
                     ],
