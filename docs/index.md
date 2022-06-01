@@ -1,5 +1,7 @@
 # Overview
 
+Source: https://gitlab.tugraz.at/dbp/greenlight/dbp-relay-greenlight-bundle
+
 ```mermaid
 graph TD
     style greenlight_bundle fill:#606096,color:#fff
