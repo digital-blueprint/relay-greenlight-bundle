@@ -108,6 +108,19 @@ class VizHash
         imagecopy($dest, $temp, -imagesx($dest) / 4, -imagesy($dest) / 4, 0, 0, imagesx($dest), imagesy($dest));
     }
 
+    /**
+     * @psalm-suppress TooFewArguments
+     */
+    private static function imagefilledpolygon($image, array $points, int $color): bool
+    {
+        if (\PHP_VERSION_ID >= 80000) {
+            /* @phpstan-ignore-next-line */
+            return imagefilledpolygon($image, $points, $color);
+        } else {
+            return imagefilledpolygon($image, $points, count($points) / 2, $color);
+        }
+    }
+
     public static function generateBackground(string $input, int $width, int $height)
     {
         $hash = hash('sha256', $input);
@@ -168,7 +181,7 @@ class VizHash
                     break;
                 case 3:
                     $points = [$getX(), $getY(), $getX(), $getY(), $getX(), $getY(), $getX(), $getY()];
-                    imagefilledpolygon($image, $points, 4, $color);
+                    self::imagefilledpolygon($image, $points, $color);
                     break;
                 case 4:
                 case 5:
