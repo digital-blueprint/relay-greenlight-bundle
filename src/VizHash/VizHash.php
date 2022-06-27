@@ -133,7 +133,7 @@ class VizHash
         $valuesIndex = 0; // to walk the array.
 
         // Returns a single integer from the $VALUES array (0...255)
-        $getInt = function () use ($values, &$valuesIndex) {
+        $getInt = function () use ($values, &$valuesIndex): int {
             $v = $values[$valuesIndex];
             ++$valuesIndex;
             $valuesIndex %= count($values); // Warp around the array
@@ -147,7 +147,7 @@ class VizHash
         };
 
         // Returns a single integer from the array (roughly mapped to image height)
-        $getY = function () use ($getInt, $height) {
+        $getY = function () use ($getInt, $height): int {
             return (int) ($height * $getInt() / 256);
         };
 
@@ -195,9 +195,9 @@ class VizHash
         for ($i = 0; $i < 7; $i = $i + 1) {
             $action = $getInt();
             $color = imagecolorallocate($image, (int) $r, (int) $g, (int) $b);
-            $r = ($r0 + $getInt() / 25) % 256;
-            $g = ($g0 + $getInt() / 25) % 256;
-            $b = ($b0 + $getInt() / 25) % 256;
+            $r = ((int) ($r0 + $getInt() / 25)) % 256;
+            $g = ((int) ($g0 + $getInt() / 25)) % 256;
+            $b = ((int) ($b0 + $getInt() / 25)) % 256;
             $r0 = $r;
             $g0 = $g;
             $b0 = $b;
