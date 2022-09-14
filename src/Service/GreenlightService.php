@@ -281,7 +281,7 @@ class GreenlightService
     {
         try {
             $photoData = $this->personPhotoProviderInterface->getPhotoDataForCurrentUser();
-        } catch (ApiError $e) {
+        } catch (\Exception $e) {
             throw ApiError::withDetails(Response::HTTP_INTERNAL_SERVER_ERROR, 'The photo service had an error!', 'greenlight:photo-service-error', ['message' => $e->getMessage()]);
         }
 
