@@ -16,7 +16,7 @@ trait PermitTrait
     private $identifier;
 
     /**
-     * @ApiProperty(iri="https://schema.org/validFrom")
+     * @ApiProperty(iri="https://schema.org/identifier")
      * @Groups({"GreenlightPermit:output"})
      *
      * @var string
