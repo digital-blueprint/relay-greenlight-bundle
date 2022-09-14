@@ -12,7 +12,6 @@ use Dbp\Relay\GreenlightBundle\API\PersonPhotoProviderInterface;
 use Dbp\Relay\GreenlightBundle\Entity\Permit;
 use Dbp\Relay\GreenlightBundle\Entity\PermitPersistence;
 use Dbp\Relay\GreenlightBundle\Entity\ReferencePermit;
-use Dbp\Relay\GreenlightBundle\Exception\PhotoServiceException;
 use Dbp\Relay\GreenlightBundle\VizHash\Utils;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManagerInterface;
@@ -282,7 +281,7 @@ class GreenlightService
     {
         try {
             $photoData = $this->personPhotoProviderInterface->getPhotoDataForCurrentUser();
-        } catch (PhotoServiceException $e) {
+        } catch (ApiError $e) {
             throw ApiError::withDetails(Response::HTTP_INTERNAL_SERVER_ERROR, 'The photo service had an error!', 'greenlight:photo-service-error', ['message' => $e->getMessage()]);
         }
 
