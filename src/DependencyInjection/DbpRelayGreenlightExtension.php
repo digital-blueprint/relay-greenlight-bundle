@@ -73,6 +73,8 @@ class DbpRelayGreenlightExtension extends ConfigurableExtension implements Prepe
             ],
         ]);
 
+        $this->registerEntityManager($container, 'dbp_relay_greenlight_bundle');
+
         $container->prependExtensionConfig('doctrine_migrations', [
             'migrations_paths' => [
                 'Dbp\Relay\GreenlightBundle\Migrations' => __DIR__.'/../Migrations',
