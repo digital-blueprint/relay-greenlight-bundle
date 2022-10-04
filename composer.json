@@ -19,15 +19,15 @@
         "web-token/jwt-encryption-algorithm-pbes2": "^2.2"
     },
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "^3.0",
-        "phpstan/phpstan": "^1.0.0",
-        "phpstan/phpstan-phpunit": "^1.0.0",
-        "phpunit/phpunit": "^9.5",
-        "symfony/browser-kit": "^5.4",
-        "symfony/http-client": "^5.4",
-        "symfony/monolog-bundle": "^3.7",
-        "symfony/phpunit-bridge": "^5.4",
-        "vimeo/psalm": "^4.2.1"
+        "friendsofphp/php-cs-fixer": "^3.4",
+        "phpstan/phpstan": "^1.8.7",
+        "phpstan/phpstan-phpunit": "^1.1.1",
+        "phpunit/phpunit": "^9.5.25",
+        "symfony/browser-kit": "^5.4.11",
+        "symfony/http-client": "^5.4.13",
+        "symfony/monolog-bundle": "^3.8",
+        "symfony/phpunit-bridge": "^5.4.11",
+        "vimeo/psalm": "^4.27"
     },
     "autoload": {
         "psr-4": {
