@@ -1,3 +1,7 @@
+# v0.2.6
+
+* Register the DB entity manager with the core migration command
+
 # v0.2.4
 
 * Add a health check for the database connection
