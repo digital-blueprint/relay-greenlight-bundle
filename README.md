@@ -5,6 +5,8 @@
 [Frontend Application](https://gitlab.tugraz.at/dbp/greenlight/greenlight) |
 [Greenlight Website](https://dbp-demo.tugraz.at/site/software/greenlight.html)
 
+[![Test](https://github.com/digital-blueprint/dbp-relay-greenlight-bundle/actions/workflows/test.yml/badge.svg)](https://github.com/digital-blueprint/dbp-relay-greenlight-bundle/actions/workflows/test.yml)
+
 This bundle allows you to create permits for the Covid19 certificate evaluation process.
 
 You will need a database that is compatible with Doctrine (for example MariaDB) to store the permits.
