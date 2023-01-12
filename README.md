@@ -1,6 +1,6 @@
 # DbpRelayGreenlightBundle
 
-[GitLab](https://github.com/digital-blueprint/dbp-relay-greenlight-bundle) |
+[GitHub](https://github.com/digital-blueprint/dbp-relay-greenlight-bundle) |
 [Packagist](https://packagist.org/packages/dbp/relay-greenlight-bundle) |
 [Frontend Application](https://gitlab.tugraz.at/dbp/greenlight/greenlight) |
 [Greenlight Website](https://dbp-demo.tugraz.at/site/software/greenlight.html)
