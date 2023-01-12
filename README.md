@@ -1,6 +1,6 @@
 # DbpRelayGreenlightBundle
 
-[GitLab](https://gitlab.tugraz.at/dbp/greenlight/dbp-relay-greenlight-bundle) |
+[GitLab](https://github.com/digital-blueprint/dbp-relay-greenlight-bundle) |
 [Packagist](https://packagist.org/packages/dbp/relay-greenlight-bundle) |
 [Frontend Application](https://gitlab.tugraz.at/dbp/greenlight/greenlight) |
 [Greenlight Website](https://dbp-demo.tugraz.at/site/software/greenlight.html)
@@ -58,7 +58,7 @@ For more info on bundle configuration see <https://symfony.com/doc/current/bundl
 ## PersonPhotoProvider service
 
 For this bundle to work you need to create a service that implements
-[PersonPhotoProviderInterface](https://gitlab.tugraz.at/dbp/greenlight/dbp-relay-greenlight-bundle/-/blob/main/src/API/PersonPhotoProviderInterface.php)
+[PersonPhotoProviderInterface](https://github.com/digital-blueprint/dbp-relay-greenlight-bundle/-/blob/main/src/API/PersonPhotoProviderInterface.php)
 in your application.
 
 ### Example

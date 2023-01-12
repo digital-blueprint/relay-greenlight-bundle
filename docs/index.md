@@ -1,6 +1,6 @@
 # Overview
 
-Source: https://gitlab.tugraz.at/dbp/greenlight/dbp-relay-greenlight-bundle
+Source: https://github.com/digital-blueprint/dbp-relay-greenlight-bundle
 
 ```mermaid
 graph TD

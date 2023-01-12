@@ -1,3 +1,7 @@
+# v0.2.7
+
+* Migrate to [dbp-relay-greenlight-bundle on GitHub](https://github.com/digital-blueprint/dbp-relay-greenlight-bundle)
+
 # v0.2.6
 
 * Register the DB entity manager with the core migration command
