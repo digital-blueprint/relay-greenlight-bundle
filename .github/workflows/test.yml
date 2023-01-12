@@ -1,0 +1,43 @@
+name: Test
+
+on:
+  pull_request:
+  push:
+  workflow_dispatch:
+
+jobs:
+  unit-tests:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php-versions: ['7.3', '7.4', '8.0', '8.1']
+    name: Tests for php${{ matrix.php-versions }}
+    steps:
+    - name: Set up php${{ matrix.php-versions }}
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: ${{ matrix.php-versions }}
+        extensions: ctype,curl,dom,gd,iconv,intl,json,mbstring,openssl,posix,sqlite,xml,zip,gmp
+        coverage: xdebug
+    - name: Unit tests
+      run: |
+        composer install
+        composer test
+  linting:
+    runs-on: ubuntu-latest
+    name: Linting
+    steps:
+    - name: Set up php${{ matrix.php-versions }}
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: 7.4
+        extensions: ctype,curl,dom,gd,iconv,intl,json,mbstring,openssl,posix,sqlite,xml,zip,gmp
+        coverage: xdebug
+    - name: Unit tests
+      run: |
+        composer install
+        result=0
+        composer run cs || result=1
+        composer run phpstan || result=1
+        composer run psalm || result=1
+        exit $result
