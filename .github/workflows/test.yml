@@ -5,13 +5,16 @@ on:
   push:
   workflow_dispatch:
 
+env:
+  COMPOSER_CACHE_DIR: /tmp/_composer_cache
+
 jobs:
   unit-tests:
+    name: Tests for php${{ matrix.php-versions }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
         php-versions: ['7.3', '7.4', '8.0', '8.1']
-    name: Tests for php${{ matrix.php-versions }}
     steps:
     - name: Set up php${{ matrix.php-versions }}
       uses: shivammathur/setup-php@v2
@@ -21,13 +24,18 @@ jobs:
         coverage: xdebug
     - name: Checkout code
       uses: actions/checkout@v3
+    - name: Cache composer cache directory
+      uses: actions/cache@v3
+      with:
+        path: ${{ env.COMPOSER_CACHE_DIR }}
+        key: composer-cache
     - name: Unit tests
       run: |
         composer install
         composer test
   linting:
-    runs-on: ubuntu-latest
     name: Linting
+    runs-on: ubuntu-latest
     steps:
     - name: Set up php${{ matrix.php-versions }}
       uses: shivammathur/setup-php@v2
@@ -37,6 +45,11 @@ jobs:
         coverage: xdebug
     - name: Checkout code
       uses: actions/checkout@v3
+    - name: Cache composer cache directory
+      uses: actions/cache@v3
+      with:
+        path: ${{ env.COMPOSER_CACHE_DIR }}
+        key: composer-cache
     - name: Unit tests
       run: |
         composer install
