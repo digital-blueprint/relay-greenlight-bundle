@@ -1,11 +1,11 @@
 # DbpRelayGreenlightBundle
 
-[GitHub](https://github.com/digital-blueprint/dbp-relay-greenlight-bundle) |
+[GitHub](https://github.com/digital-blueprint/relay-greenlight-bundle) |
 [Packagist](https://packagist.org/packages/dbp/relay-greenlight-bundle) |
 [Frontend Application](https://gitlab.tugraz.at/dbp/greenlight/greenlight) |
 [Greenlight Website](https://dbp-demo.tugraz.at/site/software/greenlight.html)
 
-[![Test](https://github.com/digital-blueprint/dbp-relay-greenlight-bundle/actions/workflows/test.yml/badge.svg)](https://github.com/digital-blueprint/dbp-relay-greenlight-bundle/actions/workflows/test.yml)
+[![Test](https://github.com/digital-blueprint/relay-greenlight-bundle/actions/workflows/test.yml/badge.svg)](https://github.com/digital-blueprint/relay-greenlight-bundle/actions/workflows/test.yml)
 
 This bundle allows you to create permits for the Covid19 certificate evaluation process.
 
@@ -60,7 +60,7 @@ For more info on bundle configuration see <https://symfony.com/doc/current/bundl
 ## PersonPhotoProvider service
 
 For this bundle to work you need to create a service that implements
-[PersonPhotoProviderInterface](https://github.com/digital-blueprint/dbp-relay-greenlight-bundle/-/blob/main/src/API/PersonPhotoProviderInterface.php)
+[PersonPhotoProviderInterface](https://github.com/digital-blueprint/relay-greenlight-bundle/blob/main/src/API/PersonPhotoProviderInterface.php)
 in your application.
 
 ### Example
