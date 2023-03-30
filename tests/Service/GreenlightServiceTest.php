@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Dbp\Relay\GreenlightBundle\Tests\Service;
 
 use Dbp\Relay\BasePersonBundle\Entity\Person;
-use Dbp\Relay\BasePersonBundle\TestUtils\DummyPersonProvider;
+use Dbp\Relay\BasePersonBundle\Service\DummyPersonProvider;
 use Dbp\Relay\GreenlightBundle\Service\GreenlightService;
 use Dbp\Relay\GreenlightBundle\Service\VizHashProvider;
 use Dbp\Relay\GreenlightBundle\TestUtils\DummyPersonPhotoProvider;
@@ -26,7 +26,8 @@ class GreenlightServiceTest extends WebTestCase
         $person->setGivenName('Häns Rudolf');
         $person->setFamilyName('Tester Straß');
         $person->setBirthDate('1980-06-05');
-        $personProvider = new DummyPersonProvider($person);
+        $personProvider = new DummyPersonProvider();
+        $personProvider->setCurrentPerson($person);
         $entityManager = $this->createMock(EntityManagerInterface::class);
         $managerRegistry = $this->createMock(ManagerRegistry::class);
         $personPhotoProvider = new DummyPersonPhotoProvider();
