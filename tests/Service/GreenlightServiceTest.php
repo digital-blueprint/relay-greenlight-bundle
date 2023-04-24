@@ -25,7 +25,7 @@ class GreenlightServiceTest extends WebTestCase
         $person = new Person();
         $person->setGivenName('Häns Rudolf');
         $person->setFamilyName('Tester Straß');
-        $person->setBirthDate('1980-06-05');
+        $person->setLocalDataValue('birthDate', '1980-06-05');
         $personProvider = new DummyPersonProvider();
         $personProvider->setCurrentPerson($person);
         $entityManager = $this->createMock(EntityManagerInterface::class);
