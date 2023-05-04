@@ -24,3 +24,7 @@ connector bundle which you have to install separately.
 ## Installation Requirements
 
 * A SQL database like MySQL, PostgreSQL or similar.
+
+## Documentation
+
+* [Configuration](./config.md)
