@@ -1,3 +1,7 @@
+# v0.2.10
+
+* Update to api-platform v2.7
+
 # v0.2.7
 
 * Migrate to [dbp-relay-greenlight-bundle on GitHub](https://github.com/digital-blueprint/dbp-relay-greenlight-bundle)
