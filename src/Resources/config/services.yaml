@@ -15,6 +15,11 @@ services:
 #    tags: ['controller.service_arguments']
 #    autowire: true
 
+  dbp.relay.greenlight.cache:
+    parent: cache.app
+    tags:
+      - { name: 'cache.pool', default_lifetime: 3600 }
+
   Dbp\Relay\GreenlightBundle\DataPersister\:
     resource: '../../DataPersister'
     autowire: true
@@ -39,6 +44,8 @@ services:
   Dbp\Relay\GreenlightBundle\Service\GreenlightService:
     autowire: true
     autoconfigure: true
+    calls:
+      - setCache: [ '@dbp.relay.greenlight.cache' ]
 
   Dbp\Relay\GreenlightBundle\Service\VizHashProvider:
     autowire: true
