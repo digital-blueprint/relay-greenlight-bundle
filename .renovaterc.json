@@ -35,5 +35,6 @@
       "matchPackageNames": ["phpunit/phpunit"],
       "allowedVersions": "<10"
     }
-  ]
+  ],
+  "enabled": false
 }
