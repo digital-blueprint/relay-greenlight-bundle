@@ -7,6 +7,11 @@
 
 [![Test](https://github.com/digital-blueprint/relay-greenlight-bundle/actions/workflows/test.yml/badge.svg)](https://github.com/digital-blueprint/relay-greenlight-bundle/actions/workflows/test.yml)
 
+**Note:** This project depends on the DCC infrastructure of the Austrian
+Government. Since the DCC infrastructure is [no longer available since June
+2023](https://github.com/Federal-Ministry-of-Health-AT/green-pass-overview/issues/11#issuecomment-1617997232),
+this project is no longer actively maintained.
+
 This bundle allows you to create permits for the Covid19 certificate evaluation process.
 
 ```bash
